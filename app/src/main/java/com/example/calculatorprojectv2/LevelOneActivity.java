@@ -1,19 +1,18 @@
 package com.example.calculatorprojectv2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.mariuszgromada.math.mxparser.*;
-import org.w3c.dom.Text;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
+import org.mariuszgromada.math.mxparser.Expression;
 
 public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
     TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
@@ -89,6 +88,12 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         goalOneRun();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
+
     private void goalOneRun(){
         clickCounter = 0;
         goalDisplay.setText("Goal: " + goalOne);
@@ -158,6 +163,8 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         bDiv.setVisibility(View.GONE);
         cButton.setVisibility(View.GONE);
     }
+
+
 
     @Override
     public void onClick(View view) {
