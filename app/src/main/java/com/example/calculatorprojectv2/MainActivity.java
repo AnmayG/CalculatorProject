@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     Button mainButton, nextButton;
     TextView instructionsLabel;
     private int stage = 0;

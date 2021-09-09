@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
+import java.util.Locale;
+
 //test comment delte
 public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
     TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
@@ -23,11 +25,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private String displayLabel = "";
     private int level = 1;
 
-    private double goalOne = 64.0;
-    private double goalTwo = 55.0;
-    private double goalThree = 169.0;
-    private double goalFour = 267.0;
-    private double goalFive = 12.0;
+    private final double goalOne = 64.0;
+    private final double goalTwo = 55.0;
+    private final double goalThree = 169.0;
+    private final double goalFour = 267.0;
+    private final double goalFive = 12.0;
 
     private boolean goalOneA = false;
     private boolean goalTwoA = false;
@@ -35,11 +37,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private boolean goalFourA = false;
     private boolean goalFiveA = false;
 
-    private int goalOneClick = 3;
-    private int goalTwoClick = 4;
-    private int goalThreeClick = 5;
-    private int goalFourClick = 6;
-    private int goalFiveClick = 3;
+    private final int goalOneClick = 3;
+    private final int goalTwoClick = 4;
+    private final int goalThreeClick = 5;
+    private final int goalFourClick = 6;
+    private final int goalFiveClick = 3;
 
 
     @Override
@@ -47,20 +49,20 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_one);
 
-        bOne = (Button) findViewById(R.id.buttonOne);
-        bTwo = (Button) findViewById(R.id.buttonTwo);
-        bThree = (Button) findViewById(R.id.buttonThree);
-        bFour = (Button) findViewById(R.id.buttonFour);
-        bFive = (Button) findViewById(R.id.buttonFive);
-        bSix = (Button) findViewById(R.id.buttonSix);
-        bSeven = (Button) findViewById(R.id.buttonSeven);
-        bEight = (Button) findViewById(R.id.buttonEight);
-        bNine = (Button) findViewById(R.id.buttonNine);
-        bAdd = (Button) findViewById(R.id.additionButton);
-        bSub = (Button) findViewById(R.id.subtractionButton);
-        bMulti = (Button) findViewById(R.id.multiplicationButton);
-        bDiv = (Button) findViewById(R.id.divisionButton);
-        cButton = (Button) findViewById(R.id.calculateButton);
+        bOne = findViewById(R.id.buttonOne);
+        bTwo = findViewById(R.id.buttonTwo);
+        bThree = findViewById(R.id.buttonThree);
+        bFour = findViewById(R.id.buttonFour);
+        bFive = findViewById(R.id.buttonFive);
+        bSix = findViewById(R.id.buttonSix);
+        bSeven = findViewById(R.id.buttonSeven);
+        bEight = findViewById(R.id.buttonEight);
+        bNine = findViewById(R.id.buttonNine);
+        bAdd = findViewById(R.id.additionButton);
+        bSub = findViewById(R.id.subtractionButton);
+        bMulti = findViewById(R.id.multiplicationButton);
+        bDiv = findViewById(R.id.divisionButton);
+        cButton = findViewById(R.id.calculateButton);
         //^^ The numerical calculator buttons
 
         bOne.setOnClickListener(this);
@@ -79,11 +81,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton.setOnClickListener(this);
         //^^ For the Click Listener for the Button
 
-        display = (TextView) findViewById(R.id.display);
-        goalDisplay = (TextView) findViewById((R.id.goalDisplay));
-        buttonClickCounter = (TextView) findViewById(R.id.buttonClickCounter);
-        constraintDisplay = (TextView) findViewById(R.id.constraintDisplay);
-        levelDisplay = (TextView) findViewById(R.id.levelLabel);
+        display = findViewById(R.id.display);
+        goalDisplay = findViewById((R.id.goalDisplay));
+        buttonClickCounter = findViewById(R.id.buttonClickCounter);
+        constraintDisplay = findViewById(R.id.constraintDisplay);
+        levelDisplay = findViewById(R.id.levelLabel);
         //^^ Sets the Displays
 
         goalOneRun();
@@ -97,49 +99,49 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
 
     private void goalOneRun(){
         clickCounter = 0;
-        goalDisplay.setText("Goal: " + goalOne);
+        goalDisplay.setText(String.format("Goal: %s", goalOne));
         constraintDisplay.setText("Three Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
     }
 
     private void goalTwoRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText("Goal: " + goalTwo);
+        goalDisplay.setText(String.format("Goal: %s", goalTwo));
         constraintDisplay.setText("Four Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         level++;
-        levelDisplay.setText("Level: " + level);
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void goalThreeRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText("Goal: " + goalThree);
+        goalDisplay.setText(String.format("Goal: %s", goalThree));
         constraintDisplay.setText("5 Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         level++;
-        levelDisplay.setText("Level: " + level);
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void goalFourRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText("Goal: " + goalFour);
+        goalDisplay.setText(String.format("Goal: %s", goalFour));
         constraintDisplay.setText("Use Addition with 5 Button Presses");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         level++;
-        levelDisplay.setText("Level: " + level);
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void goalFiveRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText("Goal: " + goalFive);
+        goalDisplay.setText(String.format("Goal: %s", goalFive));
         constraintDisplay.setText("3 Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         level++;
-        levelDisplay.setText("Level: " + level);
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void finishScreen(){
