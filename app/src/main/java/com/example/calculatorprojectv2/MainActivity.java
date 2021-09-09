@@ -12,6 +12,17 @@ public class MainActivity extends AppCompatActivity {
 
     Button mainButton, nextButton;
     TextView instructionsLabel;
+    private int stage = 0;
+
+    private final String[] stageLabels = {
+            "You're bored in class one day, so you take our your calculator",
+            "But you notice something's a little off about it...",
+            "YOUR CALCULATOR IS BROKEN!",
+            "But since you are the civilized person that you are",
+            "Instead of panicking, you decide to take this opportunity to cure your boredom!",
+            "Your goal is to get to the target button while staying under the button click limit.",
+            "Press the Play Button to start!"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,30 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
         instructionsLabel = (TextView) findViewById(R.id.instructionLabelOne);
 
-        final int[] stage = {0};
-
         mainButton.setOnClickListener(view -> openLevelOne());
 
         nextButton.setOnClickListener(view -> {
-            if (stage[0] == 0){
-                instructionsLabel.setText("You're bored in class one day, so you take out your calculator");
-            } else if (stage[0] == 1){
-                instructionsLabel.setText("But you notice something's a little off about it...");
-            } else if (stage[0] == 2){
-                instructionsLabel.setText("YOUR CALCULATOR IS BROKEN!");
-            } else if (stage[0] == 3){
-                instructionsLabel.setText("But since you are the civilized person that you are");
-            } else if (stage[0] == 4){
-                instructionsLabel.setText("Instead of panicking, you decide to take this opportunity to cure your boredom!");
-            } else if (stage[0] == 5){
-                instructionsLabel.setText("Your goal, is to get to the goal number, while staying under the button click limit");
-            } else if (stage[0] == 6){
+            instructionsLabel.setText(stageLabels[stage]);
+            if (stage == 6) {
                 nextButton.setVisibility(View.GONE);
-                instructionsLabel.setText("Press the Play Button to Start!");
                 mainButton.setVisibility(View.VISIBLE);
             }
-
-            stage[0]++;
+            stage++;
         });
     }
 
