@@ -14,10 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
-//test comment delte
 public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
     TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
-    Button bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, cButton;
+    Button bZero, bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, cButton;
 
     private int clickCounter = 0;
     private String displayLabel = "";
@@ -47,6 +46,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_one);
 
+        bZero = (Button) findViewById(R.id.buttonZero);
         bOne = (Button) findViewById(R.id.buttonOne);
         bTwo = (Button) findViewById(R.id.buttonTwo);
         bThree = (Button) findViewById(R.id.buttonThree);
@@ -63,6 +63,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton = (Button) findViewById(R.id.calculateButton);
         //^^ The numerical calculator buttons
 
+        bZero.setOnClickListener(this);
         bOne.setOnClickListener(this);
         bTwo.setOnClickListener(this);
         bThree.setOnClickListener(this);
@@ -149,6 +150,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         buttonClickCounter.setVisibility(View.GONE);
         levelDisplay.setVisibility(View.GONE);
 
+        bZero.setVisibility(View.GONE);
         bOne.setVisibility(View.GONE);
         bTwo.setVisibility(View.GONE);
         bThree.setVisibility(View.GONE);
@@ -186,6 +188,8 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         Toast overShot = Toast.makeText(contextTwo, textOver, durationTwo);
 
         switch (view.getId()){
+            //TO DO: ADD CASE STATEMENT for CASE 0;
+
             case R.id.buttonOne:
                 clickCounter++;
                 buttonClickCounter.setText("Button Clicks: " + clickCounter);
