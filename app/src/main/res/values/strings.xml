@@ -23,4 +23,5 @@
     <string name="_0">0</string>
     <string name="exponent">exponent</string>
     <string name="power">^</string>
+    <string name="mystery">\?</string>
 </resources>
