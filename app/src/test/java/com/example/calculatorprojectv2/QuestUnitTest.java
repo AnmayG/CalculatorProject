@@ -9,15 +9,19 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+
 public class QuestUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
 
+    // These are all tests for the Quest object to make sure that it is working correctly.
+    // Each one works by creating 10,000 Quest objects and validating each one
+
     @Test
     public void quest_buttonLimit_isWorking() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Quest q = new Quest(i);
             int[] testNums = q.getTestNums();
             // Checks to see if the length of each test number plus the length of the other test number plus one is the button limit
@@ -29,7 +33,7 @@ public class QuestUnitTest {
 
     @Test
     public void quest_targetNumber_isWorking() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Quest q = new Quest(i);
             int[] testNums = q.getTestNums();
             switch (q.getOperationDesignation()) {
@@ -51,7 +55,7 @@ public class QuestUnitTest {
 
     @Test
     public void quest_operationDesignation_isWorking() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Quest q = new Quest(i);
             assertTrue(1 <= q.getOperationDesignation() && q.getOperationDesignation() <= Quest.NUMBER_OPERATIONS);
         }
@@ -59,12 +63,12 @@ public class QuestUnitTest {
 
     @Test
     public void quest_numberLimit_isBelow() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10000; i++) {
             Quest q = new Quest(i);
             int[] testNums = q.getTestNums();
-            assertTrue(testNums[0] < 9999);
-            assertTrue(testNums[1] < 9999);
-            assertTrue(q.getTargetNumber() < 9999);
+            assertTrue(testNums[0] < 10000);
+            assertTrue(testNums[1] < 10000);
+            assertTrue(q.getTargetNumber() < 10000);
         }
     }
 }

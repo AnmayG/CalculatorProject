@@ -73,7 +73,7 @@ public class Quest {
                 num1 = randInt(0, 9999);
                 num2 = randInt(0, 9999);
                 testNums = new int[]{num1, num2};
-                targetNumber = num1 + num2;
+                targetNumber = num1 - num2;
                 // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
