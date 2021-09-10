@@ -17,9 +17,10 @@ import org.mariuszgromada.math.mxparser.Expression;
 
 import java.util.Locale;
 
-public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
-    TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
-    Button bZero, bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
+public class LevelOneActivity extends AppCompatActivity {
+    TextView display, goalDisplay, buttonClickCounter, levelDisplay, constraintDisplay; //add a TextView for the number that the use has to reach
+    Button bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
+    private final Button[] numberButtons = new Button[10];
 
     private int clickCounter = 0;
     private String displayLabel = "";
@@ -35,6 +36,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     };
     private Quest activeQuest;
     private static final boolean USE_GOAL_TESTS = false;
+    private static final String REWARD_MESSAGE = "You beat the game!";
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -45,23 +47,17 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private Toast underShot;
     private Toast overShot;
 
-    private String rewardMessage = "You beat the game!";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_one);
 
-        bZero = findViewById(R.id.buttonZero);
-        bOne = findViewById(R.id.buttonOne);
-        bTwo = findViewById(R.id.buttonTwo);
-        bThree = findViewById(R.id.buttonThree);
-        bFour = findViewById(R.id.buttonFour);
-        bFive = findViewById(R.id.buttonFive);
-        bSix = findViewById(R.id.buttonSix);
-        bSeven = findViewById(R.id.buttonSeven);
-        bEight = findViewById(R.id.buttonEight);
-        bNine = findViewById(R.id.buttonNine);
+        for (int i = 0; i <= 9; i++) {
+            int id = getResources().getIdentifier("button_" + i , "id", getPackageName());
+            numberButtons[i] = findViewById(id);
+        }
+        //^^ The numerical calculator buttons
+
         bAdd = findViewById(R.id.additionButton);
         bSub = findViewById(R.id.subtractionButton);
         bMulti = findViewById(R.id.multiplicationButton);
@@ -70,39 +66,18 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         bClear = findViewById(R.id.clearButton);
         bDelete = findViewById(R.id.deleteButton);
         bEnter = findViewById(R.id.calculateButton);
-        //^^ The numerical calculator buttons
 
-        bZero.setOnClickListener(this);
-        bOne.setOnClickListener(this);
-        bTwo.setOnClickListener(this);
-        bThree.setOnClickListener(this);
-        bFour.setOnClickListener(this);
-        bFive.setOnClickListener(this);
-        bSix.setOnClickListener(this);
-        bSeven.setOnClickListener(this);
-        bEight.setOnClickListener(this);
-        bNine.setOnClickListener(this);
-        bAdd.setOnClickListener(this);
-        bSub.setOnClickListener(this);
-        bMulti.setOnClickListener(this);
-        bDiv.setOnClickListener(this);
-        bPwr.setOnClickListener(this);
-        bClear.setOnClickListener(this);
-        bDelete.setOnClickListener(this);
-        bEnter.setOnClickListener(this);
+        setButtonClickListeners();
         //^^ For the Click Listener for the Button
-
-        clickButton();
 
         display = findViewById(R.id.display);
         goalDisplay = findViewById((R.id.goalDisplay));
-        buttonClickCounter = findViewById(R.id.buttonClickCounter);
-        constraintDisplay = findViewById(R.id.constraintDisplay);
+        buttonClickCounter = findViewById(R.id.clicksLeft);
         levelDisplay = findViewById(R.id.levelLabel);
+        constraintDisplay = findViewById(R.id.constraintDisplay);
         //^^ Sets the Displays
 
         Context context = getApplicationContext();
-
         int duration = Toast.LENGTH_SHORT;
         toast = Toast.makeText(context, keystrokeOver, duration);
         fgd = Toast.makeText(context, sillyGoose, duration);
@@ -110,47 +85,6 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         overShot = Toast.makeText(context, textOver, duration);
 
         startGoalRuns();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        return super.onCreateView(parent, name, context, attrs);
-    }
-
-    private void runNextGoal() {
-        if(USE_GOAL_TESTS) {
-            int lastIndex = activeQuest.getId();
-            if(lastIndex > goalQuests.length) {
-                Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
-            } else {
-                activeQuest = goalQuests[lastIndex + 1];
-            }
-        } else {
-            activeQuest = new Quest(activeQuest.getId() + 1);
-        }
-
-    private void goalTwoRun(){
-        activeQuest = goalQuest2;
-
-        clickCounter = 0;
-        displayLabel = "";
-        goalDisplay.setText("Goal: " + goalTwo);
-        constraintDisplay.setText("Four Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
-        level++;
-        levelDisplay.setText("Level: " + level);
-    }
-
-    private void goalThreeRun(){
-        activeQuest = goalQuest3;
-
-        clickCounter = 0;
-        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
-        constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
-        level++;
-        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void startGoalRuns(){
@@ -162,8 +96,8 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
             }
         }
 
-        displayLabel = "";
         clickCounter = 0;
+        displayLabel = "";
         goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
         constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
@@ -171,118 +105,45 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        return super.onCreateView(parent, name, context, attrs);
+    }
+
+    private void runNextGoal() {
+        if (USE_GOAL_TESTS) {
+            int lastIndex = activeQuest.getId();
+            if (lastIndex > goalQuests.length) {
+                Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
+            } else {
+                activeQuest = goalQuests[lastIndex + 1];
+            }
+        } else {
+            activeQuest = new Quest(activeQuest.getId() + 1);
+        }
+    }
+
     private void finishScreen(){
-        display.setText(rewardMessage);
+        display.setText(REWARD_MESSAGE);
         constraintDisplay.setVisibility(View.GONE);
         goalDisplay.setVisibility(View.GONE);
         buttonClickCounter.setVisibility(View.GONE);
         levelDisplay.setVisibility(View.GONE);
 
-        bZero.setVisibility(View.GONE);
-        bOne.setVisibility(View.GONE);
-        bTwo.setVisibility(View.GONE);
-        bThree.setVisibility(View.GONE);
-        bFour.setVisibility(View.GONE);
-        bFive.setVisibility(View.GONE);
-        bSix.setVisibility(View.GONE);
-        bSeven.setVisibility(View.GONE);
-        bEight.setVisibility(View.GONE);
-        bNine.setVisibility(View.GONE);
+        for (Button b:numberButtons) {
+            b.setVisibility(View.GONE);
+        }
+
         bAdd.setVisibility(View.GONE);
         bSub.setVisibility(View.GONE);
         bMulti.setVisibility(View.GONE);
         bDiv.setVisibility(View.GONE);
-        cButton.setVisibility(View.GONE);
-    }
-
-    // TODO: Separate each button into its separate function so as to eliminate the switch case statement
-    @Override
-    public void onClick(View view) {
-        // TODO: Add activeQuest field that acts as the current active quest
-        // This is how we're going to add the endless Quest things
-        switch (view.getId()){
-            //TODO: ADD CASE STATEMENT for CASE 0;
-            case R.id.buttonZero:
-                updateOnButtonClick("0");
-                break;
-            case R.id.buttonOne:
-                updateOnButtonClick("1");
-                break;
-            case R.id.buttonTwo:
-                updateOnButtonClick("2");
-                break;
-            case R.id.buttonThree:
-                updateOnButtonClick("3");
-                break;
-            case R.id.buttonFour:
-                updateOnButtonClick("4");
-                break;
-            case R.id.buttonFive:
-                updateOnButtonClick("5");
-                break;
-            case R.id.buttonSix:
-                updateOnButtonClick("6");
-                break;
-            case R.id.buttonSeven:
-                updateOnButtonClick("7");
-                break;
-            case R.id.buttonEight:
-                updateOnButtonClick("8");
-                break;
-            case R.id.buttonNine:
-                updateOnButtonClick("9");
-                break;
-            case R.id.additionButton:
-                updateOnButtonClick("+");
-                break;
-            case R.id.subtractionButton:
-                updateOnButtonClick("-");
-                break;
-            case R.id.multiplicationButton:
-                updateOnButtonClick("×");
-                break;
-            case R.id.divisionButton:
-                updateOnButtonClick("÷");
-                break;
-            case R.id.calculateButton:
-                String expEval = display.getText().toString();
-
-                // There is some time spent on using the × and ÷ so gotta do that too
-                expEval = expEval.replaceAll("×", "*");
-                expEval = expEval.replaceAll("÷", "/");
-
-                // This is actually an interesting idea. The Expression class autosolves it for us
-                // TODO: Replace the switch case in the Quest class with expEval
-                Expression exp = new Expression(expEval);
-
-                String resultS = String.valueOf(exp.calculate());
-                double result = Double.parseDouble(resultS);
-
-                if(result == activeQuest.getTargetNumber()) {
-                    runNextGoal();
-                    if (activeQuest.getId() == 5) {
-                        finishScreen();
-                    }
-                } else {
-                    if (result > activeQuest.getTargetNumber()) {
-                        overShot.show();
-                    } else {
-                        underShot.show();
-                    }
-
-                    displayLabel = "";
-                    clickCounter = 0;
-                }
-
-                display.setText(displayLabel);
-                buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
-                return;
-        }
-        checkOverButtonLimit();
+        bEnter.setVisibility(View.GONE);
     }
 
     public void updateOnButtonClick(String addition) {
-        if(activeQuest.isLimited()) {
+        if (activeQuest.isLimited()) {
 
         }
 
@@ -290,10 +151,12 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         displayLabel = displayLabel.concat(addition);
         display.setText(displayLabel);
+
+        checkOverButtonLimit();
     }
 
     public void checkOverButtonLimit() {
-        if(clickCounter > activeQuest.getButtonLimit()) {
+        if (clickCounter > activeQuest.getButtonLimit()) {
             toast.show();
             displayLabel = "";
             display.setText(displayLabel);
@@ -302,133 +165,75 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //on click listeners for each button fadslfkjsl
-    private void clickButton(){
-        bZero.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    //on click listeners for each button
+    private void setButtonClickListeners() {
+        for (int i = 0; i < numberButtons.length; i++) {
+            int finalI = i;
+            numberButtons[i].setOnClickListener(view -> {
+                updateOnButtonClick(String.valueOf(finalI));
+            });
+        }
 
-            }
+        bDelete.setOnClickListener(view -> {
+
         });
 
-        bOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bClear.setOnClickListener(view -> {
 
-            }
         });
 
-        bTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bEnter.setOnClickListener(view -> {
+            String expEval = display.getText().toString();
 
+            // There is some time spent on using the × and ÷ so gotta do that too
+            expEval = expEval.replaceAll("×", "*");
+            expEval = expEval.replaceAll("÷", "/");
+
+            // This is actually an interesting idea. The Expression class autosolves it for us
+            // TODO: Replace the switch case in the Quest class with expEval
+            Expression exp = new Expression(expEval);
+
+            String resultS = String.valueOf(exp.calculate());
+            double result = Double.parseDouble(resultS);
+
+            if (result == activeQuest.getTargetNumber()) {
+                runNextGoal();
+                if (activeQuest.getId() == 5) {
+                    finishScreen();
+                }
+            } else {
+                if (result > activeQuest.getTargetNumber()) {
+                    overShot.show();
+                } else {
+                    underShot.show();
+                }
+
+                displayLabel = "";
+                clickCounter = 0;
             }
+
+            display.setText(displayLabel);
+            buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         });
 
-        bThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
+        bAdd.setOnClickListener(view -> {
+            updateOnButtonClick("+");
         });
 
-        bFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
+        bSub.setOnClickListener(view -> {
+            updateOnButtonClick("-");
         });
 
-        bFive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
+        bMulti.setOnClickListener(view -> {
+            updateOnButtonClick("×");
         });
 
-        bSix.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
+        bDiv.setOnClickListener(view -> {
+            updateOnButtonClick("÷");
         });
 
-        bSeven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bPwr.setOnClickListener(view -> {
 
-            }
         });
-
-        bEight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bNine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bEnter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bMulti.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bDiv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        bPwr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
     }
 }
