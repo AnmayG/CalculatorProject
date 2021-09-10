@@ -40,6 +40,13 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private int goalFourClick = 6;
     private int goalFiveClick = 3;
 
+    // TODO: These are test quests that have the same parameters as the old ones
+    private Quest goalQuest1 = new Quest(3, 64, 3, false, 0);
+    private Quest goalQuest2 = new Quest(4, 55, 3, false, 1);
+    private Quest goalQuest3 = new Quest(5, 169, 3, false, 2);
+    private Quest goalQuest4 = new Quest(5, 267, 2, true, 3);
+    private Quest goalQuest5 = new Quest(3, 12, 3, false, 4);
+    private Quest activeQuest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,10 +174,10 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton.setVisibility(View.GONE);
     }
 
-
-
+    // TODO: Separate each button into its separate function so as to eliminate the switch case statement
     @Override
     public void onClick(View view) {
+        // Bring these into instance fields so as to save them without hurting the project
         Context context = getApplicationContext();
         CharSequence keystrokeOver = "Too many Button Presses!";
         CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -187,12 +194,16 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         Toast underShot = Toast.makeText(contextTwo, textUnder, durationTwo);
         Toast overShot = Toast.makeText(contextTwo, textOver, durationTwo);
 
+        // TODO: Add activeQuest field that acts as the current active quest
+        // This is how we're going to add the endless Quest things
         switch (view.getId()){
-            //TO DO: ADD CASE STATEMENT for CASE 0;
+            //TODO: ADD CASE STATEMENT for CASE 0;
 
             case R.id.buttonOne:
                 clickCounter++;
                 buttonClickCounter.setText("Button Clicks: " + clickCounter);
+
+                // TODO: Figure out the displayLabel because that's a thing
                 displayLabel = displayLabel.concat("1");
                 display.setText(displayLabel);
 

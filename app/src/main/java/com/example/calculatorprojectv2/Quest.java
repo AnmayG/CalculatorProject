@@ -13,8 +13,8 @@ public class Quest {
     public static final int NUMBER_OPERATIONS = 4;
 
     private int buttonLimit;
-    private int targetNumber;
-    private int[] testNums;
+    private double targetNumber;
+    private double[] testNums;
     private int operationDesignation;
     private boolean isLimited;
     private int id;
@@ -23,7 +23,7 @@ public class Quest {
         return buttonLimit;
     }
 
-    public int getTargetNumber() {
+    public double getTargetNumber() {
         return targetNumber;
     }
 
@@ -39,13 +39,17 @@ public class Quest {
         return isLimited;
     }
 
-    public int[] getTestNums() {
+    public double[] getTestNums() {
         return testNums;
     }
 
     public Quest(int id) {
         this.id = id;
         createTargets();
+    }
+
+    public Quest(int buttonLimit, int targetNumber, int operationDesignation, boolean isLimited, int id) {
+
     }
 
     public void createTargets() {
@@ -61,9 +65,9 @@ public class Quest {
         switch (operationDesignation) {
             case 1:
                 // This is the case for addition
-                int num1 = randInt(0, 4999);
-                int num2 = randInt(0, 4999);
-                testNums = new int[]{num1, num2};
+                double num1 = randInt(0, 4999);
+                double num2 = randInt(0, 4999);
+                testNums = new double[]{num1, num2};
                 targetNumber = num1 + num2;
                 // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
@@ -72,7 +76,7 @@ public class Quest {
                 // This is the case for subtraction
                 num1 = randInt(0, 9999);
                 num2 = randInt(0, 9999);
-                testNums = new int[]{num1, num2};
+                testNums = new double[]{num1, num2};
                 targetNumber = num1 - num2;
                 // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
@@ -81,7 +85,7 @@ public class Quest {
                 // This is the case for multiplication
                 num1 = randInt(0, 100);
                 num2 = randInt(0, 99);
-                testNums = new int[]{num1, num2};
+                testNums = new double[]{num1, num2};
                 targetNumber = num1 * num2;
                 // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
@@ -90,7 +94,7 @@ public class Quest {
                 // This is the case for division
                 num1 = randInt(0, 9999);
                 num2 = randInt(1, 100);
-                testNums = new int[]{num1, num2};
+                testNums = new double[]{num1, num2};
                 targetNumber = num1 / num2;
                 // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
