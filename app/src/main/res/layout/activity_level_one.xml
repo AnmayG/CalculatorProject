@@ -13,15 +13,13 @@
         android:id="@+id/display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/display"
         android:textColor="@color/white"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.203" />
 
     <TextView
         android:id="@+id/levelLabel"
@@ -35,7 +33,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.077" />
+
 
     <TextView
         android:id="@+id/goalDisplay"
@@ -43,92 +42,87 @@
         android:layout_height="wrap_content"
         android:text="@string/goal"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.243" />
+        app:layout_constraintVertical_bias="0.126" />
 
     <TextView
-        android:id="@+id/constraintDisplay"
+        android:id="@+id/clicksLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Constraints:"
+        android:text="Clicks Left:"
         android:textColor="@color/white"
-        android:textSize="28sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.053" />
-
-    <TextView
-        android:id="@+id/buttonClickCounter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button Clicks: "
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <!-- Button Zero ^^-->
+
+    <!-- Button One ^^-->
 
     <Button
         android:id="@+id/buttonZero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="424dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_0"
         android:textColor="#FFA500"
         android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/mysteryButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSeven" />
 
     <Button
         android:id="@+id/buttonOne"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="232dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="12dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_1"
         android:textColor="#FFA500"
         android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/buttonTwo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <!-- Button One ^^-->
+        app:layout_constraintTop_toBottomOf="@+id/display" />
+
+    <!--Button Two ^^-->
 
     <Button
         android:id="@+id/buttonTwo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="232dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_2"
         android:textColor="#FFA500"
         android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@+id/buttonOne"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/display" />
 
-    <!--Button Two ^^-->
+    <!--Button Three ^^-->
+
+    <!--Button Four ^^-->
 
     <Button
         android:id="@+id/buttonThree"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="232dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_3"
         android:textColor="#FFA500"
@@ -136,16 +130,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/buttonTwo"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--Button Three ^^-->
+        app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <Button
         android:id="@+id/buttonFour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_4"
         android:textColor="#FFA500"
@@ -153,14 +145,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonOne" />
 
-    <!--Button Four ^^-->
+    <!--Button Five ^^-->
 
     <Button
         android:id="@+id/buttonFive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_5"
         android:textColor="#FFA500"
@@ -168,147 +160,192 @@
         app:layout_constraintStart_toEndOf="@+id/buttonFour"
         app:layout_constraintTop_toBottomOf="@+id/buttonTwo" />
 
-    <!--Button Five ^^-->
+    <!--Button Six ^^-->
 
     <Button
         android:id="@+id/buttonSix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="13dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_6"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/subtractionButton"
         app:layout_constraintStart_toEndOf="@+id/buttonFive"
         app:layout_constraintTop_toBottomOf="@+id/buttonThree" />
 
-    <!--Button Six ^^-->
+    <!--Button Seven ^^-->
+
+    <!--Button Eight ^^-->
+
+    <!--Button Nine ^^-->
 
     <Button
         android:id="@+id/buttonSeven"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_7"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonZero"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEight"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonFour"
-        app:layout_constraintVertical_bias="0.006" />
-
-    <!--Button Seven ^^-->
-
-    <!--Button Eight ^^-->
+        app:layout_constraintTop_toBottomOf="@+id/buttonFour" />
 
     <Button
         android:id="@+id/buttonEight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_8"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mysteryButton"
         app:layout_constraintStart_toEndOf="@+id/buttonSeven"
-        app:layout_constraintTop_toBottomOf="@+id/buttonFive"
-        app:layout_constraintVertical_bias="0.042" />
-
-    <!--Button Nine ^^-->
+        app:layout_constraintTop_toBottomOf="@+id/buttonFive" />
 
     <Button
         android:id="@+id/buttonNine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/_9"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@+id/buttonEight"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSix"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonSix" />
 
     <Button
         android:id="@+id/additionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/plus"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSeven"
-        app:layout_constraintVertical_bias="0.05" />
+        app:layout_constraintStart_toEndOf="@+id/buttonThree"
+        app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <Button
         android:id="@+id/subtractionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/minus"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/additionButton"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEight"
-        app:layout_constraintVertical_bias="0.278" />
+        app:layout_constraintStart_toEndOf="@+id/buttonSix"
+        app:layout_constraintTop_toBottomOf="@+id/additionButton" />
 
     <Button
         android:id="@+id/multiplicationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/times"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@+id/subtractionButton"
-        app:layout_constraintTop_toBottomOf="@+id/buttonNine"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintBottom_toTopOf="@+id/divisionButton"
+        app:layout_constraintStart_toEndOf="@+id/buttonNine"
+        app:layout_constraintTop_toBottomOf="@+id/subtractionButton" />
 
     <Button
         android:id="@+id/divisionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calculator_custom_button"
         android:text="@string/divide"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/additionButton"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintStart_toEndOf="@+id/exponentButton"
+        app:layout_constraintTop_toBottomOf="@+id/multiplicationButton" />
+
+    <Button
+        android:id="@+id/exponentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/calculator_custom_button"
+        android:text="@string/power"
+        android:textColor="#FFA500"
+        android:textSize="25sp"
+        app:layout_constraintStart_toEndOf="@+id/mysteryButton"
+        app:layout_constraintTop_toBottomOf="@+id/buttonNine" />
+
+    <Button
+        android:id="@+id/mysteryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/calculator_custom_button"
+        android:text="@string/mystery"
+        android:textColor="#FFA500"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/exponentButton"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEight" />
 
     <Button
         android:id="@+id/calculateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="7dp"
         android:background="@drawable/calculator_custom_button"
         android:text="Go!"
         android:textColor="#FFA500"
         android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
-        app:layout_constraintStart_toEndOf="@+id/divisionButton"
-        app:layout_constraintTop_toBottomOf="@+id/multiplicationButton"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintTop_toBottomOf="@+id/divisionButton" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="17dp"
+        android:background="@drawable/calculator_custom_button"
+        android:text="Clear"
+        android:textColor="#FFA500"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+        app:layout_constraintTop_toBottomOf="@+id/buttonZero" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="114dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/calculator_custom_button"
+        android:text="Delete"
+        android:textColor="#FFA500"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/calculateButton"
+        app:layout_constraintTop_toBottomOf="@+id/exponentButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

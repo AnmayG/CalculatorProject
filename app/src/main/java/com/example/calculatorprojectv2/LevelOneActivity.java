@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
     TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
-    Button bZero, bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, cButton;
+    Button bZero, bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
 
     private int clickCounter = 0;
     private String displayLabel = "";
@@ -81,7 +81,10 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         bSub = findViewById(R.id.subtractionButton);
         bMulti = findViewById(R.id.multiplicationButton);
         bDiv = findViewById(R.id.divisionButton);
-        cButton = findViewById(R.id.calculateButton);
+        bPwr = findViewById(R.id.exponentButton);
+        bClear = findViewById(R.id.clearButton);
+        bDelete = findViewById(R.id.deleteButton);
+        bEnter = findViewById(R.id.calculateButton);
         //^^ The numerical calculator buttons
 
         bZero.setOnClickListener(this);
@@ -98,13 +101,16 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         bSub.setOnClickListener(this);
         bMulti.setOnClickListener(this);
         bDiv.setOnClickListener(this);
-        cButton.setOnClickListener(this);
+        bPwr.setOnClickListener(this);
+        bClear.setOnClickListener(this);
+        bDelete.setOnClickListener(this);
+        bEnter.setOnClickListener(this);
         //^^ For the Click Listener for the Button
+
+        clickButton();
 
         display = findViewById(R.id.display);
         goalDisplay = findViewById((R.id.goalDisplay));
-        buttonClickCounter = findViewById(R.id.buttonClickCounter);
-        constraintDisplay = findViewById(R.id.constraintDisplay);
         levelDisplay = findViewById(R.id.levelLabel);
         //^^ Sets the Displays
 
@@ -114,7 +120,6 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         fgd = Toast.makeText(context, sillyGoose, duration);
         underShot = Toast.makeText(context, textUnder, duration);
         overShot = Toast.makeText(context, textOver, duration);
-
 
         goalOneRun();
     }
@@ -203,7 +208,6 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         bSub.setVisibility(View.GONE);
         bMulti.setVisibility(View.GONE);
         bDiv.setVisibility(View.GONE);
-        cButton.setVisibility(View.GONE);
     }
 
     // TODO: Separate each button into its separate function so as to eliminate the switch case statement
@@ -369,5 +373,135 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
             clickCounter = 0;
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         }
+    }
+
+    //on click listeners for each button
+    private void clickButton(){
+        bZero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bSix.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bSeven.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bEight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bNine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bMulti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bDiv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        bPwr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 }
