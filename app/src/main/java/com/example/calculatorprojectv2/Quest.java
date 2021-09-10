@@ -49,7 +49,11 @@ public class Quest {
     }
 
     public Quest(int buttonLimit, int targetNumber, int operationDesignation, boolean isLimited, int id) {
-
+        this.buttonLimit = buttonLimit;
+        this.targetNumber = targetNumber;
+        this.operationDesignation = operationDesignation;
+        this.isLimited = isLimited;
+        this.id = id;
     }
 
     public void createTargets() {
