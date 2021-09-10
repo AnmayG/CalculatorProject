@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class QuestUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        assertEquals(4, 2 - 2);
     }
 
     // These are all tests for the Quest object to make sure that it is working correctly.
