@@ -167,10 +167,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton.setVisibility(View.GONE);
     }
 
-
-
+    // TODO: Change this to a Button.onViewListener function rather than an onClick.
+    // This will eliminate the outside switch statement.
     @Override
     public void onClick(View view) {
+        // Turn these into fields and keep them saved?
         Context context = getApplicationContext();
         CharSequence keystrokeOver = "Too many Button Presses!";
         CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -187,6 +188,9 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         Toast underShot = Toast.makeText(contextTwo, textUnder, durationTwo);
         Toast overShot = Toast.makeText(contextTwo, textOver, durationTwo);
 
+        // TODO: Change this so that the code works with the Quest object
+        // This includes having an activeQuest reference that will equal the current active quest
+        // That makes everything a lot easier to understand since we can just set the activeQuest to whatever for testing
         switch (view.getId()){
             case R.id.buttonOne:
                 clickCounter++;
