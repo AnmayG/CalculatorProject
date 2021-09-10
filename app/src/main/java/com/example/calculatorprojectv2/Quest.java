@@ -14,9 +14,10 @@ public class Quest {
 
     private int buttonLimit;
     private double targetNumber;
-    private double[] testNums;
+    private int[] testNums;
     private int operationDesignation;
     private boolean isLimited;
+    private String[] exprThing = new String[5];
     private int id;
 
     public int getButtonLimit() {
@@ -39,7 +40,7 @@ public class Quest {
         return isLimited;
     }
 
-    public double[] getTestNums() {
+    public int[] getTestNums() {
         return testNums;
     }
 
@@ -58,50 +59,49 @@ public class Quest {
 
     public void createTargets() {
         // TODO: Create an actual algorithm to randomly create numbers
+        // TODO: Ask Saksham for the best algorithm
 
         // Currently, the algorithm is extremely simplistic and does not have advanced calculations
         // It may be a good idea to incorporate high-level processes such as checking to make sure that the sum is 9999
         // Additionally, other operations need to be added manually with this design, which obviously isn't a good thing
         // This is a quick hack that is meant to be changed.
         // Limit is 9999
+        // It also needs to be refined for multiple operations
 
         operationDesignation = randInt(1, NUMBER_OPERATIONS);
         switch (operationDesignation) {
             case 1:
                 // This is the case for addition
-                double num1 = randInt(0, 4999);
-                double num2 = randInt(0, 4999);
-                testNums = new double[]{num1, num2};
+                int num1 = randInt(0, 4999);
+                int num2 = randInt(0, 4999);
+                testNums = new int[]{num1, num2};
                 targetNumber = num1 + num2;
-                // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 2:
                 // This is the case for subtraction
                 num1 = randInt(0, 9999);
                 num2 = randInt(0, 9999);
-                testNums = new double[]{num1, num2};
+                testNums = new int[]{num1, num2};
                 targetNumber = num1 - num2;
-                // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 3:
                 // This is the case for multiplication
                 num1 = randInt(0, 100);
                 num2 = randInt(0, 99);
-                testNums = new double[]{num1, num2};
+                testNums = new int[]{num1, num2};
                 targetNumber = num1 * num2;
-                // This isn't the best code but it's definitely the easiest
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 4:
                 // This is the case for division
-                num1 = randInt(0, 9999);
-                num2 = randInt(1, 100);
-                testNums = new double[]{num1, num2};
-                targetNumber = num1 / num2;
-                // This isn't the best code but it's definitely the easiest
-                buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
+                // Going backwards and generating a multiplication, then using the result and the first number
+                num1 = randInt(1, 100);
+                num2 = randInt(1, 99);
+                testNums = new int[]{num1 * num2, num1};
+                targetNumber = num2;
+                buttonLimit = String.valueOf(num1 * num2).length() + String.valueOf(num1).length() + 1;
                 break;
         }
 
@@ -123,7 +123,7 @@ public class Quest {
     public String toString() {
         return String.format(Locale.getDefault(), "Quest %d " +
                         "\n  Button Limit: %d" +
-                        "\n  Target Number: %d" +
+                        "\n  Target Number: %f" +
                         "\n  Operation Designation: %d" +
                         "\n  Is Limited: %b" +
                         "\n  Test Numbers: %s",

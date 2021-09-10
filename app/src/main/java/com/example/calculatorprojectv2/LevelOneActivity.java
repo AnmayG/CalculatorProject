@@ -3,6 +3,7 @@ package com.example.calculatorprojectv2;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,36 +25,19 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private String displayLabel = "";
     private int level = 1;
 
-    private final double goalOne = 64.0;
-    private final double goalTwo = 55.0;
-    private final double goalThree = 169.0;
-    private final double goalFour = 267.0;
-    private final double goalFive = 12.0;
-
-    private boolean goalOneA = false;
-    private boolean goalTwoA = false;
-    private boolean goalThreeA = false;
-    private boolean goalFourA = false;
-    private boolean goalFiveA = false;
-
-    private final int goalOneClick = 3;
-    private final int goalTwoClick = 4;
-    private final int goalThreeClick = 5;
-    private final int goalFourClick = 6;
-    private final int goalFiveClick = 3;
-
     // TODO: These are test quests that have the same parameters as the old ones
-    private final Quest goalQuest1 = new Quest(3, 64, 3, false, 0);
-    private final Quest goalQuest2 = new Quest(4, 55, 3, false, 1);
-    private final Quest goalQuest3 = new Quest(5, 169, 3, false, 2);
-    private final Quest goalQuest4 = new Quest(5, 267, 2, true, 3);
-    private final Quest goalQuest5 = new Quest(3, 12, 3, false, 4);
+    private final Quest[] goalQuests = {
+            new Quest(3, 64, 3, false, 0),
+            new Quest(4, 55, 3, false, 1),
+            new Quest(5, 169, 3, false, 2),
+            new Quest(5, 267, 2, true, 3),
+            new Quest(3, 12, 3, false, 4)
+    };
     private Quest activeQuest;
+    private static final boolean USE_GOAL_TESTS = false;
 
-    private Context context;
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
-    private final int duration = Toast.LENGTH_SHORT;
     private Toast toast;
     private Toast fgd;
     private final CharSequence textOver = "Goal Overshot!";
@@ -61,6 +45,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private Toast underShot;
     private Toast overShot;
 
+    private String rewardMessage = "You beat the game!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,15 +93,15 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         levelDisplay = findViewById(R.id.levelLabel);
         //^^ Sets the Displays
 
-        context = getApplicationContext();
+        Context context = getApplicationContext();
 
+        int duration = Toast.LENGTH_SHORT;
         toast = Toast.makeText(context, keystrokeOver, duration);
         fgd = Toast.makeText(context, sillyGoose, duration);
         underShot = Toast.makeText(context, textUnder, duration);
         overShot = Toast.makeText(context, textOver, duration);
 
-
-        goalOneRun();
+        startGoalRuns();
     }
 
     @Nullable
@@ -125,65 +110,47 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         return super.onCreateView(parent, name, context, attrs);
     }
 
-    private void goalOneRun(){
-        activeQuest = goalQuest1;
+    private void runNextGoal() {
+        if(USE_GOAL_TESTS) {
+            int lastIndex = activeQuest.getId();
+            if(lastIndex > goalQuests.length) {
+                Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
+            } else {
+                activeQuest = goalQuests[lastIndex + 1];
+            }
+        } else {
+            activeQuest = new Quest(activeQuest.getId() + 1);
+        }
 
+        displayLabel = "";
         clickCounter = 0;
-        goalDisplay.setText("Goal: " + goalOne);
-        constraintDisplay.setText("Three Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
+        constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        level++;
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
-    private void goalTwoRun(){
-        activeQuest = goalQuest2;
+    private void startGoalRuns(){
+        if(activeQuest == null) {
+            if(USE_GOAL_TESTS) {
+                activeQuest = goalQuests[0];
+            } else {
+                activeQuest = new Quest(0);
+            }
+        }
 
-        clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText("Goal: " + goalTwo);
-        constraintDisplay.setText("Four Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
-        level++;
-        levelDisplay.setText("Level: " + level);
-    }
-
-    private void goalThreeRun(){
-        activeQuest = goalQuest3;
-
         clickCounter = 0;
-        displayLabel = "";
-        goalDisplay.setText("Goal: " + goalThree);
-        constraintDisplay.setText("5 Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
+        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
+        constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         level++;
-        levelDisplay.setText("Level: " + level);
-    }
-
-    private void goalFourRun(){
-        activeQuest = goalQuest4;
-
-        clickCounter = 0;
-        displayLabel = "";
-        goalDisplay.setText("Goal: " + goalFour);
-        constraintDisplay.setText("Use Addition with 5 Button Presses");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
-        level++;
-        levelDisplay.setText("Level: " + level);
-    }
-
-    private void goalFiveRun(){
-        activeQuest = goalQuest5;
-
-        clickCounter = 0;
-        displayLabel = "";
-        goalDisplay.setText("Goal: " + goalFive);
-        constraintDisplay.setText("3 Buttons");
-        buttonClickCounter.setText("Button Clicks: " + clickCounter);
-        level++;
-        levelDisplay.setText("Level: " + level);
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
     }
 
     private void finishScreen(){
-        display.setText("You Beat the Game!");
+        display.setText(rewardMessage);
         constraintDisplay.setVisibility(View.GONE);
         goalDisplay.setVisibility(View.GONE);
         buttonClickCounter.setVisibility(View.GONE);
@@ -213,117 +180,47 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         // This is how we're going to add the endless Quest things
         switch (view.getId()){
             //TODO: ADD CASE STATEMENT for CASE 0;
-
+            case R.id.buttonZero:
+                updateOnButtonClick("0");
+                break;
             case R.id.buttonOne:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-
-                // TODO: Figure out the displayLabel because that's a thing that needs algorithmic changes
-                // right now it's just a string
-                displayLabel = displayLabel.concat("1");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("1");
                 break;
             case R.id.buttonTwo:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("2");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("2");
                 break;
             case R.id.buttonThree:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("3");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("3");
                 break;
             case R.id.buttonFour:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("4");
-                display.setText(displayLabel);
-
-
-                checkOverButtonLimit();
+                updateOnButtonClick("4");
                 break;
             case R.id.buttonFive:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("5");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("5");
                 break;
             case R.id.buttonSix:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("6");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("6");
                 break;
             case R.id.buttonSeven:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("7");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("7");
                 break;
             case R.id.buttonEight:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("8");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("8");
                 break;
             case R.id.buttonNine:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("9");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("9");
                 break;
             case R.id.additionButton:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("+");
-                display.setText(displayLabel);
-
-
-                checkOverButtonLimit();
+                updateOnButtonClick("+");
                 break;
             case R.id.subtractionButton:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("-");
-                display.setText(displayLabel);
-
-                checkOverButtonLimit();
+                updateOnButtonClick("-");
                 break;
             case R.id.multiplicationButton:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("×");
-                display.setText(displayLabel);
-
-
-                checkOverButtonLimit();
+                updateOnButtonClick("×");
                 break;
             case R.id.divisionButton:
-                clickCounter++;
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                displayLabel = displayLabel.concat("÷");
-                display.setText(displayLabel);
-
-
-                checkOverButtonLimit();
+                updateOnButtonClick("÷");
                 break;
             case R.id.calculateButton:
                 String expEval = display.getText().toString();
@@ -340,7 +237,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
                 double result = Double.parseDouble(resultS);
 
                 if(result == activeQuest.getTargetNumber()) {
-                    goalTwoRun();
+                    runNextGoal();
                     if (activeQuest.getId() == 5) {
                         finishScreen();
                     }
@@ -356,9 +253,21 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 display.setText(displayLabel);
-                buttonClickCounter.setText("Button Clicks: " + clickCounter);
-                break;
+                buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+                return;
         }
+        checkOverButtonLimit();
+    }
+
+    public void updateOnButtonClick(String addition) {
+        if(activeQuest.isLimited()) {
+
+        }
+
+        clickCounter++;
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        displayLabel = displayLabel.concat(addition);
+        display.setText(displayLabel);
     }
 
     public void checkOverButtonLimit() {
