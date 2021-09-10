@@ -33,21 +33,22 @@ public class QuestUnitTest {
 
     @Test
     public void quest_targetNumber_isWorking() {
+        double precision = 0.01;
         for (int i = 0; i < 10000; i++) {
             Quest q = new Quest(i);
             double[] testNums = q.getTestNums();
             switch (q.getOperationDesignation()) {
                 case 1:
-                    assertEquals(testNums[0] + testNums[1], q.getTargetNumber());
+                    assertEquals(testNums[0] + testNums[1], q.getTargetNumber(), precision);
                     break;
                 case 2:
-                    assertEquals(testNums[0] - testNums[1], q.getTargetNumber());
+                    assertEquals(testNums[0] - testNums[1], q.getTargetNumber(), precision);
                     break;
                 case 3:
-                    assertEquals(testNums[0] * testNums[1], q.getTargetNumber());
+                    assertEquals(testNums[0] * testNums[1], q.getTargetNumber(), precision);
                     break;
                 case 4:
-                    assertEquals(testNums[0] / testNums[1], q.getTargetNumber());
+                    assertEquals(testNums[0] / testNums[1], q.getTargetNumber(), precision);
                     break;
             }
         }
