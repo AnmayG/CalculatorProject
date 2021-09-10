@@ -20,4 +20,7 @@
     <string name="welcome_to_calculator_the_puzzle">Welcome to Calculator the Puzzle</string>
     <string name="next">Next ➤</string>
     <string name="level_1">Level: 1</string>
+    <string name="_0">0</string>
+    <string name="exponent">exponent</string>
+    <string name="power">^</string>
 </resources>

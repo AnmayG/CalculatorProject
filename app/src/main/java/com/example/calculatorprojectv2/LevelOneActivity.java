@@ -14,22 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
-import java.util.Locale;
-
-//test comment delte
 public class LevelOneActivity extends AppCompatActivity implements View.OnClickListener{
     TextView display, goalDisplay, buttonClickCounter, constraintDisplay, levelDisplay; //add a TextView for the number that the use has to reach
-    Button bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, cButton;
+    Button bZero, bOne, bTwo, bThree, bFour, bFive, bSix, bSeven, bEight, bNine, bAdd, bSub, bMulti, bDiv, cButton;
 
     private int clickCounter = 0;
     private String displayLabel = "";
     private int level = 1;
 
-    private final double goalOne = 64.0;
-    private final double goalTwo = 55.0;
-    private final double goalThree = 169.0;
-    private final double goalFour = 267.0;
-    private final double goalFive = 12.0;
+    private double goalOne = 64.0;
+    private double goalTwo = 55.0;
+    private double goalThree = 169.0;
+    private double goalFour = 267.0;
+    private double goalFive = 12.0;
 
     private boolean goalOneA = false;
     private boolean goalTwoA = false;
@@ -37,11 +34,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private boolean goalFourA = false;
     private boolean goalFiveA = false;
 
-    private final int goalOneClick = 3;
-    private final int goalTwoClick = 4;
-    private final int goalThreeClick = 5;
-    private final int goalFourClick = 6;
-    private final int goalFiveClick = 3;
+    private int goalOneClick = 3;
+    private int goalTwoClick = 4;
+    private int goalThreeClick = 5;
+    private int goalFourClick = 6;
+    private int goalFiveClick = 3;
 
 
     @Override
@@ -49,22 +46,24 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_one);
 
-        bOne = findViewById(R.id.buttonOne);
-        bTwo = findViewById(R.id.buttonTwo);
-        bThree = findViewById(R.id.buttonThree);
-        bFour = findViewById(R.id.buttonFour);
-        bFive = findViewById(R.id.buttonFive);
-        bSix = findViewById(R.id.buttonSix);
-        bSeven = findViewById(R.id.buttonSeven);
-        bEight = findViewById(R.id.buttonEight);
-        bNine = findViewById(R.id.buttonNine);
-        bAdd = findViewById(R.id.additionButton);
-        bSub = findViewById(R.id.subtractionButton);
-        bMulti = findViewById(R.id.multiplicationButton);
-        bDiv = findViewById(R.id.divisionButton);
-        cButton = findViewById(R.id.calculateButton);
+        bZero = (Button) findViewById(R.id.buttonZero);
+        bOne = (Button) findViewById(R.id.buttonOne);
+        bTwo = (Button) findViewById(R.id.buttonTwo);
+        bThree = (Button) findViewById(R.id.buttonThree);
+        bFour = (Button) findViewById(R.id.buttonFour);
+        bFive = (Button) findViewById(R.id.buttonFive);
+        bSix = (Button) findViewById(R.id.buttonSix);
+        bSeven = (Button) findViewById(R.id.buttonSeven);
+        bEight = (Button) findViewById(R.id.buttonEight);
+        bNine = (Button) findViewById(R.id.buttonNine);
+        bAdd = (Button) findViewById(R.id.additionButton);
+        bSub = (Button) findViewById(R.id.subtractionButton);
+        bMulti = (Button) findViewById(R.id.multiplicationButton);
+        bDiv = (Button) findViewById(R.id.divisionButton);
+        cButton = (Button) findViewById(R.id.calculateButton);
         //^^ The numerical calculator buttons
 
+        bZero.setOnClickListener(this);
         bOne.setOnClickListener(this);
         bTwo.setOnClickListener(this);
         bThree.setOnClickListener(this);
@@ -81,11 +80,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton.setOnClickListener(this);
         //^^ For the Click Listener for the Button
 
-        display = findViewById(R.id.display);
-        goalDisplay = findViewById((R.id.goalDisplay));
-        buttonClickCounter = findViewById(R.id.buttonClickCounter);
-        constraintDisplay = findViewById(R.id.constraintDisplay);
-        levelDisplay = findViewById(R.id.levelLabel);
+        display = (TextView) findViewById(R.id.display);
+        goalDisplay = (TextView) findViewById((R.id.goalDisplay));
+        buttonClickCounter = (TextView) findViewById(R.id.buttonClickCounter);
+        constraintDisplay = (TextView) findViewById(R.id.constraintDisplay);
+        levelDisplay = (TextView) findViewById(R.id.levelLabel);
         //^^ Sets the Displays
 
         goalOneRun();
@@ -99,49 +98,49 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
 
     private void goalOneRun(){
         clickCounter = 0;
-        goalDisplay.setText(String.format("Goal: %s", goalOne));
+        goalDisplay.setText("Goal: " + goalOne);
         constraintDisplay.setText("Three Buttons");
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        buttonClickCounter.setText("Button Clicks: " + clickCounter);
     }
 
     private void goalTwoRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText(String.format("Goal: %s", goalTwo));
+        goalDisplay.setText("Goal: " + goalTwo);
         constraintDisplay.setText("Four Buttons");
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        buttonClickCounter.setText("Button Clicks: " + clickCounter);
         level++;
-        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+        levelDisplay.setText("Level: " + level);
     }
 
     private void goalThreeRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText(String.format("Goal: %s", goalThree));
+        goalDisplay.setText("Goal: " + goalThree);
         constraintDisplay.setText("5 Buttons");
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        buttonClickCounter.setText("Button Clicks: " + clickCounter);
         level++;
-        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+        levelDisplay.setText("Level: " + level);
     }
 
     private void goalFourRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText(String.format("Goal: %s", goalFour));
+        goalDisplay.setText("Goal: " + goalFour);
         constraintDisplay.setText("Use Addition with 5 Button Presses");
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        buttonClickCounter.setText("Button Clicks: " + clickCounter);
         level++;
-        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+        levelDisplay.setText("Level: " + level);
     }
 
     private void goalFiveRun(){
         clickCounter = 0;
         displayLabel = "";
-        goalDisplay.setText(String.format("Goal: %s", goalFive));
+        goalDisplay.setText("Goal: " + goalFive);
         constraintDisplay.setText("3 Buttons");
-        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        buttonClickCounter.setText("Button Clicks: " + clickCounter);
         level++;
-        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+        levelDisplay.setText("Level: " + level);
     }
 
     private void finishScreen(){
@@ -151,6 +150,7 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         buttonClickCounter.setVisibility(View.GONE);
         levelDisplay.setVisibility(View.GONE);
 
+        bZero.setVisibility(View.GONE);
         bOne.setVisibility(View.GONE);
         bTwo.setVisibility(View.GONE);
         bThree.setVisibility(View.GONE);
@@ -167,11 +167,10 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         cButton.setVisibility(View.GONE);
     }
 
-    // TODO: Change this to a Button.onViewListener function rather than an onClick.
-    // This will eliminate the outside switch statement.
+
+
     @Override
     public void onClick(View view) {
-        // Turn these into fields and keep them saved?
         Context context = getApplicationContext();
         CharSequence keystrokeOver = "Too many Button Presses!";
         CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -188,10 +187,9 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         Toast underShot = Toast.makeText(contextTwo, textUnder, durationTwo);
         Toast overShot = Toast.makeText(contextTwo, textOver, durationTwo);
 
-        // TODO: Change this so that the code works with the Quest object
-        // This includes having an activeQuest reference that will equal the current active quest
-        // That makes everything a lot easier to understand since we can just set the activeQuest to whatever for testing
         switch (view.getId()){
+            //TO DO: ADD CASE STATEMENT for CASE 0;
+
             case R.id.buttonOne:
                 clickCounter++;
                 buttonClickCounter.setText("Button Clicks: " + clickCounter);
