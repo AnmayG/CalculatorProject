@@ -76,7 +76,7 @@
         android:textAlignment="viewStart"
         android:textColor="@color/white"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@+id/displayCache"
+        app:layout_constraintBottom_toTopOf="@+id/operationList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goalDisplay"
         app:layout_constraintVertical_bias="0.0" />
@@ -86,11 +86,12 @@
         android:name="com.example.calculatorprojectv2.LevelOneActivity"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/display"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goalDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/operationDisplay"
         tools:context=".ManagerFragment">
 
     </androidx.recyclerview.widget.RecyclerView>

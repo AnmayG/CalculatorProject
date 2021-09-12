@@ -12,9 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -51,6 +54,10 @@ public class LevelOneActivity extends AppCompatActivity {
     private Toast useOperator;
 
     public static final String[] OPERATIONS_DISPLAY = new String[]{"+", "-", "×", "÷", "^"};
+
+    private final ArrayList<PastEquationContent> pastEquationList = new ArrayList<>();
+    private PastEquationAdapter pastEquationAdapter;
+    private RecyclerView rvPastEquations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +97,11 @@ public class LevelOneActivity extends AppCompatActivity {
         underShot = Toast.makeText(context, textUnder, duration);
         overShot = Toast.makeText(context, textOver, duration);
         useOperator = Toast.makeText(context, textUseOperator, duration);
+
+        rvPastEquations = findViewById(R.id.operationList);
+        pastEquationAdapter = new PastEquationAdapter(pastEquationList);
+        rvPastEquations.setAdapter(pastEquationAdapter);
+        rvPastEquations.setLayoutManager(new LinearLayoutManager(context));
 
         startGoalRuns();
     }
@@ -183,7 +195,7 @@ public class LevelOneActivity extends AppCompatActivity {
     public void updateOnButtonClick(String newEntry) {
         if (activeQuest.isLimited()) {
             if(!Arrays.asList(Quest.NUMBERS).contains(newEntry)) {
-                if(!Quest.OPERATIONS_ACTUAL[activeQuest.getOperationDesignation() - 1].equals(newEntry)) {
+                if(!Quest.OPERATIONS[activeQuest.getOperationDesignation() - 1].equals(newEntry)) {
                     fgd.show();
                     return;
                 }
@@ -230,40 +242,39 @@ public class LevelOneActivity extends AppCompatActivity {
         });
 
         bEnter.setOnClickListener(view -> {
-            String expEval = display.getText().toString();
-            System.out.println(expEval);
+            String pastExpEval = display.getText().toString();
             boolean hasOperators = false;
 
+            // There is some time spent on using the × and ÷ so gotta do that too
+            String expEval = pastExpEval.replaceAll("×", "*");
+            expEval = expEval.replaceAll("÷", "/");
+
             //checks to make sure operator is used
-            for(String operator: OPERATIONS_DISPLAY){
-                if(expEval.contains(operator)){
+            for(String operator: Quest.OPERATIONS){
+                if (expEval.contains(operator)) {
                     hasOperators = true;
+                    break;
                 }
             }
-
-            // There is some time spent on using the × and ÷ so gotta do that too
-            expEval = expEval.replaceAll("×", "*");
-            expEval = expEval.replaceAll("÷", "/");
 
             // This is actually an interesting idea. The Expression class auto-solves it for us
             // TODO: Replace the switch case in the Quest class with expEval
             Expression exp = new Expression(expEval);
 
-            String resultS = String.valueOf(exp.calculate());
-            double result = Double.parseDouble(resultS);
+            int result = (int) exp.calculate();
+            String resultS = String.valueOf(result);
 
             if(!hasOperators){
-                //System.out.println("got here");
                 useOperator.show();
                 displayLabel = "";
                 clickCounter = activeQuest.getButtonLimit();
-            }
-            else if (result == activeQuest.getTargetNumber()) {
+            } else if (result == activeQuest.getTargetNumber()) {
                 if (activeQuest.getId() == 4) {
                     finishScreen();
                     return;
                 }
                 runNextGoal();
+                updateRVPastEquation(pastExpEval, resultS);
             } else {
                 if (result > activeQuest.getTargetNumber()) {
                     overShot.show();
@@ -273,6 +284,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
                 displayLabel = "";
                 clickCounter = activeQuest.getButtonLimit();
+                updateRVPastEquation(pastExpEval, resultS);
             }
 
             display.setText(displayLabel);
@@ -288,5 +300,11 @@ public class LevelOneActivity extends AppCompatActivity {
         bDiv.setOnClickListener(view -> updateOnButtonClick("÷"));
 
         bPwr.setOnClickListener(view -> updateOnButtonClick("^"));
+    }
+
+    private void updateRVPastEquation(String pastExpEval, String resultS) {
+        pastEquationList.add(new PastEquationContent(pastExpEval, resultS));
+        pastEquationAdapter.notifyItemInserted(pastEquationList.size() - 1);
+        rvPastEquations.scrollToPosition(pastEquationAdapter.getItemCount() - 1);
     }
 }

@@ -131,7 +131,7 @@ public class Quest {
     private boolean[] entryIsNumber;
     // We only want
     public static final String[] NUMBERS = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    public static final String[] OPERATIONS_ACTUAL = new String[]{"+", "-", "*", "/", "^"};
+    public static final String[] OPERATIONS = new String[]{"+", "-", "*", "/", "^"};
 
     public void createTargetsMultiple() {
         // TODO: Add support for larger numbers (two digit should be the limit but maybe score based)
@@ -150,7 +150,7 @@ public class Quest {
 
         boolean isNumber = true;
         for (int entryIndex = 0; entryIndex < numEntries; entryIndex++) {
-            String[] stringToAdd = OPERATIONS_ACTUAL;
+            String[] stringToAdd = OPERATIONS;
             if(isNumber) stringToAdd = NUMBERS;
 
             // If we're dividing we gotta do something different
