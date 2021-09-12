@@ -50,4 +50,30 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //FIX CODE TO READ DATA TMRW!!!
+
+//    private void handleLoadPrevScores(ActionEvent event) {
+//        try{
+//            FileReader reader = new FileReader("src/main/res/user_scores.txt");
+//            Scanner in = new Scanner(reader);
+//            while(in.hasNextLine())
+//            {
+//                String temp = in.nextLine();
+//            }
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("SOMETHING HAS GONE HORRIBLY WRONG WE'RE ALL GONNA DIE!");
+//        }
+//    }
+//
+//    private void handleSaveNewScore(ActionEvent event){
+//        String outFile = "src/main/res/user_scores.txt";
+//        try {
+//            PrintWriter out = new PrintWriter(outFile);
+//            out.close();
+//
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("Something went wrong!");
+//        }
+//    }
 }
