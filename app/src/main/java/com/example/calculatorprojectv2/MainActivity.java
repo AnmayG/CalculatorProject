@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //FIX CODE TO READ DATA TMRW!!!
+    //FIX CODE TO READ DATA TMRW!!! sds
 
 //    private void handleLoadPrevScores(ActionEvent event) {
 //        try{
