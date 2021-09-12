@@ -47,6 +47,8 @@ public class LevelOneActivity extends AppCompatActivity {
     private final CharSequence textUnder = "Goal Undershot!";
     private Toast underShot;
     private Toast overShot;
+    private final CharSequence textUseOperator = "Remember to use an operator!";
+    private Toast useOperator;
 
     public static final String[] OPERATIONS_DISPLAY = new String[]{"+", "-", "×", "÷", "^"};
 
@@ -87,6 +89,7 @@ public class LevelOneActivity extends AppCompatActivity {
         fgd = Toast.makeText(context, sillyGoose, duration);
         underShot = Toast.makeText(context, textUnder, duration);
         overShot = Toast.makeText(context, textOver, duration);
+        useOperator = Toast.makeText(context, textUseOperator, duration);
 
         startGoalRuns();
     }
@@ -228,6 +231,15 @@ public class LevelOneActivity extends AppCompatActivity {
 
         bEnter.setOnClickListener(view -> {
             String expEval = display.getText().toString();
+            System.out.println(expEval);
+            boolean hasOperators = false;
+
+            //checks to make sure operator is used
+            for(String operator: OPERATIONS_DISPLAY){
+                if(expEval.contains(operator)){
+                    hasOperators = true;
+                }
+            }
 
             // There is some time spent on using the × and ÷ so gotta do that too
             expEval = expEval.replaceAll("×", "*");
@@ -240,7 +252,13 @@ public class LevelOneActivity extends AppCompatActivity {
             String resultS = String.valueOf(exp.calculate());
             double result = Double.parseDouble(resultS);
 
-            if (result == activeQuest.getTargetNumber()) {
+            if(!hasOperators){
+                //System.out.println("got here");
+                useOperator.show();
+                displayLabel = "";
+                clickCounter = activeQuest.getButtonLimit();
+            }
+            else if (result == activeQuest.getTargetNumber()) {
                 if (activeQuest.getId() == 4) {
                     finishScreen();
                     return;
