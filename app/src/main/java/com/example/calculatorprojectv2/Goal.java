@@ -118,7 +118,7 @@ public class Goal {
 
         isLimited = randInt(0, 1) == 1;
 
-        createTargetsMultiple();
+        // createTargetsMultiple();
     }
 
 
@@ -216,8 +216,8 @@ public class Goal {
         System.out.println(Arrays.toString(randExpression));
         System.out.println("Expression: " + newExpression);
         System.out.println(e.calculate());
-        targetNumber = (int) e.calculate();
-        buttonLimit = randExpression.length;
+        // targetNumber = (int) e.calculate();
+        // buttonLimit = randExpression.length;
     }
 
     /**
