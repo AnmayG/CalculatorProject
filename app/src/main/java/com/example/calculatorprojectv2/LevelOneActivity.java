@@ -2,15 +2,13 @@ package com.example.calculatorprojectv2;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,18 +18,21 @@ import org.mariuszgromada.math.mxparser.Expression;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LevelOneActivity extends AppCompatActivity {
     TextView display, goalDisplay, buttonClickCounter, levelDisplay, operationDisplay; //add a TextView for the number that the use has to reach
     Button bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
+    ProgressBar progressBar;
     private final Button[] numberButtons = new Button[10];
 
     private int clickCounter = 0;
     private String displayLabel = "";
     private int level = 1;
 
-    // TODO: These are test quests that have the same parameters as the old ones
-    private final Goal[] goalGoals = {
+    // These are test goals that have the same parameters as the old ones
+    private final Goal[] testGoals = {
             new Goal(3, 64, 3, false, 0),
             new Goal(4, 55, 3, false, 1),
             new Goal(5, 169, 3, false, 2),
@@ -39,8 +40,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = false;
-    private static final String REWARD_MESSAGE = "You beat the game!";
+    private static final boolean USE_GOAL_TESTS = true;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -58,6 +58,10 @@ public class LevelOneActivity extends AppCompatActivity {
     private final ArrayList<PastEquationContent> pastEquationList = new ArrayList<>();
     private PastEquationAdapter pastEquationAdapter;
     private RecyclerView rvPastEquations;
+
+    private Timer timer;
+    private long seconds = 0;
+    private static final int TIMER_PERIOD = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,12 +108,49 @@ public class LevelOneActivity extends AppCompatActivity {
         rvPastEquations.setLayoutManager(new LinearLayoutManager(context));
 
         startGoalRuns();
+
+        progressBar = findViewById(R.id.timerBar);
+        progressBar.setMax(activeGoal.getTime());
+        progressBar.setProgress(activeGoal.getTime());
+        timer = new Timer();
+        startTimer();
+    }
+
+    private final Runnable generate = () -> {
+        progressBar.incrementProgressBy(-1 * TIMER_PERIOD);
+        seconds += TIMER_PERIOD;
+        if(seconds > activeGoal.getTime()) {
+            finishScreen("You ran out of time!");
+            timer.cancel();
+        }
+    };
+
+    public void startTimer() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                decreaseProgress();
+            }
+        }, 1, TIMER_PERIOD);
+    }
+
+    public void resetTimer() {
+        timer.cancel();
+        timer = new Timer();
+        progressBar.setMax(activeGoal.getTime());
+        progressBar.setProgress(activeGoal.getTime());
+        seconds = 0;
+        startTimer();
+    }
+
+    private void decreaseProgress(){
+        this.runOnUiThread(generate);
     }
 
     private void startGoalRuns(){
         if(activeGoal == null) {
             if(USE_GOAL_TESTS) {
-                activeGoal = goalGoals[0];
+                activeGoal = testGoals[0];
             } else {
                 activeGoal = new Goal(0);
             }
@@ -131,21 +172,13 @@ public class LevelOneActivity extends AppCompatActivity {
         operationDisplay.setText(operationLimit);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-        return super.onCreateView(parent, name, context, attrs);
-    }
-
-    //^^DO WE NEED THIS? (onCreateView)
-
     private void runNextGoal() {
         if (USE_GOAL_TESTS) {
             int lastIndex = activeGoal.getId();
-            if (lastIndex + 1 >= goalGoals.length) {
-                Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
+            if (lastIndex + 1 >= testGoals.length) {
+                Log.e("LEVEL_ONE_ACTIVITY", "Not enough goals in the list.");
             } else {
-                activeGoal = goalGoals[lastIndex + 1];
+                activeGoal = testGoals[lastIndex + 1];
             }
         } else {
             activeGoal = new Goal(activeGoal.getId() + 1);
@@ -168,8 +201,8 @@ public class LevelOneActivity extends AppCompatActivity {
         operationDisplay.setText(operationLimit);
     }
 
-    private void finishScreen(){
-        displayLabel = REWARD_MESSAGE;
+    private void finishScreen(String message){
+        displayLabel = message;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         display.setText(displayLabel);
         //constraintDisplay.setVisibility(View.GONE);
@@ -190,6 +223,10 @@ public class LevelOneActivity extends AppCompatActivity {
         bEnter.setVisibility(View.GONE);
         bClear.setVisibility(View.GONE);
         bDelete.setVisibility(View.GONE);
+
+        rvPastEquations.setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     public void updateOnButtonClick(String newEntry) {
@@ -270,9 +307,10 @@ public class LevelOneActivity extends AppCompatActivity {
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
                 if (activeGoal.getId() == 4) {
-                    finishScreen();
+                    finishScreen("You beat the game!");
                     return;
                 }
+                resetTimer();
                 runNextGoal();
                 updateRVPastEquation(pastExpEval, resultS);
             } else {

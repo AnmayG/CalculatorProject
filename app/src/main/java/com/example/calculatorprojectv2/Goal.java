@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-// This is a data class intended to store information about each quest.
+// This is a data class intended to store information about each goal.
 public class Goal {
 
     // public static final int so that it can be accessed anywhere
@@ -20,8 +20,9 @@ public class Goal {
     private int[] testNums;
     private int operationDesignation;
     private boolean isLimited;
-    private String[] exprThing = new String[5];
-    private int id;
+    private final int id;
+    // TODO: Implement changing times, currently set at 10,000 milliseconds
+    private int time = 10000;
 
     public int getButtonLimit() {
         return buttonLimit;
@@ -45,6 +46,10 @@ public class Goal {
 
     public int[] getTestNums() {
         return testNums;
+    }
+
+    public int getTime() {
+        return time;
     }
 
     public Goal(int id) {
@@ -123,7 +128,7 @@ public class Goal {
 
 
     /**
-     * This is the number of entries that the quest will have.
+     * This is the number of entries that the goal will have.
      * For example, 12 + 6 + 2 has 5 entries.
      */
     private int numEntries = randInt(3, 7);
