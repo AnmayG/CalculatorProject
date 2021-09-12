@@ -28,16 +28,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainButton = (Button) findViewById(R.id.mainButton);
-        nextButton = (Button) findViewById(R.id.nextButton);
+        mainButton = findViewById(R.id.mainButton);
+        nextButton = findViewById(R.id.nextButton);
 
-        instructionsLabel = (TextView) findViewById(R.id.instructionLabelOne);
+        instructionsLabel = findViewById(R.id.instructionLabelOne);
 
         mainButton.setOnClickListener(view -> openLevelOne());
 
         nextButton.setOnClickListener(view -> {
             instructionsLabel.setText(stageLabels[stage]);
-            if (stage == 6) {
+            if (stage == stageLabels.length - 1) {
                 nextButton.setVisibility(View.GONE);
                 mainButton.setVisibility(View.VISIBLE);
             }
@@ -49,5 +49,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LevelOneActivity.class);
         startActivity(intent);
     }
-
 }
