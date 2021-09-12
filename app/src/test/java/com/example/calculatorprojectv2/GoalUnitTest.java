@@ -20,7 +20,7 @@ public class GoalUnitTest {
     // Each one works by creating 10,000 Goal objects and validating each one
 
     @Test
-    public void quest_buttonLimit_isWorking() {
+    public void goal_buttonLimit_isWorking() {
         for (int i = 0; i < 10000; i++) {
             Goal q = new Goal(i);
             int[] testNums = q.getTestNums();
@@ -33,7 +33,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void quest_targetNumber_isWorking() {
+    public void goal_targetNumber_isWorking() {
         double precision = 0.01;
         for (int i = 0; i < 10000; i++) {
             Goal q = new Goal(i);
@@ -56,7 +56,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void quest_operationDesignation_isWorking() {
+    public void goal_operationDesignation_isWorking() {
         for (int i = 0; i < 10000; i++) {
             Goal q = new Goal(i);
             assertTrue(1 <= q.getOperationDesignation() && q.getOperationDesignation() <= Goal.NUMBER_OPERATIONS);
@@ -64,7 +64,7 @@ public class GoalUnitTest {
     }
 
     @Test
-    public void quest_numberLimit_isBelow() {
+    public void goal_numberLimit_isBelow() {
         for (int i = 0; i < 10000; i++) {
             Goal q = new Goal(i);
             int[] testNums = q.getTestNums();
