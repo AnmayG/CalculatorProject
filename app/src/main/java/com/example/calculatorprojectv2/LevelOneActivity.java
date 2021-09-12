@@ -40,7 +40,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = true;
+    private static final boolean USE_GOAL_TESTS = false;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -61,7 +61,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private Timer timer;
     private long seconds = 0;
-    private static final int TIMER_PERIOD = 10;
+    private static final int TIMER_PERIOD = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

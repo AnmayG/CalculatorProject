@@ -30,4 +30,9 @@
     <string name="delete">Delete</string>
     <string name="constraint">Constraint</string>
     <string name="operation_limit">Operation Limit:</string>
+    <string name="single_player">Single Player</string>
+    <string name="pick_a_game_mode">Pick a Game Mode:</string>
+    <string name="single_player_mode">Single Player Mode</string>
+    <string name="competitive_mode">Competitive Mode</string>
+    <string name="collaborative_mode">Collaborative Mode</string>
 </resources>
