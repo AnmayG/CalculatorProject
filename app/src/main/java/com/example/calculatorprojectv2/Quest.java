@@ -2,6 +2,9 @@ package com.example.calculatorprojectv2;
 
 import androidx.annotation.NonNull;
 
+import org.mariuszgromada.math.mxparser.Expression;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -10,10 +13,10 @@ public class Quest {
 
     // public static final int so that it can be accessed anywhere
     // probably bad code so make sure to double check it
-    public static final int NUMBER_OPERATIONS = 4;
+    public static final int NUMBER_OPERATIONS = 5;
 
     private int buttonLimit;
-    private double targetNumber;
+    private int targetNumber;
     private int[] testNums;
     private int operationDesignation;
     private boolean isLimited;
@@ -59,7 +62,6 @@ public class Quest {
 
     public void createTargets() {
         // TODO: Create an actual algorithm to randomly create numbers
-        // TODO: Ask Saksham for the best algorithm
 
         // Currently, the algorithm is extremely simplistic and does not have advanced calculations
         // It may be a good idea to incorporate high-level processes such as checking to make sure that the sum is 9999
@@ -103,9 +105,119 @@ public class Quest {
                 targetNumber = num2;
                 buttonLimit = String.valueOf(num1 * num2).length() + String.valueOf(num1).length() + 1;
                 break;
+            case 5:
+                // This is the case for exponents
+                // Works by going backwards
+                num1 = randInt(1, 100);
+                num2 = randInt(1, 99);
+                testNums = new int[]{num1 ^ num2, num1};
+                targetNumber = num2;
+                buttonLimit = String.valueOf(num1 ^ num2).length() + String.valueOf(num1).length() + 1;
+                break;
         }
 
         isLimited = randInt(0, 1) == 1;
+
+        createTargetsMultiple();
+    }
+
+
+    /**
+     * This is the number of entries that the quest will have.
+     * For example, 12 + 6 + 2 has 5 entries.
+     */
+    private int numEntries = randInt(3, 7);
+    private String[] randExpression;
+    private boolean[] entryIsNumber;
+    // We only want
+    public static final String[] NUMBERS = new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    public static final String[] OPERATIONS_ACTUAL = new String[]{"+", "-", "*", "/", "^"};
+
+    public void createTargetsMultiple() {
+        // TODO: Add support for larger numbers (two digit should be the limit but maybe score based)
+        // The idea for this algorithm is that they enter in a multitude on 1 number operations
+
+        numEntries = 20;
+        isLimited = randInt(1, 5) == 1;
+
+        // Start off with a number
+        if((numEntries - 1) % 2 != 0) {
+            numEntries--;
+        }
+
+        randExpression = new String[numEntries];
+        entryIsNumber = new boolean[numEntries];
+
+        boolean isNumber = true;
+        for (int entryIndex = 0; entryIndex < numEntries; entryIndex++) {
+            String[] stringToAdd = OPERATIONS_ACTUAL;
+            if(isNumber) stringToAdd = NUMBERS;
+
+            // If we're dividing we gotta do something different
+            String operation = stringToAdd[randInt(0, stringToAdd.length - 1)];
+            if(operation.equals("/")) {
+                // Get factors of the previous number
+                int prevNumber = Integer.parseInt(randExpression[entryIndex - 1]);
+                ArrayList<Integer> prevFactors = new ArrayList<>();
+                // Add 1 just so that prime numbers don't break things
+                prevFactors.add(1);
+                for (int i = 2; i < Math.sqrt(prevNumber); i++) {
+                    if(prevNumber % i == 0) {
+                        prevFactors.add(i);
+                    }
+                }
+
+                // If there's another factor I don't want to keep dividing by 1
+                if(prevFactors.size() > 1) prevFactors.remove(0);
+
+                // Set the next number to something random in those factors
+                int nextNumber = prevFactors.get(randInt(0, prevFactors.size() - 1));
+
+                // The current entry is set to the division operator (obviously)
+                randExpression[entryIndex] = operation;
+                entryIsNumber[entryIndex] = isNumber;
+
+                // And the next entry is set to the nextNumber that we found earlier
+                randExpression[entryIndex + 1] = String.valueOf(nextNumber);
+                entryIsNumber[entryIndex + 1] = isNumber;
+
+                // Then we skip the next entry (it's already been decided by the previous line)
+                entryIndex++;
+                continue;
+            } else if(operation.equals("^")){
+                if(randExpression[entryIndex - 2].equals("^")) {
+                    operation = stringToAdd[randInt(0, stringToAdd.length - 1)];
+                    randExpression[entryIndex] = operation;
+                    entryIsNumber[entryIndex] = isNumber;
+                    continue;
+                }
+                randExpression[entryIndex] = operation;
+                entryIsNumber[entryIndex] = isNumber;
+
+                int nextNumber = randInt(0, 3);
+                randExpression[entryIndex + 1] = String.valueOf(nextNumber);
+                entryIsNumber[entryIndex + 1] = isNumber;
+                entryIndex++;
+                continue;
+            }
+
+            randExpression[entryIndex] = operation;
+            entryIsNumber[entryIndex] = isNumber;
+            isNumber = !isNumber;
+        }
+
+        StringBuilder newExpression = new StringBuilder();
+        for (String s : randExpression) {
+            newExpression.append(s);
+        }
+        Expression e = new Expression(String.valueOf(newExpression));
+
+        System.out.println(Arrays.toString(entryIsNumber));
+        System.out.println(Arrays.toString(randExpression));
+        System.out.println("Expression: " + newExpression);
+        System.out.println(e.calculate());
+        targetNumber = (int) e.calculate();
+        buttonLimit = randExpression.length;
     }
 
     /**
@@ -123,7 +235,7 @@ public class Quest {
     public String toString() {
         return String.format(Locale.getDefault(), "Quest %d " +
                         "\n  Button Limit: %d" +
-                        "\n  Target Number: %f" +
+                        "\n  Target Number: %d" +
                         "\n  Operation Designation: %d" +
                         "\n  Is Limited: %b" +
                         "\n  Test Numbers: %s",

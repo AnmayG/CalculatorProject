@@ -15,10 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 public class LevelOneActivity extends AppCompatActivity {
-    TextView display, goalDisplay, buttonClickCounter, levelDisplay, constraintDisplay; //add a TextView for the number that the use has to reach
+    TextView display, goalDisplay, buttonClickCounter, levelDisplay, constraintDisplay, operationDisplay; //add a TextView for the number that the use has to reach
     Button bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
     private final Button[] numberButtons = new Button[10];
 
@@ -31,11 +32,11 @@ public class LevelOneActivity extends AppCompatActivity {
             new Quest(3, 64, 3, false, 0),
             new Quest(4, 55, 3, false, 1),
             new Quest(5, 169, 3, false, 2),
-            new Quest(5, 267, 2, true, 3),
+            new Quest(5, 267, 1, true, 3),
             new Quest(3, 12, 3, false, 4)
     };
     private Quest activeQuest;
-    private static final boolean USE_GOAL_TESTS = false;
+    private static final boolean USE_GOAL_TESTS = true;
     private static final String REWARD_MESSAGE = "You beat the game!";
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
@@ -46,6 +47,8 @@ public class LevelOneActivity extends AppCompatActivity {
     private final CharSequence textUnder = "Goal Undershot!";
     private Toast underShot;
     private Toast overShot;
+
+    public static final String[] OPERATIONS_DISPLAY = new String[]{"+", "-", "×", "÷", "^"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class LevelOneActivity extends AppCompatActivity {
         bMulti = findViewById(R.id.multiplicationButton);
         bDiv = findViewById(R.id.divisionButton);
         bPwr = findViewById(R.id.exponentButton);
+
         bClear = findViewById(R.id.clearButton);
         bDelete = findViewById(R.id.deleteButton);
         bEnter = findViewById(R.id.calculateButton);
@@ -75,6 +79,7 @@ public class LevelOneActivity extends AppCompatActivity {
         buttonClickCounter = findViewById(R.id.clicksLeft);
         levelDisplay = findViewById(R.id.levelLabel);
         constraintDisplay = findViewById(R.id.constraintDisplay);
+        operationDisplay = findViewById(R.id.operationDisplay);
         //^^ Sets the Displays
 
         Context context = getApplicationContext();
@@ -101,8 +106,15 @@ public class LevelOneActivity extends AppCompatActivity {
         goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
         constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
-        level++;
         levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+
+        String operationLimit = "Operation Limit: ";
+        if(activeQuest.isLimited()) {
+            operationLimit += OPERATIONS_DISPLAY[activeQuest.getOperationDesignation() - 1];
+        } else {
+            operationLimit += "None";
+        }
+        operationDisplay.setText(operationLimit);
     }
 
     @Nullable
@@ -114,7 +126,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private void runNextGoal() {
         if (USE_GOAL_TESTS) {
             int lastIndex = activeQuest.getId();
-            if (lastIndex > goalQuests.length) {
+            if (lastIndex + 1 >= goalQuests.length) {
                 Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
             } else {
                 activeQuest = goalQuests[lastIndex + 1];
@@ -122,14 +134,33 @@ public class LevelOneActivity extends AppCompatActivity {
         } else {
             activeQuest = new Quest(activeQuest.getId() + 1);
         }
+
+        clickCounter = 0;
+        displayLabel = "";
+        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
+        constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+        level++;
+        levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
+
+        String operationLimit = "Operation Limit: ";
+        if(activeQuest.isLimited()) {
+            operationLimit += OPERATIONS_DISPLAY[activeQuest.getOperationDesignation() - 1];
+        } else {
+            operationLimit += "None";
+        }
+        operationDisplay.setText(operationLimit);
     }
 
     private void finishScreen(){
-        display.setText(REWARD_MESSAGE);
+        displayLabel = REWARD_MESSAGE;
+        display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        display.setText(displayLabel);
         constraintDisplay.setVisibility(View.GONE);
         goalDisplay.setVisibility(View.GONE);
         buttonClickCounter.setVisibility(View.GONE);
         levelDisplay.setVisibility(View.GONE);
+        operationDisplay.setVisibility(View.GONE);
 
         for (Button b:numberButtons) {
             b.setVisibility(View.GONE);
@@ -139,17 +170,25 @@ public class LevelOneActivity extends AppCompatActivity {
         bSub.setVisibility(View.GONE);
         bMulti.setVisibility(View.GONE);
         bDiv.setVisibility(View.GONE);
+        bPwr.setVisibility(View.GONE);
         bEnter.setVisibility(View.GONE);
+        bClear.setVisibility(View.GONE);
+        bDelete.setVisibility(View.GONE);
     }
 
-    public void updateOnButtonClick(String addition) {
+    public void updateOnButtonClick(String newEntry) {
         if (activeQuest.isLimited()) {
-
+            if(!Arrays.asList(Quest.NUMBERS).contains(newEntry)) {
+                if(!Quest.OPERATIONS_ACTUAL[activeQuest.getOperationDesignation() - 1].equals(newEntry)) {
+                    fgd.show();
+                    return;
+                }
+            }
         }
 
         clickCounter++;
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
-        displayLabel = displayLabel.concat(addition);
+        displayLabel = displayLabel.concat(newEntry);
         display.setText(displayLabel);
 
         checkOverButtonLimit();
@@ -169,9 +208,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private void setButtonClickListeners() {
         for (int i = 0; i < numberButtons.length; i++) {
             int finalI = i;
-            numberButtons[i].setOnClickListener(view -> {
-                updateOnButtonClick(String.valueOf(finalI));
-            });
+            numberButtons[i].setOnClickListener(view -> updateOnButtonClick(String.valueOf(finalI)));
         }
 
         bDelete.setOnClickListener(view -> {
@@ -189,7 +226,7 @@ public class LevelOneActivity extends AppCompatActivity {
             expEval = expEval.replaceAll("×", "*");
             expEval = expEval.replaceAll("÷", "/");
 
-            // This is actually an interesting idea. The Expression class autosolves it for us
+            // This is actually an interesting idea. The Expression class auto-solves it for us
             // TODO: Replace the switch case in the Quest class with expEval
             Expression exp = new Expression(expEval);
 
@@ -197,10 +234,11 @@ public class LevelOneActivity extends AppCompatActivity {
             double result = Double.parseDouble(resultS);
 
             if (result == activeQuest.getTargetNumber()) {
-                runNextGoal();
-                if (activeQuest.getId() == 5) {
+                if (activeQuest.getId() == 4) {
                     finishScreen();
+                    return;
                 }
+                runNextGoal();
             } else {
                 if (result > activeQuest.getTargetNumber()) {
                     overShot.show();
@@ -216,24 +254,14 @@ public class LevelOneActivity extends AppCompatActivity {
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
         });
 
-        bAdd.setOnClickListener(view -> {
-            updateOnButtonClick("+");
-        });
+        bAdd.setOnClickListener(view -> updateOnButtonClick("+"));
 
-        bSub.setOnClickListener(view -> {
-            updateOnButtonClick("-");
-        });
+        bSub.setOnClickListener(view -> updateOnButtonClick("-"));
 
-        bMulti.setOnClickListener(view -> {
-            updateOnButtonClick("×");
-        });
+        bMulti.setOnClickListener(view -> updateOnButtonClick("×"));
 
-        bDiv.setOnClickListener(view -> {
-            updateOnButtonClick("÷");
-        });
+        bDiv.setOnClickListener(view -> updateOnButtonClick("÷"));
 
-        bPwr.setOnClickListener(view -> {
-
-        });
+        bPwr.setOnClickListener(view -> updateOnButtonClick("^"));
     }
 }

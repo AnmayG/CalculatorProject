@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import android.util.Log;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -26,6 +28,7 @@ public class QuestUnitTest {
             int[] testNums = q.getTestNums();
             // Checks to see if the length of each test number plus the length of the other test number plus one is the button limit
             // This is good for everything else
+            System.out.println("BUTTON_LIMIT " + testNums[0] + " " + testNums[1] + " " + q.getButtonLimit());
             assertEquals(String.valueOf(testNums[0]).length() + String.valueOf(testNums[1]).length() + 1,
                     q.getButtonLimit());
         }
@@ -48,7 +51,7 @@ public class QuestUnitTest {
                     assertEquals(testNums[0] * testNums[1], q.getTargetNumber(), precision);
                     break;
                 case 4:
-                    assertEquals(testNums[0] / testNums[1], q.getTargetNumber(), precision);
+                    assertEquals(testNums[0] / ((double) testNums[1]), q.getTargetNumber(), precision);
                     break;
             }
         }

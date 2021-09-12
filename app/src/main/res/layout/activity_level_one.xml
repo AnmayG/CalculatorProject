@@ -13,11 +13,12 @@
         android:layout_height="0dp"
         android:textColor="@color/white"
         android:textSize="48sp"
+        android:visibility="visible"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@id/display"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goalDisplay"/>
+        app:layout_constraintTop_toBottomOf="@id/goalDisplay" />
 
     <TextView
         android:id="@+id/display"
@@ -29,42 +30,47 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="You beat the game!" />
 
     <TextView
         android:id="@+id/levelLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="54dp"
+        android:layout_marginStart="8dp"
         android:text="@string/level_1"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="visible"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/goalDisplay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clicksLeft" />
 
     <TextView
         android:id="@+id/goalDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="@string/goal"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="visible"
         app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toTopOf="@+id/displayCache"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/levelLabel"/>
+        app:layout_constraintTop_toBottomOf="@id/levelLabel" />
 
     <TextView
         android:id="@+id/clicksLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clicks Left:"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/clicks_left"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="visible"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/levelLabel"
         app:layout_constraintEnd_toStartOf="@id/constraintDisplay"
@@ -79,10 +85,13 @@
         android:id="@+id/constraintDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Constraint"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/constraint"
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:visibility="visible"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/clicksLeft"
@@ -91,6 +100,20 @@
     <!--Button Zero ^^-->
 
     <!--Button One ^^-->
+
+    <TextView
+        android:id="@+id/operationDisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/operation_limit"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/clicksLeft"
+        app:layout_constraintTop_toBottomOf="@+id/constraintDisplay" />
 
     <Button
         android:id="@+id/button_2"
@@ -400,7 +423,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/calculator_custom_button"
-        android:text="Go!"
+        android:text="@string/go"
         android:textColor="#FFA500"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
@@ -418,7 +441,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/calculator_custom_button"
-        android:text="Clear"
+        android:text="@string/clear"
         android:textColor="#FFA500"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
@@ -436,7 +459,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/calculator_custom_button"
-        android:text="Delete"
+        android:text="@string/delete"
         android:textColor="#FFA500"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
@@ -444,4 +467,5 @@
         app:layout_constraintEnd_toStartOf="@+id/calculateButton"
         app:layout_constraintStart_toEndOf="@+id/clearButton"
         app:layout_constraintTop_toBottomOf="@+id/exponentButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,10 @@
     <string name="exponent">exponent</string>
     <string name="power">^</string>
     <string name="mystery">\?</string>
+    <string name="clicks_left">Clicks Left:</string>
+    <string name="clear">Clear</string>
+    <string name="go">Go!</string>
+    <string name="delete">Delete</string>
+    <string name="constraint">Constraint</string>
+    <string name="operation_limit">Operation Limit:</string>
 </resources>
