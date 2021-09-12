@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainButton = findViewById(R.id.mainButton);
-        nextButton = findViewById(R.id.nextButton);
+        mainButton = (Button) findViewById(R.id.mainButton);
+        nextButton = (Button) findViewById(R.id.nextButton);
 
-        instructionsLabel = findViewById(R.id.instructionLabelOne);
+        instructionsLabel = (TextView) findViewById(R.id.instructionLabelOne);
 
         mainButton.setOnClickListener(view -> openLevelOne());
 
@@ -49,4 +49,31 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LevelOneActivity.class);
         startActivity(intent);
     }
+
+    //FIX CODE TO READ DATA TMRW!!! sds
+
+//    private void handleLoadPrevScores(ActionEvent event) {
+//        try{
+//            FileReader reader = new FileReader("src/main/res/user_scores.txt");
+//            Scanner in = new Scanner(reader);
+//            while(in.hasNextLine())
+//            {
+//                String temp = in.nextLine();
+//            }
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("SOMETHING HAS GONE HORRIBLY WRONG WE'RE ALL GONNA DIE!");
+//        }
+//    }
+//
+//    private void handleSaveNewScore(ActionEvent event){
+//        String outFile = "src/main/res/user_scores.txt";
+//        try {
+//            PrintWriter out = new PrintWriter(outFile);
+//            out.close();
+//
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("Something went wrong!");
+//        }
+//    }
 }
