@@ -66,36 +66,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="@string/clicks_left"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:visibility="visible"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/levelLabel"
-        app:layout_constraintEnd_toStartOf="@id/constraintDisplay"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <!-- Display of the Numbers ^^-->
 
     <!-- BEGIN_BUTTON_START -->
-
-    <TextView
-        android:id="@+id/constraintDisplay"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/constraint"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="25sp"
-        android:visibility="visible"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/clicksLeft"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <!--Button Zero ^^-->
 
@@ -105,15 +86,15 @@
         android:id="@+id/operationDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="224dp"
         android:text="@string/operation_limit"
-        android:textAlignment="viewEnd"
+        android:textAlignment="viewStart"
         android:textColor="@color/white"
         android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/displayCache"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/clicksLeft"
-        app:layout_constraintTop_toBottomOf="@+id/constraintDisplay" />
+        app:layout_constraintTop_toBottomOf="@+id/goalDisplay"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_2"
