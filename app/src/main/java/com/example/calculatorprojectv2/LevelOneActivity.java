@@ -123,6 +123,8 @@ public class LevelOneActivity extends AppCompatActivity {
         return super.onCreateView(parent, name, context, attrs);
     }
 
+    //^^DO WE NEED THIS? (onCreateView)
+
     private void runNextGoal() {
         if (USE_GOAL_TESTS) {
             int lastIndex = activeQuest.getId();
@@ -212,11 +214,17 @@ public class LevelOneActivity extends AppCompatActivity {
         }
 
         bDelete.setOnClickListener(view -> {
-
+            clickCounter--;
+            buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+            displayLabel = displayLabel.substring(0, displayLabel.length() - 1);
+            display.setText(displayLabel);
         });
 
         bClear.setOnClickListener(view -> {
-
+            clickCounter = 0;
+            buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks: %d", clickCounter));
+            displayLabel = "";
+            display.setText(displayLabel);
         });
 
         bEnter.setOnClickListener(view -> {
