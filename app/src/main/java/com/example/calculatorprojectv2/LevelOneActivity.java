@@ -39,7 +39,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = true;
+    private static final boolean USE_GOAL_TESTS = false;
     private static final String REWARD_MESSAGE = "You beat the game!";
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
