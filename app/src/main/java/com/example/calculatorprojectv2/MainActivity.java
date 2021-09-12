@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         nextButton.setOnClickListener(view -> {
             instructionsLabel.setText(stageLabels[stage]);
-            if (stage == 6) {
+            if (stage == stageLabels.length - 1) {
                 nextButton.setVisibility(View.GONE);
                 mainButton.setVisibility(View.VISIBLE);
             }

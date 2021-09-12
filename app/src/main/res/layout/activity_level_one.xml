@@ -8,19 +8,6 @@
     tools:context=".LevelOneActivity">
 
     <TextView
-        android:id="@+id/displayCache"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textColor="@color/white"
-        android:textSize="48sp"
-        android:visibility="visible"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@id/display"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/goalDisplay" />
-
-    <TextView
         android:id="@+id/display"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,8 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="You beat the game!" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/levelLabel"
@@ -57,7 +43,6 @@
         android:textSize="25sp"
         android:visibility="visible"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/displayCache"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/levelLabel" />
 
@@ -95,6 +80,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/goalDisplay"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/operationList"
+        android:name="com.example.calculatorprojectv2.LevelOneActivity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layoutManager="LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/display"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/goalDisplay"
+        tools:context=".ManagerFragment">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/button_2"
