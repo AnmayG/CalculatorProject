@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 // This is a data class intended to store information about each quest.
-public class Quest {
+public class Goal {
 
     // public static final int so that it can be accessed anywhere
     // probably bad code so make sure to double check it
@@ -47,12 +47,12 @@ public class Quest {
         return testNums;
     }
 
-    public Quest(int id) {
+    public Goal(int id) {
         this.id = id;
         createTargets();
     }
 
-    public Quest(int buttonLimit, int targetNumber, int operationDesignation, boolean isLimited, int id) {
+    public Goal(int buttonLimit, int targetNumber, int operationDesignation, boolean isLimited, int id) {
         this.buttonLimit = buttonLimit;
         this.targetNumber = targetNumber;
         this.operationDesignation = operationDesignation;
@@ -233,7 +233,7 @@ public class Quest {
     @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "Quest %d " +
+        return String.format(Locale.getDefault(), "Goal %d " +
                         "\n  Button Limit: %d" +
                         "\n  Target Number: %d" +
                         "\n  Operation Designation: %d" +

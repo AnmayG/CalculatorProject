@@ -31,14 +31,14 @@ public class LevelOneActivity extends AppCompatActivity {
     private int level = 1;
 
     // TODO: These are test quests that have the same parameters as the old ones
-    private final Quest[] goalQuests = {
-            new Quest(3, 64, 3, false, 0),
-            new Quest(4, 55, 3, false, 1),
-            new Quest(5, 169, 3, false, 2),
-            new Quest(5, 267, 1, true, 3),
-            new Quest(3, 12, 3, false, 4)
+    private final Goal[] goalGoals = {
+            new Goal(3, 64, 3, false, 0),
+            new Goal(4, 55, 3, false, 1),
+            new Goal(5, 169, 3, false, 2),
+            new Goal(5, 267, 1, true, 3),
+            new Goal(3, 12, 3, false, 4)
     };
-    private Quest activeQuest;
+    private Goal activeGoal;
     private static final boolean USE_GOAL_TESTS = true;
     private static final String REWARD_MESSAGE = "You beat the game!";
 
@@ -107,24 +107,24 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     private void startGoalRuns(){
-        if(activeQuest == null) {
+        if(activeGoal == null) {
             if(USE_GOAL_TESTS) {
-                activeQuest = goalQuests[0];
+                activeGoal = goalGoals[0];
             } else {
-                activeQuest = new Quest(0);
+                activeGoal = new Goal(0);
             }
         }
 
-        clickCounter = activeQuest.getButtonLimit();
+        clickCounter = activeGoal.getButtonLimit();
         displayLabel = "";
-        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
-        //constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
+        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeGoal.getTargetNumber()));
+        //constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeGoal.getButtonLimit()));
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
         levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
 
         String operationLimit = "Operation Limit: ";
-        if(activeQuest.isLimited()) {
-            operationLimit += OPERATIONS_DISPLAY[activeQuest.getOperationDesignation() - 1];
+        if(activeGoal.isLimited()) {
+            operationLimit += OPERATIONS_DISPLAY[activeGoal.getOperationDesignation() - 1];
         } else {
             operationLimit += "None";
         }
@@ -141,27 +141,27 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private void runNextGoal() {
         if (USE_GOAL_TESTS) {
-            int lastIndex = activeQuest.getId();
-            if (lastIndex + 1 >= goalQuests.length) {
+            int lastIndex = activeGoal.getId();
+            if (lastIndex + 1 >= goalGoals.length) {
                 Log.e("LEVEL_ONE_ACTIVITY", "Not enough quests in the list.");
             } else {
-                activeQuest = goalQuests[lastIndex + 1];
+                activeGoal = goalGoals[lastIndex + 1];
             }
         } else {
-            activeQuest = new Quest(activeQuest.getId() + 1);
+            activeGoal = new Goal(activeGoal.getId() + 1);
         }
 
-        clickCounter = activeQuest.getButtonLimit();
+        clickCounter = activeGoal.getButtonLimit();
         displayLabel = "";
-        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeQuest.getTargetNumber()));
-        //constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeQuest.getButtonLimit()));
+        goalDisplay.setText(String.format(Locale.getDefault(), "Goal: %s", activeGoal.getTargetNumber()));
+        //constraintDisplay.setText(String.format(Locale.getDefault(), "%d Buttons Allowed", activeGoal.getButtonLimit()));
         buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
         level++;
         levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
 
         String operationLimit = "Operation Limit: ";
-        if(activeQuest.isLimited()) {
-            operationLimit += OPERATIONS_DISPLAY[activeQuest.getOperationDesignation() - 1];
+        if(activeGoal.isLimited()) {
+            operationLimit += OPERATIONS_DISPLAY[activeGoal.getOperationDesignation() - 1];
         } else {
             operationLimit += "None";
         }
@@ -193,9 +193,9 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     public void updateOnButtonClick(String newEntry) {
-        if (activeQuest.isLimited()) {
-            if(!Arrays.asList(Quest.NUMBERS).contains(newEntry)) {
-                if(!Quest.OPERATIONS[activeQuest.getOperationDesignation() - 1].equals(newEntry)) {
+        if (activeGoal.isLimited()) {
+            if(!Arrays.asList(Goal.NUMBERS).contains(newEntry)) {
+                if(!Goal.OPERATIONS[activeGoal.getOperationDesignation() - 1].equals(newEntry)) {
                     fgd.show();
                     return;
                 }
@@ -211,11 +211,11 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     public void checkOverButtonLimit() {
-        if (clickCounter > activeQuest.getButtonLimit()) {
+        if (clickCounter > activeGoal.getButtonLimit()) {
             toast.show();
             displayLabel = "";
             display.setText(displayLabel);
-            clickCounter = activeQuest.getButtonLimit();
+            clickCounter = activeGoal.getButtonLimit();
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
         }
     }
@@ -235,7 +235,7 @@ public class LevelOneActivity extends AppCompatActivity {
         });
 
         bClear.setOnClickListener(view -> {
-            clickCounter = activeQuest.getButtonLimit();
+            clickCounter = activeGoal.getButtonLimit();
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
             displayLabel = "";
             display.setText(displayLabel);
@@ -250,7 +250,7 @@ public class LevelOneActivity extends AppCompatActivity {
             expEval = expEval.replaceAll("÷", "/");
 
             //checks to make sure operator is used
-            for(String operator: Quest.OPERATIONS){
+            for(String operator: Goal.OPERATIONS){
                 if (expEval.contains(operator)) {
                     hasOperators = true;
                     break;
@@ -258,7 +258,7 @@ public class LevelOneActivity extends AppCompatActivity {
             }
 
             // This is actually an interesting idea. The Expression class auto-solves it for us
-            // TODO: Replace the switch case in the Quest class with expEval
+            // TODO: Replace the switch case in the Goal class with expEval
             Expression exp = new Expression(expEval);
 
             int result = (int) exp.calculate();
@@ -267,23 +267,23 @@ public class LevelOneActivity extends AppCompatActivity {
             if(!hasOperators){
                 useOperator.show();
                 displayLabel = "";
-                clickCounter = activeQuest.getButtonLimit();
-            } else if (result == activeQuest.getTargetNumber()) {
-                if (activeQuest.getId() == 4) {
+                clickCounter = activeGoal.getButtonLimit();
+            } else if (result == activeGoal.getTargetNumber()) {
+                if (activeGoal.getId() == 4) {
                     finishScreen();
                     return;
                 }
                 runNextGoal();
                 updateRVPastEquation(pastExpEval, resultS);
             } else {
-                if (result > activeQuest.getTargetNumber()) {
+                if (result > activeGoal.getTargetNumber()) {
                     overShot.show();
                 } else {
                     underShot.show();
                 }
 
                 displayLabel = "";
-                clickCounter = activeQuest.getButtonLimit();
+                clickCounter = activeGoal.getButtonLimit();
                 updateRVPastEquation(pastExpEval, resultS);
             }
 
