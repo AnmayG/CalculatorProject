@@ -14,7 +14,7 @@ import java.util.List;
 
 // Taken from https://guides.codepath.com/android/using-the-recyclerview#using-the-recyclerview
 public class PastEquationAdapter extends RecyclerView.Adapter<PastEquationAdapter.ViewHolder>{
-    private List<PastEquationContent> mContent;
+    private final List<PastEquationContent> mContent;
 
     public PastEquationAdapter(List<PastEquationContent> content) {
         this.mContent = content;

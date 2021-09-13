@@ -248,12 +248,14 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     public void checkOverButtonLimit() {
-        if (clickCounter > activeGoal.getButtonLimit()) {
+        // FIXME: This is for testing
+        if (clickCounter < -100) {
             toast.show();
             displayLabel = "";
             display.setText(displayLabel);
             clickCounter = activeGoal.getButtonLimit();
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
+            clearRVPastEquation();
         }
     }
 
@@ -298,31 +300,43 @@ public class LevelOneActivity extends AppCompatActivity {
             // TODO: Replace the switch case in the Goal class with expEval
             Expression exp = new Expression(expEval);
 
-            int result = (int) exp.calculate();
+            // FIXME: How should we deal with doubles and division it's currently not dealt with at all
+            //double result = (int)(exp.calculate() * 10000)/10000.0;
+            double result = exp.calculate();
             String resultS = String.valueOf(result);
+            if(resultS.equals("NaN")) {
+                // How should we deal with these? Right now I'm just setting it to 0 but that's incorrect
+                result = 0;
+                resultS = String.valueOf(result);
+            }
 
             if(!hasOperators){
                 useOperator.show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
-                if (activeGoal.getId() == 4) {
+                if (activeGoal.getId() == testGoals.length - 1) {
                     finishScreen("You beat the game!");
                     return;
                 }
                 resetTimer();
                 runNextGoal();
-                updateRVPastEquation(pastExpEval, resultS);
+                clearRVPastEquation();
             } else {
-                if (result > activeGoal.getTargetNumber()) {
-                    overShot.show();
-                } else {
-                    underShot.show();
-                }
+                // FIXME: This is changed so that the answer won't submit until they reach the result under the click limit
+                //  They'll just keep on changing the number that they got from the last equation
 
-                displayLabel = "";
-                clickCounter = activeGoal.getButtonLimit();
+                displayLabel = resultS;
                 updateRVPastEquation(pastExpEval, resultS);
+
+//                if (result > activeGoal.getTargetNumber()) {
+//                    overShot.show();
+//                } else {
+//                    underShot.show();
+//                }
+//
+//                displayLabel = "";
+//                clickCounter = activeGoal.getButtonLimit();
             }
 
             display.setText(displayLabel);
@@ -344,5 +358,12 @@ public class LevelOneActivity extends AppCompatActivity {
         pastEquationList.add(new PastEquationContent(pastExpEval, resultS));
         pastEquationAdapter.notifyItemInserted(pastEquationList.size() - 1);
         rvPastEquations.scrollToPosition(pastEquationAdapter.getItemCount() - 1);
+    }
+
+    private void clearRVPastEquation() {
+        int size = pastEquationList.size();
+        pastEquationList.clear();
+        pastEquationAdapter.notifyItemRangeRemoved(0, size);
+        rvPastEquations.scrollToPosition(0);
     }
 }
