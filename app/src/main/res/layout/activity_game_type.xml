@@ -65,6 +65,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/competitiveBtn" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="92dp"
+        android:layout_height="93dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/treasure_icon" />
+
     <!--    <Button-->
 <!--        android:id="@+id/singlePlayerBtn"-->
 <!--        android:layout_width="0dp"-->

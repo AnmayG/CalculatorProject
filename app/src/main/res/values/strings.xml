@@ -61,4 +61,9 @@
     <string name="choice_scissors">Scissors</string>
 
     <string name="game_score">%1$d : %2$d</string>
+    <string name="treasure_chest">Treasure Chest:</string>
+    <string name="point_count">Points:</string>
+    <string name="freeze_timer_50_pts">Freeze Timer - 50 pts</string>
+    <string name="double_points_earned_100_pts">Double Points Earned - 100 pts</string>
+    <string name="add_an_extra_click_20_pts">Add an Extra Click - 20 pts</string>
 </resources>
