@@ -1,12 +1,32 @@
 package com.example.calculatorprojectv2;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.io.IOException;
+import java.util.Set;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
     Button mainButton, nextButton;
@@ -23,15 +43,18 @@ public class MainActivity extends AppCompatActivity {
             "Press the Play Button to start!"
     };
 
+    // Bluetooth is implemented by following
+    // https://developer.android.com/guide/topics/connectivity/bluetooth
+    // So there's a lot of stuff that I'm missing out on as I'm just copy pasting code
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainButton = (Button) findViewById(R.id.mainButton);
-        nextButton = (Button) findViewById(R.id.nextButton);
+        mainButton = findViewById(R.id.mainButton);
+        nextButton = findViewById(R.id.nextButton);
 
-        instructionsLabel = (TextView) findViewById(R.id.instructionLabelOne);
+        instructionsLabel = findViewById(R.id.instructionLabelOne);
 
         mainButton.setOnClickListener(view -> openSelectGameType());
 
@@ -51,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public void openSelectGameType(){
-        Intent intent = new Intent(this, GameType.class);
+        Intent intent = new Intent(this, GameTypeActivity.class);
         startActivity(intent);
     }
 
@@ -81,4 +104,9 @@ public class MainActivity extends AppCompatActivity {
 //            System.out.println("Something went wrong!");
 //        }
 //    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
