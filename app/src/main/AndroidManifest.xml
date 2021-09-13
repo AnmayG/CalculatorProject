@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculatorProjectV2">
         <activity
+            android:name=".GameType"
+            android:exported="true" />
+        <activity
             android:name=".LevelOneActivity"
             android:exported="true" />
         <activity

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         instructionsLabel = (TextView) findViewById(R.id.instructionLabelOne);
 
-        mainButton.setOnClickListener(view -> openLevelOne());
+        mainButton.setOnClickListener(view -> openSelectGameType());
 
         nextButton.setOnClickListener(view -> {
             instructionsLabel.setText(stageLabels[stage]);
@@ -45,8 +45,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void openLevelOne(){
-        Intent intent = new Intent(this, LevelOneActivity.class);
+//    public void openLevelOne(){
+//        Intent intent = new Intent(this, LevelOneActivity.class);
+//        startActivity(intent);
+//    }
+
+    public void openSelectGameType(){
+        Intent intent = new Intent(this, GameType.class);
         startActivity(intent);
     }
 

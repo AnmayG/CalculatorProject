@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -61,7 +63,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private Timer timer;
     private long seconds = 0;
-    private static final int TIMER_PERIOD = 10;
+    private static final int TIMER_PERIOD = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +204,7 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     private void finishScreen(String message){
+        addScoretoTextFile();
         displayLabel = message;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         display.setText(displayLabel);
@@ -227,6 +230,18 @@ public class LevelOneActivity extends AppCompatActivity {
         rvPastEquations.setVisibility(View.GONE);
 
         progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void addScoretoTextFile() {
+        String outFile = "src/main/res/user_scores.txt";
+        try {
+            PrintWriter out = new PrintWriter(outFile);
+            out.println(level);
+            out.close();
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Something went wrong!");
+        }
     }
 
     public void updateOnButtonClick(String newEntry) {
