@@ -48,10 +48,13 @@ public class LevelOneActivity extends AppCompatActivity {
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
     private Toast toast;
     private Toast fgd;
-    private final CharSequence textOver = "Goal Overshot!";
-    private final CharSequence textUnder = "Goal Undershot!";
-    private Toast underShot;
-    private Toast overShot;
+    /*
+        This is old stuff
+        private final CharSequence textOver = "Goal Overshot!";
+        private final CharSequence textUnder = "Goal Undershot!";
+        private Toast underShot;
+        private Toast overShot;
+     */
     private final CharSequence textUseOperator = "Remember to use an operator!";
     private Toast useOperator;
 
@@ -100,8 +103,11 @@ public class LevelOneActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         toast = Toast.makeText(context, keystrokeOver, duration);
         fgd = Toast.makeText(context, sillyGoose, duration);
-        underShot = Toast.makeText(context, textUnder, duration);
-        overShot = Toast.makeText(context, textOver, duration);
+        /*
+            We're doing the equation system so don't need this
+            underShot = Toast.makeText(context, textUnder, duration);
+            overShot = Toast.makeText(context, textOver, duration);
+         */
         useOperator = Toast.makeText(context, textUseOperator, duration);
 
         rvPastEquations = findViewById(R.id.operationList);
@@ -204,7 +210,7 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     private void finishScreen(String message){
-        addScoretoTextFile();
+        addScoreToTextFile();
         displayLabel = message;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         display.setText(displayLabel);
@@ -232,7 +238,8 @@ public class LevelOneActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void addScoretoTextFile() {
+    private void addScoreToTextFile() {
+        // Are text files supposed to be in res or in assets?
         String outFile = "src/main/res/user_scores.txt";
         try {
             PrintWriter out = new PrintWriter(outFile);
@@ -297,19 +304,13 @@ public class LevelOneActivity extends AppCompatActivity {
 
         bEnter.setOnClickListener(view -> {
             String pastExpEval = display.getText().toString();
-            boolean hasOperators = false;
+
+            //checks to make sure operator is used
+            boolean hasOperators = hasOperation(pastExpEval);
 
             // There is some time spent on using the × and ÷ so gotta do that too
             String expEval = pastExpEval.replaceAll("×", "*");
             expEval = expEval.replaceAll("÷", "/");
-
-            //checks to make sure operator is used
-            for(String operator: Goal.OPERATIONS){
-                if (expEval.contains(operator)) {
-                    hasOperators = true;
-                    break;
-                }
-            }
 
             // This is actually an interesting idea. The Expression class auto-solves it for us
             // TODO: Replace the switch case in the Goal class with expEval
@@ -325,8 +326,14 @@ public class LevelOneActivity extends AppCompatActivity {
                 resultS = String.valueOf(result);
             }
 
-            if(!hasOperators){
+            if(!hasOperators) {
                 useOperator.show();
+                displayLabel = "";
+                clickCounter = activeGoal.getButtonLimit();
+            } else if(zeroChange(pastExpEval, resultS)) {
+                Toast t = new Toast(getApplicationContext());
+                t.setText("You have to do something useful with each operation!");
+                t.show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
@@ -343,15 +350,6 @@ public class LevelOneActivity extends AppCompatActivity {
 
                 displayLabel = resultS;
                 updateRVPastEquation(pastExpEval, resultS);
-
-//                if (result > activeGoal.getTargetNumber()) {
-//                    overShot.show();
-//                } else {
-//                    underShot.show();
-//                }
-//
-//                displayLabel = "";
-//                clickCounter = activeGoal.getButtonLimit();
             }
 
             display.setText(displayLabel);
@@ -380,5 +378,49 @@ public class LevelOneActivity extends AppCompatActivity {
         pastEquationList.clear();
         pastEquationAdapter.notifyItemRangeRemoved(0, size);
         rvPastEquations.scrollToPosition(0);
+    }
+
+    private boolean zeroChange(String input, String result) {
+        boolean output = false;
+        ArrayList<String> entries = splitInputIntoEntries(input);
+        for (int i = 0; i < entries.size(); i++) {
+            if(!hasOperation(entries.get(i))) {
+                if (Double.parseDouble(entries.get(i)) == Double.parseDouble(result)) {
+                    output = true;
+                    break;
+                }
+            }
+        }
+        System.out.println(entries + " " + result);
+        return output;
+    }
+
+    private ArrayList<String> splitInputIntoEntries(String input) {
+        ArrayList<String> entries = new ArrayList<>();
+        entries.add("");
+        int entryIndex = 0;
+        for (int i = 0; i < input.length(); i++) {
+            String character = String.valueOf(input.charAt(i));
+            boolean isOperator = false;
+            if(hasOperation(character)) {
+                isOperator = true;
+                entries.add("");
+                entryIndex++;
+            }
+            entries.set(entryIndex, entries.get(entryIndex) + character);
+            if(isOperator){
+                entries.add("");
+                entryIndex++;
+            }
+            System.out.println(input + " " + entries);
+        }
+        return entries;
+    }
+
+    private boolean hasOperation(String i){
+        for (String s:OPERATIONS_DISPLAY) {
+            if(s.contains(i)) return true;
+        }
+        return false;
     }
 }
