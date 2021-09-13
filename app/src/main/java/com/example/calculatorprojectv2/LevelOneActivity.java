@@ -327,6 +327,7 @@ public class LevelOneActivity extends AppCompatActivity {
             }
 
             if(!hasOperators) {
+                System.out.println(pastExpEval);
                 useOperator.show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
@@ -419,7 +420,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private boolean hasOperation(String i){
         for (String s:OPERATIONS_DISPLAY) {
-            if(s.contains(i)) return true;
+            if(i.contains(s)) return true;
         }
         return false;
     }
