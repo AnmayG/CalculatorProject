@@ -42,12 +42,17 @@ public class GameTypeActivity extends AppCompatActivity {
         collaborative.setOnClickListener(view -> bluetoothNeeded.show());
 
         competitive.setOnClickListener(view -> {
-            bluetoothNeeded.show();
+            openNetworkActivity();
         });
     }
 
     public void openLevelOne(){
         Intent intent = new Intent(this, LevelOneActivity.class);
+        startActivity(intent);
+    }
+
+    public void openNetworkActivity(){
+        Intent intent = new Intent(this, NetworkActivity.class);
         startActivity(intent);
     }
 }
