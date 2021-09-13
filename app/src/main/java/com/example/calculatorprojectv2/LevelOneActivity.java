@@ -423,4 +423,11 @@ public class LevelOneActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void clearDisplayExpression(){
+        clickCounter = activeGoal.getButtonLimit();
+        buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
+        displayLabel = "";
+        display.setText(displayLabel);
+    }
 }
