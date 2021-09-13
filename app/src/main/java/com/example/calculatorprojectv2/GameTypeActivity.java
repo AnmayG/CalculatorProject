@@ -1,16 +1,21 @@
 package com.example.calculatorprojectv2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.Locale;
 
-public class GameType extends AppCompatActivity {
+public class GameTypeActivity extends AppCompatActivity {
 
     private Button singlePlayer, collaborative, competitive;
     private Toast bluetoothNeeded;
@@ -25,18 +30,16 @@ public class GameType extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         bluetoothNeeded = Toast.makeText(context, btNeededText, duration);
 
-        singlePlayer = (Button) findViewById(R.id.singlePlayerBtn);
-        collaborative = (Button) findViewById(R.id.collaborativeBtn);
-        competitive = (Button) findViewById(R.id.competitiveBtn);
+        singlePlayer = findViewById(R.id.singlePlayerBtn);
+        collaborative = findViewById(R.id.collaborativeBtn);
+        competitive = findViewById(R.id.competitiveBtn);
 
         singlePlayer.setOnClickListener(view -> {
             openLevelOne();
         });
 
         //change once bluetooth code implemented
-        collaborative.setOnClickListener(view ->{
-            bluetoothNeeded.show();
-        });
+        collaborative.setOnClickListener(view -> bluetoothNeeded.show());
 
         competitive.setOnClickListener(view -> {
             bluetoothNeeded.show();
