@@ -121,7 +121,7 @@ public class Goal {
                 break;
         }
 
-        isLimited = randInt(0, 1) == 1;
+        isLimited = randInt(1, 1) == 1;
 
         // createTargetsMultiple();
     }

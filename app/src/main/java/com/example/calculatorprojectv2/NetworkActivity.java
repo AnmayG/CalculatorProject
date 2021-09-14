@@ -25,6 +25,7 @@ import android.view.ViewAnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.core.content.ContextCompat;
@@ -156,7 +157,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if (mState == State.CONNECTED && mGestureDetector.onKeyEvent(event)) {
+        if (mState == State.CONNECTED) {
             return true;
         }
         return super.dispatchKeyEvent(event);
@@ -511,11 +512,6 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         if (payload.getType() == Payload.Type.STREAM) {
             // payload.asStream().asInputStream())
         }
-    }
-
-    /** @return True if currently playing. */
-    private boolean isPlaying() {
-        return !mAudioPlayers.isEmpty();
     }
 
     /** Starts recording sound from the microphone and streaming it to all connected devices. */
