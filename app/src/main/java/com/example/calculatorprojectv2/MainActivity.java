@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
-    Button mainButton, nextButton;
+    Button mainButton, nextButton, skipButton;
     TextView instructionsLabel;
    // ImageView treasureChest;
     private int stage = 0;
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         mainButton = findViewById(R.id.mainButton);
         nextButton = findViewById(R.id.nextButton);
+        skipButton = findViewById(R.id.skipButton);
 
         instructionsLabel = findViewById(R.id.instructionLabelOne);
 
@@ -71,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 mainButton.setVisibility(View.VISIBLE);
             }
             stage++;
+        });
+
+        skipButton.setOnClickListener(view -> {
+            instructionsLabel.setText(stageLabels[stageLabels.length - 1]);
+            nextButton.setVisibility(View.GONE);
+            mainButton.setVisibility(View.VISIBLE);
+            skipButton.setVisibility(View.GONE);
+
         });
 
 //        treasureChest = findViewById(R.id.treasure_image);

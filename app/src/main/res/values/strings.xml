@@ -71,4 +71,5 @@
     <string name="status_unknown">Please wait</string>
     <string name="status_advertising">Advertising</string>
     <string name="status_discovering">Have one person shake their device. Everyone else, stand still.</string>
+    <string name="skip">Skip ➤➤</string>
 </resources>

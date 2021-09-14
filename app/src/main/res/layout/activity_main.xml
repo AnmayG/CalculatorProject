@@ -35,6 +35,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.788" />
 
+    <Button
+        android:id="@+id/skipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/main_custom_button"
+        android:text="@string/skip"
+        android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nextButton"
+        app:layout_constraintVertical_bias="0.218" />
+
     <TextView
         android:id="@+id/titleLabel"
         android:layout_width="wrap_content"
