@@ -379,7 +379,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
     public void updateOnButtonClick(String newEntry) {
         if (activeGoal.isLimited()) {
-            if(!Arrays.asList(Goal.NUMBERS).contains(newEntry)) {
+            if(hasOperation(newEntry)) {
                 if(!Goal.OPERATIONS[activeGoal.getOperationDesignation() - 1].equals(newEntry)) {
                     fgd.show();
                     return;
