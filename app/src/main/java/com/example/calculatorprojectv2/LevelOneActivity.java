@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -379,8 +378,8 @@ public class LevelOneActivity extends AppCompatActivity {
 
     public void updateOnButtonClick(String newEntry) {
         if (activeGoal.isLimited()) {
-            if(hasOperation(newEntry)) {
-                if(!Goal.OPERATIONS[activeGoal.getOperationDesignation() - 1].equals(newEntry)) {
+            if(isOperation(newEntry)) {
+                if(!OPERATIONS_DISPLAY[activeGoal.getOperationDesignation() - 1].equals(newEntry)) {
                     fgd.show();
                     return;
                 }
@@ -426,6 +425,7 @@ public class LevelOneActivity extends AppCompatActivity {
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
             displayLabel = "";
             display.setText(displayLabel);
+            clearRVPastEquation();
         });
 
         bEnter.setOnClickListener(view -> {
@@ -564,5 +564,4 @@ public class LevelOneActivity extends AppCompatActivity {
         displayLabel = "";
         display.setText(displayLabel);
     }
-
 }

@@ -235,6 +235,16 @@ public class Goal {
         return (int)(Math.random()*(max + 1 - min)) + min;
     }
 
+    /**
+     * Simplifies an expression to "human operations"
+     * @param expression The expression to simplify
+     * @return Simplified expression
+     */
+    public int complexityAnalyzer(String expression) {
+
+        return 0;
+    }
+
     @NonNull
     @Override
     public String toString() {
