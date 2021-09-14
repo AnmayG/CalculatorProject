@@ -115,9 +115,9 @@ public class Goal {
                 // Works by going backwards
                 num1 = randInt(1, 100);
                 num2 = randInt(1, 99);
-                testNums = new int[]{num1 ^ num2, num1};
+                testNums = new int[]{(int) Math.pow(num1, num2), num1};
                 targetNumber = num2;
-                buttonLimit = String.valueOf(num1 ^ num2).length() + String.valueOf(num1).length() + 1;
+                buttonLimit = String.valueOf((int) Math.pow(num1, num2)).length() + String.valueOf(num1).length() + 1;
                 break;
         }
 
