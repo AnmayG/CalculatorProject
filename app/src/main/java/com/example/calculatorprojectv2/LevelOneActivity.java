@@ -56,7 +56,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private static final boolean USE_GOAL_TESTS = false;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
-    private final CharSequence sillyGoose = "I said Addition you silly goose :)";
+    private final CharSequence sillyGoose = "Use the right operator you silly goose :)";
     private Toast toast;
     private Toast fgd;
     /*
@@ -459,7 +459,7 @@ public class LevelOneActivity extends AppCompatActivity {
                 clickCounter = activeGoal.getButtonLimit();
             } else if(zeroChange(pastExpEval, resultS)) {
                 Toast t = new Toast(getApplicationContext());
-                t.setText("You have to do something useful with each operation!");
+                t.setText("Try to come up with a cooler expression!");
                 t.show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
