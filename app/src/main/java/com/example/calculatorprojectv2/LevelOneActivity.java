@@ -38,6 +38,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private int numDoublePowerup = 0;
     private int numFreezePowerup = 0;
     private int numClickPowerup = 0;
+    private boolean timerPause = false;
 
     private int points;
 
@@ -50,7 +51,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = true;
+    private static final boolean USE_GOAL_TESTS = false;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "I said Addition you silly goose :)";
@@ -124,6 +125,7 @@ public class LevelOneActivity extends AppCompatActivity {
 
         setButtonClickListeners();
         //^^ For the Click Listener for the Button
+        setPowerupClickListeners();
 
         display = findViewById(R.id.display);
         goalDisplay = findViewById((R.id.goalDisplay));
@@ -157,12 +159,39 @@ public class LevelOneActivity extends AppCompatActivity {
         startTimer();
     }
 
+    private void setPowerupClickListeners() {
+        click.setOnClickListener(view -> {
+            if(numClickPowerup > 0){
+                numClickPowerup -= 1;
+                clickCounter++;
+                buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
+                if(numClickPowerup == 0){
+                    click.setAlpha(0.5F);
+                }
+            }
+        });
+
+        freeze.setOnClickListener(view ->{
+            if(numFreezePowerup > 0){
+                numFreezePowerup--;
+                //NEEDS TO ADD FREEZING TIMER OPTION HERE
+                timerPause = true;
+
+                if(numFreezePowerup == 0){
+                    freeze.setAlpha(0.5F);
+                }
+            }
+        });
+    }
+
     private final Runnable generate = () -> {
-        progressBar.incrementProgressBy(-1 * TIMER_PERIOD);
-        seconds += TIMER_PERIOD;
-        if(seconds > activeGoal.getTime()) {
-            finishScreen("You ran out of time!");
-            timer.cancel();
+        if(!timerPause){
+            progressBar.incrementProgressBy(-1 * TIMER_PERIOD);
+            seconds += TIMER_PERIOD;
+            if(seconds > activeGoal.getTime()) {
+                finishScreen("You ran out of time!");
+                timer.cancel();
+            }
         }
     };
 
@@ -170,7 +199,9 @@ public class LevelOneActivity extends AppCompatActivity {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                decreaseProgress();
+                if(!timerPause){
+                    decreaseProgress();
+                }
             }
         }, 1, TIMER_PERIOD);
     }
@@ -214,6 +245,7 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     private void runNextGoal() {
+        timerPause = false;
         if (USE_GOAL_TESTS) {
             int lastIndex = activeGoal.getId();
             if (lastIndex + 1 >= testGoals.length) {
