@@ -10,11 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +33,11 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     Button mainButton, nextButton;
     TextView instructionsLabel;
+    ImageView treasureChest;
     private int stage = 0;
     public int points = 100;
+
+    //TO FIX: points always reset to 100 when new main activity started
 
     private final String[] stageLabels = {
             "You're bored in class one day, so you take our your calculator",
@@ -67,12 +72,17 @@ public class MainActivity extends AppCompatActivity {
             }
             stage++;
         });
+
+        treasureChest = findViewById(R.id.treasure_image);
+        treasureChest.setOnClickListener(view ->{
+            Intent intent = new Intent(this, Treasure.class);
+            intent.putExtra("Points", points + "");
+            intent.putExtra("PrevScreen", "main");
+            startActivity(intent);
+
+        });
     }
 
-//    public void openLevelOne(){
-//        Intent intent = new Intent(this, LevelOneActivity.class);
-//        startActivity(intent);
-//    }
 
     public void openSelectGameType(){
         Intent intent = new Intent(this, GameTypeActivity.class);

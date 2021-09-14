@@ -2,6 +2,7 @@ package com.example.calculatorprojectv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,28 +41,39 @@ public class Treasure extends AppCompatActivity {
 
     private void clickBtns() {
         freezePower.setOnClickListener(View -> {
-            if(points > freezeCost){
+            if(points >= freezeCost){
                 points -= freezeCost;
                 updatePointsLabel();
             }
         });
 
         doublePower.setOnClickListener(View -> {
-            if(points > doubleCost){
+            if(points >= doubleCost){
                 points -= doubleCost;
                 updatePointsLabel();
             }
         });
 
         clickPower.setOnClickListener(View ->{
-            if(points > clickCost){
+            if(points >= clickCost){
                 points -= clickCost;
                 updatePointsLabel();
             }
         });
 
         exit.setOnClickListener(View -> {
-
+            String returnScreen = getIntent().getStringExtra("PrevScreen");
+            Intent intent;
+            if (returnScreen.equals("gameType")){
+                intent = new Intent(this, GameTypeActivity.class);
+                intent.putExtra("Points", points +"");
+                startActivity(intent);
+            }
+            else if(returnScreen.equals("main")){
+                intent = new Intent(this, MainActivity.class);
+                intent.putExtra("Points", points +"");
+                startActivity(intent);
+            }
         });
     }
 }

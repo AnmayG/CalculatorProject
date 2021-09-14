@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.Locale;
@@ -18,6 +19,7 @@ import java.util.Locale;
 public class GameTypeActivity extends AppCompatActivity {
 
     private Button singlePlayer, collaborative, competitive;
+    private ImageView treasureChest;
     private Toast bluetoothNeeded;
     private int points;
     private final CharSequence btNeededText = "Please connect second device to play!";
@@ -47,6 +49,15 @@ public class GameTypeActivity extends AppCompatActivity {
 
         competitive.setOnClickListener(view -> {
             openNetworkActivity();
+        });
+
+        treasureChest = findViewById(R.id.treasure_image);
+        treasureChest.setOnClickListener(view ->{
+            System.out.println("clicked treasure");
+            Intent intent = new Intent(this, Treasure.class);
+            intent.putExtra("Points", points + "");
+            intent.putExtra("PrevScreen", "gameType");
+            startActivity(intent);
         });
     }
 
