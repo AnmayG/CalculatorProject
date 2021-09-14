@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import java.util.TimerTask;
 public class LevelOneActivity extends AppCompatActivity {
     TextView display, goalDisplay, buttonClickCounter, levelDisplay, operationDisplay; //add a TextView for the number that the use has to reach
     Button bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
+    ImageView click, freeze;
     ProgressBar progressBar;
     private final Button[] numberButtons = new Button[10];
 
@@ -33,6 +35,9 @@ public class LevelOneActivity extends AppCompatActivity {
     private String displayLabel = "";
     private int level = 1;
     private boolean isDoublePointsEnabled = false;
+    private int numDoublePowerup = 0;
+    private int numFreezePowerup = 0;
+    private int numClickPowerup = 0;
 
     private int points;
 
@@ -79,8 +84,17 @@ public class LevelOneActivity extends AppCompatActivity {
         String pts = getIntent().getStringExtra("Points");
         points = Integer.parseInt(pts);
 
-        isDoublePointsEnabled = getIntent().getBooleanExtra("isDoublePointsEnabled", false);
-        System.out.println("double points: " + isDoublePointsEnabled);
+        try{
+            isDoublePointsEnabled = getIntent().getBooleanExtra("isDoublePointsEnabled", false);
+            System.out.println("double points: " + isDoublePointsEnabled);
+            numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+            numFreezePowerup = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+            numClickPowerup = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+        }
+        catch (Exception e){
+            System.out.println("no powerups bought");
+        }
+
 
         for (int i = 0; i <= 9; i++) {
             int id = getResources().getIdentifier("button_" + i , "id", getPackageName());
@@ -97,6 +111,16 @@ public class LevelOneActivity extends AppCompatActivity {
         bClear = findViewById(R.id.clearButton);
         bDelete = findViewById(R.id.deleteButton);
         bEnter = findViewById(R.id.calculateButton);
+
+        click = findViewById(R.id.clickImage);
+        freeze = findViewById(R.id.freezeImage);
+
+        if(numClickPowerup > 0){
+            click.setAlpha(1F);
+        }
+        if(numFreezePowerup > 0){
+            freeze.setAlpha(1F);
+        }
 
         setButtonClickListeners();
         //^^ For the Click Listener for the Button
