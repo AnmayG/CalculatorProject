@@ -65,10 +65,10 @@ public class GameTypeActivity extends AppCompatActivity {
         });
 
         //change once bluetooth code implemented
-        collaborative.setOnClickListener(view -> bluetoothNeeded.show());
+        collaborative.setOnClickListener(view -> openNetworkActivity());
 
         competitive.setOnClickListener(view -> {
-            openNetworkActivity();
+            bluetoothNeeded.show();
         });
 
         treasureChest = findViewById(R.id.treasure_image);

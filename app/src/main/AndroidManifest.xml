@@ -26,9 +26,6 @@
             android:name=".Treasure"
             android:exported="true" />
         <activity
-            android:name=".NetworkActivity"
-            android:exported="true" />
-        <activity
             android:name=".BluetoothActivity"
             android:exported="true" />
         <activity

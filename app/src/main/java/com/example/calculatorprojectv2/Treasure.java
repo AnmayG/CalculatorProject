@@ -77,6 +77,7 @@ public class Treasure extends AppCompatActivity {
         });
 
         exit.setOnClickListener(View -> {
+            // Replace with ViewModel not this thing
             Intent intent = new Intent(this, GameTypeActivity.class);
             intent.putExtra("Points", points +"");
             intent.putExtra("NumFreeze", freeze_quant+"");

@@ -16,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -311,15 +314,67 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private void addScoreToTextFile() {
         // Are text files supposed to be in res or in assets?
-        String outFile = "src/main/res/user_scores.txt";
-        try {
-            PrintWriter out = new PrintWriter(outFile);
-            out.println(level);
-            out.close();
+        File file = getFileStreamPath("user_scores.txt");
 
-        } catch (FileNotFoundException ex) {
-            System.out.println("Something went wrong!");
+        try {
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream writer = openFileOutput(file.getName(), Context.MODE_PRIVATE);
+            writer.write(String.valueOf(level).getBytes());
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
+
+        System.out.println(readFile("user_scores.txt"));
+
+//        String outFile = "src/main/assets/user_scores.txt";
+//        try {
+//            PrintWriter out = new PrintWriter(outFile);
+//            out.println(level);
+//            System.out.println(level);
+//            out.close();
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("Something went wrong!");
+//        }
+    }
+
+    /**
+     * Reads the file "upgrade_names.txt" and updates upgradeNames using those values
+     * Source: https://stackoverflow.com/questions/9544737/read-file-from-assets
+     */
+    public ArrayList<String> readFile(String fileName){
+        ArrayList<String> output = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            Context mActivityContext = getApplicationContext();
+            reader = new BufferedReader(
+                    new InputStreamReader(mActivityContext.getAssets().open(fileName)));
+
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                //process line
+                output.add(mLine);
+            }
+        } catch (IOException e) {
+            //log the exception
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    //log the exception
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return output;
     }
 
     public void updateOnButtonClick(String newEntry) {
@@ -456,7 +511,7 @@ public class LevelOneActivity extends AppCompatActivity {
         boolean output = false;
         ArrayList<String> entries = splitInputIntoEntries(input);
         for (int i = 0; i < entries.size(); i++) {
-            if(!hasOperation(entries.get(i))) {
+            if(!isOperation(entries.get(i))) {
                 if (Double.parseDouble(entries.get(i)) == Double.parseDouble(result)) {
                     output = true;
                     break;
@@ -487,6 +542,13 @@ public class LevelOneActivity extends AppCompatActivity {
             System.out.println(input + " " + entries);
         }
         return entries;
+    }
+
+    private boolean isOperation(String i) {
+        for (String s:OPERATIONS_DISPLAY) {
+            if(i.equals(s)) return true;
+        }
+        return false;
     }
 
     private boolean hasOperation(String i){

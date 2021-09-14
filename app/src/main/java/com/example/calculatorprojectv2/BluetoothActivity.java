@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class BluetoothActivity extends AppCompatActivity {
     private final UUID uuid = UUID.randomUUID();
-    private static final int REQUEST_ENABLE_BT = 1;
+    private static int REQUEST_ENABLE_BT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
