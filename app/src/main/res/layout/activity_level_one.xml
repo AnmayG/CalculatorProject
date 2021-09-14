@@ -469,13 +469,5 @@
         app:layout_constraintStart_toEndOf="@+id/clearButton"
         app:layout_constraintTop_toBottomOf="@+id/exponentButton" />
 
-    <ImageView
-        android:id="@+id/treasure_image"
-        android:layout_width="93dp"
-        android:layout_height="93dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/clicksLeft"
-        app:srcCompat="@drawable/treasure_icon"
-        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

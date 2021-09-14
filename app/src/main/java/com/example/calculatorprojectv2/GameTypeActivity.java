@@ -19,12 +19,16 @@ public class GameTypeActivity extends AppCompatActivity {
 
     private Button singlePlayer, collaborative, competitive;
     private Toast bluetoothNeeded;
+    private int points;
     private final CharSequence btNeededText = "Please connect second device to play!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_type);
+
+        String pts = getIntent().getStringExtra("Points");
+        points = Integer.parseInt(pts);
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -48,6 +52,7 @@ public class GameTypeActivity extends AppCompatActivity {
 
     public void openLevelOne(){
         Intent intent = new Intent(this, LevelOneActivity.class);
+        intent.putExtra("Points", points +"");
         startActivity(intent);
     }
 

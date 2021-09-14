@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Button mainButton, nextButton;
     TextView instructionsLabel;
     private int stage = 0;
+    public int points = 100;
 
     private final String[] stageLabels = {
             "You're bored in class one day, so you take our your calculator",
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openSelectGameType(){
         Intent intent = new Intent(this, GameTypeActivity.class);
+        intent.putExtra("Points", points +"");
         startActivity(intent);
     }
 

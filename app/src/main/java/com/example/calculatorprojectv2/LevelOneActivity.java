@@ -33,6 +33,8 @@ public class LevelOneActivity extends AppCompatActivity {
     private String displayLabel = "";
     private int level = 1;
 
+    private int points;
+
     // These are test goals that have the same parameters as the old ones
     private final Goal[] testGoals = {
             new Goal(3, 64, 3, false, 0),
@@ -72,6 +74,9 @@ public class LevelOneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_one);
+
+        String pts = getIntent().getStringExtra("Points");
+        points = Integer.parseInt(pts);
 
         for (int i = 0; i <= 9; i++) {
             int id = getResources().getIdentifier("button_" + i , "id", getPackageName());
@@ -211,6 +216,8 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private void finishScreen(String message){
         addScoreToTextFile();
+        points += level * 10;
+        System.out.println(points);
         displayLabel = message;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         display.setText(displayLabel);
@@ -431,4 +438,5 @@ public class LevelOneActivity extends AppCompatActivity {
         displayLabel = "";
         display.setText(displayLabel);
     }
+
 }
