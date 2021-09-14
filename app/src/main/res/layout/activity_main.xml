@@ -67,13 +67,4 @@
         app:layout_constraintTop_toBottomOf="@+id/titleLabel"
         app:layout_constraintVertical_bias="0.083" />
 
-    <ImageView
-        android:id="@+id/treasure_image"
-        android:layout_width="93dp"
-        android:layout_height="93dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription"
-        app:srcCompat="@drawable/treasure_icon" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

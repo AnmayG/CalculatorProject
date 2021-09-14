@@ -20,6 +20,7 @@ public class GameTypeActivity extends AppCompatActivity {
 
     private Button singlePlayer, collaborative, competitive;
     private ImageView treasureChest;
+    private int freezeCount, clickCount, doubleCount;
     private Toast bluetoothNeeded;
     private int points;
     private final CharSequence btNeededText = "Please connect second device to play!";
@@ -31,6 +32,10 @@ public class GameTypeActivity extends AppCompatActivity {
 
         String pts = getIntent().getStringExtra("Points");
         points = Integer.parseInt(pts);
+
+//        freezeCount = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+//        clickCount = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+//        doubleCount = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;

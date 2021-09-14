@@ -15,6 +15,9 @@ public class Treasure extends AppCompatActivity {
     private int freezeCost = 50;
     private int doubleCost = 100;
     private int clickCost = 20;
+    private int freeze_quant = 0;
+    private int double_quant = 0;
+    private int click_quant = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class Treasure extends AppCompatActivity {
         freezePower.setOnClickListener(View -> {
             if(points >= freezeCost){
                 points -= freezeCost;
+                freeze_quant++;
                 updatePointsLabel();
             }
         });
@@ -50,6 +54,7 @@ public class Treasure extends AppCompatActivity {
         doublePower.setOnClickListener(View -> {
             if(points >= doubleCost){
                 points -= doubleCost;
+                double_quant++;
                 updatePointsLabel();
             }
         });
@@ -57,23 +62,19 @@ public class Treasure extends AppCompatActivity {
         clickPower.setOnClickListener(View ->{
             if(points >= clickCost){
                 points -= clickCost;
+                click_quant++;
                 updatePointsLabel();
             }
         });
 
         exit.setOnClickListener(View -> {
-            String returnScreen = getIntent().getStringExtra("PrevScreen");
-            Intent intent;
-            if (returnScreen.equals("gameType")){
-                intent = new Intent(this, GameTypeActivity.class);
-                intent.putExtra("Points", points +"");
-                startActivity(intent);
-            }
-            else if(returnScreen.equals("main")){
-                intent = new Intent(this, MainActivity.class);
-                intent.putExtra("Points", points +"");
-                startActivity(intent);
-            }
+            Intent intent = new Intent(this, GameTypeActivity.class);
+            intent.putExtra("Points", points +"");
+            intent.putExtra("NumFreeze", freeze_quant+"");
+            intent.putExtra("NumDouble", double_quant+"");
+            intent.putExtra("NumClick", click_quant+"");
+
+            startActivity(intent);
         });
     }
 }

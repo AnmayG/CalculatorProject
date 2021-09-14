@@ -33,7 +33,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
     Button mainButton, nextButton;
     TextView instructionsLabel;
-    ImageView treasureChest;
+   // ImageView treasureChest;
     private int stage = 0;
     public int points = 100;
 
@@ -73,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
             stage++;
         });
 
-        treasureChest = findViewById(R.id.treasure_image);
-        treasureChest.setOnClickListener(view ->{
-            Intent intent = new Intent(this, Treasure.class);
-            intent.putExtra("Points", points + "");
-            intent.putExtra("PrevScreen", "main");
-            startActivity(intent);
-
-        });
+//        treasureChest = findViewById(R.id.treasure_image);
+//        treasureChest.setOnClickListener(view ->{
+//            Intent intent = new Intent(this, Treasure.class);
+//            intent.putExtra("Points", points + "");
+//            intent.putExtra("PrevScreen", "main");
+//            startActivity(intent);
+//
+//        });
     }
 
 
