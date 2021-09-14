@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculatorProjectV2">
         <activity
+            android:name=".Treasure"
+            android:exported="true" />
+        <activity
             android:name=".NetworkActivity"
             android:exported="true" />
         <activity
