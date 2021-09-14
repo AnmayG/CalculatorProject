@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,11 +19,14 @@ import java.util.Locale;
 
 public class GameTypeActivity extends AppCompatActivity {
 
-    private Button singlePlayer, collaborative, competitive;
+    private Button singlePlayer, collaborative, competitive, doublePowerup;
     private ImageView treasureChest;
-    private int freezeCount, clickCount, doubleCount;
+    private int freezeCount = 0;
+    private int clickCount = 0;
+    private int doubleCount = 0;
     private Toast bluetoothNeeded;
     private int points;
+    private boolean doublePointsEnabled = false;
     private final CharSequence btNeededText = "Please connect second device to play!";
 
     @Override
@@ -33,9 +37,15 @@ public class GameTypeActivity extends AppCompatActivity {
         String pts = getIntent().getStringExtra("Points");
         points = Integer.parseInt(pts);
 
-//        freezeCount = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
-//        clickCount = Integer.parseInt(getIntent().getStringExtra("NumClick"));
-//        doubleCount = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+        try{
+            freezeCount = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+            clickCount = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+            doubleCount = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+            System.out.println(freezeCount + ", " + clickCount + ", " + doubleCount);
+        }catch(Exception e){
+            System.out.println("hadn't been powerups bought");
+        }
+
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -44,6 +54,11 @@ public class GameTypeActivity extends AppCompatActivity {
         singlePlayer = findViewById(R.id.singlePlayerBtn);
         collaborative = findViewById(R.id.collaborativeBtn);
         competitive = findViewById(R.id.competitiveBtn);
+        doublePowerup = findViewById(R.id.double_points_powerup);
+
+        if(doubleCount > 0){
+            doublePowerup.setVisibility(View.VISIBLE);
+        }
 
         singlePlayer.setOnClickListener(view -> {
             openLevelOne();
@@ -61,14 +76,27 @@ public class GameTypeActivity extends AppCompatActivity {
             System.out.println("clicked treasure");
             Intent intent = new Intent(this, Treasure.class);
             intent.putExtra("Points", points + "");
+            intent.putExtra("NumFreeze", freezeCount+"");
+            intent.putExtra("NumDouble", doubleCount+"");
+            intent.putExtra("NumClick", clickCount+"");
             intent.putExtra("PrevScreen", "gameType");
             startActivity(intent);
+        });
+
+        doublePowerup.setOnClickListener(view ->{
+            doubleCount -= 1;
+            doublePointsEnabled = true;
+            doublePowerup.setVisibility(View.INVISIBLE);
         });
     }
 
     public void openLevelOne(){
         Intent intent = new Intent(this, LevelOneActivity.class);
         intent.putExtra("Points", points +"");
+        intent.putExtra("NumFreeze", freezeCount+"");
+        intent.putExtra("NumDouble", doubleCount+"");
+        intent.putExtra("NumClick", clickCount+"");
+        intent.putExtra("isDoublePointsEnabled", doublePointsEnabled);
         startActivity(intent);
     }
 

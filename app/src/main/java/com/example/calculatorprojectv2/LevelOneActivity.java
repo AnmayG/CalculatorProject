@@ -32,6 +32,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private int clickCounter = 0;
     private String displayLabel = "";
     private int level = 1;
+    private boolean isDoublePointsEnabled = false;
 
     private int points;
 
@@ -77,6 +78,9 @@ public class LevelOneActivity extends AppCompatActivity {
 
         String pts = getIntent().getStringExtra("Points");
         points = Integer.parseInt(pts);
+
+        isDoublePointsEnabled = getIntent().getBooleanExtra("isDoublePointsEnabled", false);
+        System.out.println("double points: " + isDoublePointsEnabled);
 
         for (int i = 0; i <= 9; i++) {
             int id = getResources().getIdentifier("button_" + i , "id", getPackageName());
@@ -216,7 +220,11 @@ public class LevelOneActivity extends AppCompatActivity {
 
     private void finishScreen(String message){
         addScoreToTextFile();
-        points += level * 10;
+        int pointsAdded = level * 10;
+        if(isDoublePointsEnabled){
+            pointsAdded *= 2;
+        }
+        points += pointsAdded;
         System.out.println(points);
         displayLabel = message;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

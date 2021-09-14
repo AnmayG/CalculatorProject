@@ -33,6 +33,15 @@ public class Treasure extends AppCompatActivity {
         exit = findViewById(R.id.exitBtn);
         pointsLbl = findViewById(R.id.pointCount);
 
+        try{
+            freeze_quant = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+            click_quant = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+            double_quant = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+            System.out.println(freeze_quant + ", " + click_quant + ", " + double_quant);
+        }catch(Exception e){
+            System.out.println("hadn't been powerups bought");
+        }
+
         clickBtns();
         updatePointsLabel();
     }
