@@ -522,7 +522,7 @@ public class LevelOneActivity extends AppCompatActivity {
         return output;
     }
 
-    private ArrayList<String> splitInputIntoEntries(String input) {
+    public static ArrayList<String> splitInputIntoEntries(String input) {
         ArrayList<String> entries = new ArrayList<>();
         entries.add("");
         int entryIndex = 0;
@@ -551,7 +551,7 @@ public class LevelOneActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean hasOperation(String i){
+    private static boolean hasOperation(String i){
         for (String s:OPERATIONS_DISPLAY) {
             if(i.contains(s)) return true;
         }
