@@ -241,8 +241,32 @@ public class Goal {
      * @return Simplified expression
      */
     public int complexityAnalyzer(String expression) {
+        // Split the array into entries
+        ArrayList<String> entriesString = LevelOneActivity.splitInputIntoEntries(expression);
+        for (int i = 0; i < entriesString.size(); i++) {
+            String entry = entriesString.get(i);
 
+            // If it's addition or subtraction then its very simple (think +1 or -1)
+            if(whatOperation(entry) == 0 || whatOperation(entry) == 1) {
+
+            }
+        }
         return 0;
+    }
+
+    private int whatOperation(String in) {
+        for (int i = 0; i < OPERATIONS.length; i++) {
+            if(in.equals(OPERATIONS[i])) return i;
+        }
+        return -1;
+    }
+
+    private ArrayList<Integer> findFactors(int input, int baseCase) {
+        ArrayList<Integer> output = new ArrayList<>();
+        for (int i = 0; i < Math.sqrt(input); i++) {
+            output.add(i);
+        }
+        return output;
     }
 
     @NonNull
