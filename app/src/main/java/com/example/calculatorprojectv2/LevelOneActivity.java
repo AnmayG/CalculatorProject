@@ -294,7 +294,8 @@ public class LevelOneActivity extends AppCompatActivity {
         addScoreToTextFile(pointsAdded);
         points += pointsAdded;
         System.out.println(points);
-        displayLabel = message;
+        displayLabel = message +" " +
+                "Score: " + pointsAdded;
         display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         display.setText(displayLabel);
         //constraintDisplay.setVisibility(View.GONE);
