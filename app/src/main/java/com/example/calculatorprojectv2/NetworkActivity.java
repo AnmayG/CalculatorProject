@@ -2,14 +2,12 @@ package com.example.calculatorprojectv2;
 
 import android.Manifest;
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,6 +20,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,6 +100,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** Displays the current state. */
     private TextView mCurrentStateView;
 
+    /** Moves to calculator activity */
+    private Button bNext;
+
     /** An animator that controls the animation from previous state to current state. */
     @Nullable
     private Animator mCurrentAnimator;
@@ -140,16 +142,30 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        mPreviousStateView = (TextView) findViewById(R.id.previous_state);
-        mCurrentStateView = (TextView) findViewById(R.id.current_state);
+        mPreviousStateView = findViewById(R.id.previous_state);
+        mCurrentStateView = findViewById(R.id.current_state);
 
-        mDebugLogView = (TextView) findViewById(R.id.debug_log);
+        mDebugLogView = findViewById(R.id.debug_log);
         mDebugLogView.setVisibility(DEBUG ? View.VISIBLE : View.GONE);
         mDebugLogView.setMovementMethod(new ScrollingMovementMethod());
 
         mName = generateRandomName();
 
         ((TextView) findViewById(R.id.name)).setText(mName);
+
+        bNext = findViewById(R.id.start_button);
+        bNext.setOnClickListener(view -> openLevelOne());
+    }
+
+    public void openLevelOne(){
+        Intent intent = new Intent(this, LevelOneActivity.class);
+        intent.putExtra("Points", 0 +"");
+        intent.putExtra("NumFreeze", 0+"");
+        intent.putExtra("NumDouble", 0+"");
+        intent.putExtra("NumClick", 0+"");
+        intent.putExtra("isDoublePointsEnabled", false);
+        intent.putExtra("isNetwork", true);
+        startActivity(intent);
     }
 
     @Override
@@ -165,24 +181,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         super.onStart();
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
-        // Set the media volume to max.
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        mOriginalVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-
         setState(State.DISCOVERING);
     }
 
     @Override
     protected void onStop() {
         mSensorManager.unregisterListener(this);
-
-        // Restore the original volume.
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mOriginalVolume, 0);
-        setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
 
         setState(State.UNKNOWN);
 
@@ -406,30 +410,18 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     @NonNull
     private Animator createAnimator(boolean reverse) {
         Animator animator;
-        if (Build.VERSION.SDK_INT >= 21) {
-            int cx = mCurrentStateView.getMeasuredWidth() / 2;
-            int cy = mCurrentStateView.getMeasuredHeight() / 2;
-            int initialRadius = 0;
-            int finalRadius = Math.max(mCurrentStateView.getWidth(), mCurrentStateView.getHeight());
-            if (reverse) {
-                int temp = initialRadius;
-                initialRadius = finalRadius;
-                finalRadius = temp;
-            }
-            animator =
-                    ViewAnimationUtils.createCircularReveal(
-                            mCurrentStateView, cx, cy, initialRadius, finalRadius);
-        } else {
-            float initialAlpha = 0f;
-            float finalAlpha = 1f;
-            if (reverse) {
-                float temp = initialAlpha;
-                initialAlpha = finalAlpha;
-                finalAlpha = temp;
-            }
-            mCurrentStateView.setAlpha(initialAlpha);
-            animator = ObjectAnimator.ofFloat(mCurrentStateView, "alpha", finalAlpha);
+        int cx = mCurrentStateView.getMeasuredWidth() / 2;
+        int cy = mCurrentStateView.getMeasuredHeight() / 2;
+        int initialRadius = 0;
+        int finalRadius = Math.max(mCurrentStateView.getWidth(), mCurrentStateView.getHeight());
+        if (reverse) {
+            int temp = initialRadius;
+            initialRadius = finalRadius;
+            finalRadius = temp;
         }
+        animator =
+                ViewAnimationUtils.createCircularReveal(
+                        mCurrentStateView, cx, cy, initialRadius, finalRadius);
         animator.addListener(
                 new AnimatorListener() {
                     @Override
@@ -519,6 +511,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
             // Send the first half of the payload (the read side) to Nearby Connections.
             // send(Payload.fromStream(payloadPipe[0]));
+
         } catch (IOException e) {
             logE("startRecording() failed", e);
         }
