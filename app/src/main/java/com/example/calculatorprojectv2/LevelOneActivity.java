@@ -353,7 +353,7 @@ public class LevelOneActivity extends AppCompatActivity {
         });
 
     }
-
+//fjaldsk delete later
         // Are text files supposed to be in res or in assets?
 //        File file = getFileStreamPath("user_scores.txt");
 //
