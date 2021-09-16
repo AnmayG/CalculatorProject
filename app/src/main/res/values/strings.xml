@@ -72,4 +72,7 @@
     <string name="status_advertising">Advertising</string>
     <string name="status_discovering">Have one person shake their device. Everyone else, stand still.</string>
     <string name="skip">Skip ➤➤</string>
+    <string name="game_score_txy">Game Score:</string>
+    <string name="game_ended">GAME ENDED</string>
+    <string name="high_score">High Score:</string>
 </resources>

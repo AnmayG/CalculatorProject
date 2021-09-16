@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context=".EndScreen">
+
+    <TextView
+        android:id="@+id/gameScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="serif-monospace"
+        android:gravity="center_horizontal"
+        android:shadowColor="@color/white"
+        android:text="@string/game_score_txy"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameScoreLabel2" />
+
+    <TextView
+        android:id="@+id/gameScoreLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="serif-monospace"
+        android:gravity="center_horizontal"
+        android:shadowColor="@color/white"
+        android:text="@string/game_ended"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="60sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/highScoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="serif-monospace"
+        android:gravity="center_horizontal"
+        android:shadowColor="@color/white"
+        android:text="@string/high_score"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameScoreLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

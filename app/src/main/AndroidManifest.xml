@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <uses-feature
         android:name="android.hardware.bluetooth"
         android:required="true" />
@@ -25,6 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalculatorProjectV2">
         <activity
+            android:name=".EndScreen"
+            android:exported="true" />
+        <activity
             android:name=".Treasure"
             android:exported="true" />
         <activity
@@ -33,13 +37,15 @@
         <activity
             android:name=".GameTypeActivity"
             android:exported="true" />
-        <activity android:name=".LevelOneActivity"
+        <activity
+            android:name=".LevelOneActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-         </activity>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -49,9 +55,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NetworkActivity"
-            android:exported="true">
-        </activity>
+        <activity
+            android:name=".NetworkActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

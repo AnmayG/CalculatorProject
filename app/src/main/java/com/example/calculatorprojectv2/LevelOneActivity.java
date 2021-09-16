@@ -290,7 +290,7 @@ public class LevelOneActivity extends AppCompatActivity {
         if(isDoublePointsEnabled){
             pointsAdded *= 2;
         }
-        addScoreToTextFile(pointsAdded);
+        addScoreToDatabase(pointsAdded);
         points += pointsAdded;
         System.out.println(points);
         displayLabel = message +" " +
@@ -321,7 +321,7 @@ public class LevelOneActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void addScoreToTextFile(int points) {
+    private void addScoreToDatabase(int points) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
 
@@ -352,34 +352,7 @@ public class LevelOneActivity extends AppCompatActivity {
         });
 
     }
-//fjaldsk delete later
-        // Are text files supposed to be in res or in assets?
-//        File file = getFileStreamPath("user_scores.txt");
-//
-//        try {
-//            if(!file.exists()) {
-//                file.createNewFile();
-//            }
-//            FileOutputStream writer = openFileOutput(file.getName(), Context.MODE_PRIVATE);
-//            writer.write(String.valueOf(level).getBytes());
-//            writer.flush();
-//            writer.close();
-//        } catch (IOException e) {
-//            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(readFile("user_scores.txt"));
 
-//        String outFile = "src/main/assets/user_scores.txt";
-//        try {
-//            PrintWriter out = new PrintWriter(outFile);
-//            out.println(level);
-//            System.out.println(level);
-//            out.close();
-//        } catch (FileNotFoundException ex) {
-//            System.out.println("Something went wrong!");
-//        }
 
     /**
      * Reads the file "upgrade_names.txt" and updates upgradeNames using those values
