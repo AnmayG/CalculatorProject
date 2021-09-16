@@ -19,7 +19,7 @@
         <entry key="app/src/main/res/drawable/rock.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/drawable/scissors.xml" value="0.25729166666666664" />
         <entry key="app/src/main/res/layout/activity_game_type.xml" value="0.17572463768115942" />
-        <entry key="app/src/main/res/layout/activity_level_one.xml" value="0.302734375" />
+        <entry key="app/src/main/res/layout/activity_level_one.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.302734375" />
         <entry key="app/src/main/res/layout/activity_network.xml" value="0.18568840579710144" />
         <entry key="app/src/main/res/layout/activity_treasure.xml" value="0.17527173913043478" />

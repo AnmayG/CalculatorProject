@@ -19,8 +19,10 @@ import org.mariuszgromada.math.mxparser.Expression;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Timer;
@@ -53,7 +55,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = false;
+    private static final boolean USE_GOAL_TESTS = true;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "Use the right operator you silly goose :)";
@@ -277,11 +279,11 @@ public class LevelOneActivity extends AppCompatActivity {
     }
 
     private void finishScreen(String message){
-        addScoreToTextFile();
         int pointsAdded = level * 10;
         if(isDoublePointsEnabled){
             pointsAdded *= 2;
         }
+        addScoreToTextFile(pointsAdded);
         points += pointsAdded;
         System.out.println(points);
         displayLabel = message;
@@ -311,24 +313,38 @@ public class LevelOneActivity extends AppCompatActivity {
         progressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void addScoreToTextFile() {
-        // Are text files supposed to be in res or in assets?
-        File file = getFileStreamPath("user_scores.txt");
-
+    private void addScoreToTextFile(int points) {
         try {
-            if(!file.exists()) {
-                file.createNewFile();
-            }
-            FileOutputStream writer = openFileOutput(file.getName(), Context.MODE_PRIVATE);
-            writer.write(String.valueOf(level).getBytes());
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+            FileOutputStream fileout=openFileOutput("user_scores.txt", MODE_PRIVATE);
+            OutputStreamWriter outputWriter=new OutputStreamWriter(fileout);
+            outputWriter.write(points+"");
+            outputWriter.close();
+
+            //display file saved message
+            Toast.makeText(getBaseContext(), "File saved successfully!",
+                    Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        }
 
-        System.out.println(readFile("user_scores.txt"));
+        // Are text files supposed to be in res or in assets?
+//        File file = getFileStreamPath("user_scores.txt");
+//
+//        try {
+//            if(!file.exists()) {
+//                file.createNewFile();
+//            }
+//            FileOutputStream writer = openFileOutput(file.getName(), Context.MODE_PRIVATE);
+//            writer.write(String.valueOf(level).getBytes());
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println(readFile("user_scores.txt"));
 
 //        String outFile = "src/main/assets/user_scores.txt";
 //        try {
@@ -339,7 +355,6 @@ public class LevelOneActivity extends AppCompatActivity {
 //        } catch (FileNotFoundException ex) {
 //            System.out.println("Something went wrong!");
 //        }
-    }
 
     /**
      * Reads the file "upgrade_names.txt" and updates upgradeNames using those values

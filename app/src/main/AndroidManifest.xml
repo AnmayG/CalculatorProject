@@ -37,9 +37,13 @@
         <activity
             android:name=".GameTypeActivity"
             android:exported="true" />
-        <activity
-            android:name=".LevelOneActivity"
-            android:exported="true" />
+        <activity android:name=".LevelOneActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+         </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
