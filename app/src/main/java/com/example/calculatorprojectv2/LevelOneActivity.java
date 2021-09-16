@@ -25,12 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.mariuszgromada.math.mxparser.Expression;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Timer;
@@ -89,6 +85,8 @@ public class LevelOneActivity extends AppCompatActivity {
     private long seconds = 0;
     private static final int TIMER_PERIOD = 20;
 
+    private boolean network = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,14 +95,15 @@ public class LevelOneActivity extends AppCompatActivity {
         String pts = getIntent().getStringExtra("Points");
         points = Integer.parseInt(pts);
 
-        try{
+        network = Boolean.parseBoolean(getIntent().getStringExtra("isNetwork"));
+
+        try {
             isDoublePointsEnabled = getIntent().getBooleanExtra("isDoublePointsEnabled", false);
             System.out.println("double points: " + isDoublePointsEnabled);
             numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
             numFreezePowerup = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
             numClickPowerup = Integer.parseInt(getIntent().getStringExtra("NumClick"));
-        }
-        catch (Exception e){
+        } catch (Exception e){
             System.out.println("no powerups bought");
         }
 

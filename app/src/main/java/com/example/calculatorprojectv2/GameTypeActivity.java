@@ -1,21 +1,14 @@
 package com.example.calculatorprojectv2;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.Locale;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class GameTypeActivity extends AppCompatActivity {
 
@@ -97,6 +90,7 @@ public class GameTypeActivity extends AppCompatActivity {
         intent.putExtra("NumDouble", doubleCount+"");
         intent.putExtra("NumClick", clickCount+"");
         intent.putExtra("isDoublePointsEnabled", doublePointsEnabled);
+        intent.putExtra("isNetwork", false);
         startActivity(intent);
     }
 
