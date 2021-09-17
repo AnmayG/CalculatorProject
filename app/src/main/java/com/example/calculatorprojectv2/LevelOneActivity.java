@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -60,7 +59,7 @@ public class LevelOneActivity extends AppCompatActivity {
             new Goal(3, 12, 3, false, 4)
     };
     private Goal activeGoal;
-    private static final boolean USE_GOAL_TESTS = true;
+    private static final boolean USE_GOAL_TESTS = false;
 
     private final CharSequence keystrokeOver = "Too many Button Presses!";
     private final CharSequence sillyGoose = "Use the right operator you silly goose :)";
@@ -306,33 +305,6 @@ public class LevelOneActivity extends AppCompatActivity {
         intent.putExtra("NumDouble", numDoublePowerup+"");
         intent.putExtra("NumClick", numClickPowerup+"");
         startActivity(intent);
-
-//        displayLabel = message +" " +
-//                "Score: " + pointsAdded;
-//        display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-//        display.setText(displayLabel);
-//        //constraintDisplay.setVisibility(View.GONE);
-//        goalDisplay.setVisibility(View.GONE);
-//        buttonClickCounter.setVisibility(View.GONE);
-//        levelDisplay.setVisibility(View.GONE);
-//        operationDisplay.setVisibility(View.GONE);
-//
-//        for (Button b:numberButtons) {
-//            b.setVisibility(View.GONE);
-//        }
-//
-//        bAdd.setVisibility(View.GONE);
-//        bSub.setVisibility(View.GONE);
-//        bMulti.setVisibility(View.GONE);
-//        bDiv.setVisibility(View.GONE);
-//        bPwr.setVisibility(View.GONE);
-//        bEnter.setVisibility(View.GONE);
-//        bClear.setVisibility(View.GONE);
-//        bDelete.setVisibility(View.GONE);
-//
-//        rvPastEquations.setVisibility(View.GONE);
-//
-//        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void addScoreToDatabase(int points) {
@@ -452,7 +424,6 @@ public class LevelOneActivity extends AppCompatActivity {
             buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
             displayLabel = "";
             display.setText(displayLabel);
-            clearRVPastEquation();
         });
 
         bEnter.setOnClickListener(view -> {
@@ -485,9 +456,8 @@ public class LevelOneActivity extends AppCompatActivity {
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if(zeroChange(pastExpEval, resultS)) {
-                Toast t = new Toast(getApplicationContext());
-                t.setText("Try to come up with a cooler expression!");
-                t.show();
+                Toast.makeText(getApplicationContext(),
+                        "Try to come up with a cooler expression!", Toast.LENGTH_SHORT).show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
@@ -497,7 +467,7 @@ public class LevelOneActivity extends AppCompatActivity {
                 }
                 resetTimer();
                 runNextGoal();
-                clearRVPastEquation();
+                updateRVPastEquation(pastExpEval, resultS);
             } else {
                 // FIXME: This is changed so that the answer won't submit until they reach the result under the click limit
                 //  They'll just keep on changing the number that they got from the last equation
