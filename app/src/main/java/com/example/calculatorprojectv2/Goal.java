@@ -21,7 +21,7 @@ public class Goal {
     private int operationDesignation;
     private boolean isLimited;
     private final int id;
-    // TODO: Implement changing times, currently set at 10,000 milliseconds
+    // TODO: Implement changing times, currently set at 10,000 seconds should be 10,000 milliseconds
     private int time = 1000000000;
 
     public int getButtonLimit() {
