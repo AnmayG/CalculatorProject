@@ -32,9 +32,6 @@
             android:name=".Treasure"
             android:exported="true" />
         <activity
-            android:name=".BluetoothActivity"
-            android:exported="true" />
-        <activity
             android:name=".GameTypeActivity"
             android:exported="true" />
         <activity
