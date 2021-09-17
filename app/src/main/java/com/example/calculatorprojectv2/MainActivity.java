@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             if (stage == stageLabels.length - 1) {
                 nextButton.setVisibility(View.GONE);
                 mainButton.setVisibility(View.VISIBLE);
+                skipButton.setVisibility(View.GONE);
             }
             stage++;
         });

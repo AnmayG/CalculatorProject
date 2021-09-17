@@ -7,6 +7,20 @@
     android:background="#000000"
     tools:context=".EndScreen">
 
+    <Button
+        android:id="@+id/double_points_powerup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/main_custom_button"
+        android:text="@string/use_double_points_powerup"
+        android:textColor="#F4C265"
+        android:textSize="10sp"
+        android:visibility="invisible"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="@+id/singlePlayerBtn"
+        app:layout_constraintTop_toBottomOf="@+id/singlePlayerBtn" />
+
     <TextView
         android:id="@+id/gameScoreLabel"
         android:layout_width="wrap_content"

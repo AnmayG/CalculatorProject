@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,12 +21,22 @@ import com.google.firebase.database.ValueEventListener;
 public class EndScreen extends AppCompatActivity {
 
     private TextView currentScoreTxt, highScoreTxt;
-    private Button replayGame;
+    private Button replayGame, doubleScorePowerupQuestion;
+    private int numDoublePowerup = 0;
+    private boolean doublePointsEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_screen);
+
+
+        doubleScorePowerupQuestion = findViewById(R.id.double_points_powerup2);
+        numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+        if(numDoublePowerup > 0){
+            System.out.println("numdouble powerup: " +numDoublePowerup);
+            doubleScorePowerupQuestion.setVisibility(View.VISIBLE);
+        }
 
         currentScoreTxt = findViewById(R.id.gameScoreLabel);
         highScoreTxt = findViewById(R.id.highScoreLabel);
@@ -54,17 +65,28 @@ public class EndScreen extends AppCompatActivity {
             }
         });
 
+        doubleScorePowerupQuestion.setOnClickListener(view ->{
+            if(numDoublePowerup > 0){
+                numDoublePowerup-= 1;
+                System.out.println("numdoublePowerupNow");
+                doublePointsEnabled = true;
+                doubleScorePowerupQuestion.setVisibility(View.GONE);
+            }
+        });
+
         replayGame = findViewById(R.id.singlePlayerBtn);
         replayGame.setOnClickListener(view ->{
             Intent intent = new Intent(this, LevelOneActivity.class);
 
             try{
-                int numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+                numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
                 int numFreezePowerup = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
                 int numClickPowerup = Integer.parseInt(getIntent().getStringExtra("NumClick"));
                 intent.putExtra("NumFreeze", numFreezePowerup+"");
                 intent.putExtra("NumDouble", numDoublePowerup+"");
                 intent.putExtra("NumClick", numClickPowerup+"");
+                intent.putExtra("isDoublePointsEnabled", doublePointsEnabled);
+                System.out.println("Doubled points powerup: " + numDoublePowerup);
             }
             catch(Exception e){
 
