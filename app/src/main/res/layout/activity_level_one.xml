@@ -120,7 +120,7 @@
 
     <Button
         android:id="@+id/button_2"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="5dp"
@@ -129,6 +129,8 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_5"
+        app:layout_constraintEnd_toStartOf="@+id/button_3"
         app:layout_constraintStart_toEndOf="@+id/button_1"
         app:layout_constraintTop_toBottomOf="@+id/display" />
 
@@ -138,7 +140,7 @@
 
     <Button
         android:id="@+id/button_3"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="5dp"
@@ -147,48 +149,56 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_6"
+        app:layout_constraintEnd_toStartOf="@+id/additionButton"
         app:layout_constraintStart_toEndOf="@+id/button_2"
         app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <Button
         android:id="@+id/button_4"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_design_new"
         android:text="@string/_4"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_7"
+        app:layout_constraintEnd_toStartOf="@+id/button_5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_1" />
 
     <Button
         android:id="@+id/button_1"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/button_design_new"
         android:text="@string/_1"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_4"
+        app:layout_constraintEnd_toStartOf="@+id/button_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <Button
         android:id="@+id/button_7"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_design_new"
         android:text="@string/_7"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_0"
+        app:layout_constraintEnd_toStartOf="@+id/button_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_4" />
 
@@ -196,21 +206,23 @@
 
     <Button
         android:id="@+id/button_0"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_design_new"
         android:text="@string/_0"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/calculateButton"
+        app:layout_constraintEnd_toStartOf="@+id/clearButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_7" />
 
     <Button
         android:id="@+id/button_5"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
@@ -219,6 +231,8 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_8"
+        app:layout_constraintEnd_toStartOf="@+id/button_6"
         app:layout_constraintStart_toEndOf="@+id/button_4"
         app:layout_constraintTop_toBottomOf="@+id/button_2" />
 
@@ -228,7 +242,7 @@
 
     <Button
         android:id="@+id/button_6"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
@@ -237,6 +251,8 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/button_9"
+        app:layout_constraintEnd_toStartOf="@+id/subtractionButton"
         app:layout_constraintStart_toEndOf="@+id/button_5"
         app:layout_constraintTop_toBottomOf="@+id/button_3" />
 
@@ -244,7 +260,7 @@
 
     <Button
         android:id="@+id/button_8"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
@@ -253,6 +269,8 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/clearButton"
+        app:layout_constraintEnd_toStartOf="@+id/button_9"
         app:layout_constraintStart_toEndOf="@+id/button_7"
         app:layout_constraintTop_toBottomOf="@+id/button_5" />
 
@@ -260,7 +278,7 @@
 
     <Button
         android:id="@+id/button_9"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
@@ -269,13 +287,16 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/deleteButton"
+        app:layout_constraintEnd_toStartOf="@+id/multiplicationButton"
         app:layout_constraintStart_toEndOf="@+id/button_8"
         app:layout_constraintTop_toBottomOf="@+id/button_6" />
 
     <Button
         android:id="@+id/additionButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_design_new"
@@ -283,13 +304,16 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/subtractionButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_3"
         app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <Button
         android:id="@+id/subtractionButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_design_new"
@@ -297,13 +321,16 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/multiplicationButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_6"
         app:layout_constraintTop_toBottomOf="@+id/additionButton" />
 
     <Button
         android:id="@+id/multiplicationButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_design_new"
@@ -311,13 +338,16 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/divisionButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_9"
         app:layout_constraintTop_toBottomOf="@+id/subtractionButton" />
 
     <Button
         android:id="@+id/divisionButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_design_new"
@@ -325,77 +355,77 @@
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/exponentButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/deleteButton"
         app:layout_constraintTop_toBottomOf="@+id/multiplicationButton" />
 
     <Button
-        android:id="@+id/mysteryButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/button_design_new"
-        android:textColor="#BDBDBD"
-        android:textSize="25sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toStartOf="@+id/exponentButton"
-        app:layout_constraintStart_toEndOf="@+id/button_0"
-        app:layout_constraintTop_toBottomOf="@+id/button_8" />
-
-    <Button
         android:id="@+id/clearButton"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_design_new"
         android:text="CLR"
         android:textColor="#BDBDBD"
         android:textSize="15sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/calculateButton"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
         app:layout_constraintStart_toEndOf="@+id/button_0"
         app:layout_constraintTop_toBottomOf="@+id/button_8" />
 
     <Button
         android:id="@+id/deleteButton"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_design_new"
         android:text="DEL"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/calculateButton"
+        app:layout_constraintEnd_toStartOf="@+id/divisionButton"
         app:layout_constraintStart_toEndOf="@+id/clearButton"
         app:layout_constraintTop_toBottomOf="@+id/button_9" />
 
     <Button
         android:id="@+id/exponentButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/button_design_new"
         android:text="@string/power"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/divisionButton"
         app:layout_constraintTop_toBottomOf="@+id/divisionButton" />
 
     <Button
         android:id="@+id/calculateButton"
-        android:layout_width="270dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
         android:background="@drawable/button_design_new"
         android:text="@string/go"
         android:textColor="#BDBDBD"
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exponentButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_0" />
 
