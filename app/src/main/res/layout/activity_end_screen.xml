@@ -57,4 +57,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameScoreLabel" />
 
+    <Button
+        android:id="@+id/singlePlayerBtn"
+        android:layout_width="124dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/calculator_custom_button"
+        android:text="@string/replay"
+        android:textColor="#FFA500"
+        android:textSize="25sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highScoreLabel" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,4 +75,6 @@
     <string name="game_score_txy">Game Score:</string>
     <string name="game_ended">GAME ENDED</string>
     <string name="high_score">High Score:</string>
+    <string name="replay_single_player_mode">Replay (single-player mode)</string>
+    <string name="replay">Replay</string>
 </resources>

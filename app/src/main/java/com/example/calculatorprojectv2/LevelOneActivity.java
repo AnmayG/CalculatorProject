@@ -3,6 +3,7 @@ package com.example.calculatorprojectv2;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,7 +49,7 @@ public class LevelOneActivity extends AppCompatActivity {
     private int numClickPowerup = 0;
     private boolean timerPause = false;
 
-    private int points;
+    private int points = 0;
 
     // These are test goals that have the same parameters as the old ones
     private final Goal[] testGoals = {
@@ -93,7 +94,11 @@ public class LevelOneActivity extends AppCompatActivity {
         setContentView(R.layout.activity_level_one);
 
         String pts = getIntent().getStringExtra("Points");
-        points = Integer.parseInt(pts);
+        try{
+            points = Integer.parseInt(pts);
+        }catch(Exception e){
+
+        }
 
         network = Boolean.parseBoolean(getIntent().getStringExtra("isNetwork"));
 
@@ -293,32 +298,41 @@ public class LevelOneActivity extends AppCompatActivity {
         addScoreToDatabase(pointsAdded);
         points += pointsAdded;
         System.out.println(points);
-        displayLabel = message +" " +
-                "Score: " + pointsAdded;
-        display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        display.setText(displayLabel);
-        //constraintDisplay.setVisibility(View.GONE);
-        goalDisplay.setVisibility(View.GONE);
-        buttonClickCounter.setVisibility(View.GONE);
-        levelDisplay.setVisibility(View.GONE);
-        operationDisplay.setVisibility(View.GONE);
 
-        for (Button b:numberButtons) {
-            b.setVisibility(View.GONE);
-        }
+        Intent intent = new Intent(this, EndScreen.class);
+        intent.putExtra("PointsAdded", pointsAdded +"");
+        intent.putExtra("Points", points +"");
+        intent.putExtra("NumFreeze", numFreezePowerup+"");
+        intent.putExtra("NumDouble", numDoublePowerup+"");
+        intent.putExtra("NumClick", numClickPowerup+"");
+        startActivity(intent);
 
-        bAdd.setVisibility(View.GONE);
-        bSub.setVisibility(View.GONE);
-        bMulti.setVisibility(View.GONE);
-        bDiv.setVisibility(View.GONE);
-        bPwr.setVisibility(View.GONE);
-        bEnter.setVisibility(View.GONE);
-        bClear.setVisibility(View.GONE);
-        bDelete.setVisibility(View.GONE);
-
-        rvPastEquations.setVisibility(View.GONE);
-
-        progressBar.setVisibility(View.INVISIBLE);
+//        displayLabel = message +" " +
+//                "Score: " + pointsAdded;
+//        display.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//        display.setText(displayLabel);
+//        //constraintDisplay.setVisibility(View.GONE);
+//        goalDisplay.setVisibility(View.GONE);
+//        buttonClickCounter.setVisibility(View.GONE);
+//        levelDisplay.setVisibility(View.GONE);
+//        operationDisplay.setVisibility(View.GONE);
+//
+//        for (Button b:numberButtons) {
+//            b.setVisibility(View.GONE);
+//        }
+//
+//        bAdd.setVisibility(View.GONE);
+//        bSub.setVisibility(View.GONE);
+//        bMulti.setVisibility(View.GONE);
+//        bDiv.setVisibility(View.GONE);
+//        bPwr.setVisibility(View.GONE);
+//        bEnter.setVisibility(View.GONE);
+//        bClear.setVisibility(View.GONE);
+//        bDelete.setVisibility(View.GONE);
+//
+//        rvPastEquations.setVisibility(View.GONE);
+//
+//        progressBar.setVisibility(View.INVISIBLE);
     }
 
     private void addScoreToDatabase(int points) {
