@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Calculator Project V2</string>
     <string name="press_to_play">Press to play!</string>
-    <string name="display">Display</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
     <string name="_3">3</string>
@@ -16,21 +15,14 @@
     <string name="minus">-</string>
     <string name="times">×</string>
     <string name="divide">÷</string>
-    <string name="testbutton">testButton</string>
     <string name="welcome_to_calculator_the_puzzle">Welcome to Calculator the Puzzle</string>
     <string name="next">Next ➤</string>
     <string name="level_1">Level: 1</string>
     <string name="_0">0</string>
-    <string name="exponent">exponent</string>
     <string name="power">^</string>
-    <string name="mystery">\?</string>
     <string name="clicks_left">Clicks Left:</string>
-    <string name="clear">Clear</string>
     <string name="go">=</string>
-    <string name="delete">Delete</string>
-    <string name="constraint">Constraint</string>
     <string name="operation_limit">Operation Limit:</string>
-    <string name="single_player">Single Player</string>
     <string name="pick_a_game_mode">Pick a Game Mode:</string>
     <string name="single_player_mode">Single Player Mode</string>
     <string name="competitive_mode">Competitive Mode</string>
@@ -39,24 +31,8 @@
     <!-- This is just copy-pasted from the repo -->
     <string name="error_missing_permissions">Cannot start without required permissions</string>
 
-    <string name="codename">Your codename: %s</string>
-    <string name="opponent_name">Opponent: %s</string>
-    <string name="no_opponent">none (yet)</string>
-
-    <string name="status_disconnected">Disconnected</string>
-    <string name="status_searching">Searching</string>
     <string name="status_connected">Connected</string>
 
-    <string name="game_choice">You chose %s</string>
-
-    <string name="win_message">%1$s beats %2$s!</string>
-    <string name="tie_message">You both chose %s</string>
-    <string name="loss_message">%1$s loses to %2$s…</string>
-
-    <string name="action_find_opponents">Find opponent</string>
-    <string name="action_disconnect">Disconnect</string>
-
-    <string name="game_score">%1$d : %2$d</string>
     <string name="treasure_chest">Treasure Chest:</string>
     <string name="point_count">Points:</string>
     <string name="freeze_timer_50_pts">Freeze Timer - 50 pts</string>
@@ -68,13 +44,19 @@
     <string name="toast_connected">Connected to %s</string>
     <string name="toast_disconnected">Disconnected from %s</string>
 
-    <string name="status_unknown">Please wait</string>
     <string name="status_advertising">Advertising</string>
     <string name="status_discovering">Have one person shake their device. Everyone else, stand still.</string>
-    <string name="skip">Skip ➤➤</string>
+    <string name="status_unknown">Status unknown</string>
+    <string name="clr">CLR</string>
+    <string name="del">DEL</string>
+    <string name="start">Start</string>
+    <string name="connected_device_ids">Connected Device IDs:</string>
     <string name="game_score_txy">Game Score:</string>
-    <string name="game_ended">GAME ENDED</string>
     <string name="high_score">High Score:</string>
-    <string name="replay_single_player_mode">Replay (single-player mode)</string>
+    <string name="game_ended">GAME ENDED</string>
     <string name="replay">Replay</string>
+    <string name="skip">Skip ➤➤</string>
+    <string name="next_to_continue">Press Next to Continue</string>
+    <string name="click_image_description">Extra Click</string>
+    <string name="freeze_image_description">Freeze Timer</string>
 </resources>

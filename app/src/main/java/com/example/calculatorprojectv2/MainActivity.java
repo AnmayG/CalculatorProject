@@ -24,9 +24,11 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
    // ImageView treasureChest;
     private int stage = 0;
     public int points = 100;
+
+    private PowerUpViewModel viewModel;
 
     //TO FIX: points always reset to 100 when new main activity started
 
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
@@ -86,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 highScore.setText(highScoreTxt);
             }
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
@@ -114,20 +118,13 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-//        treasureChest = findViewById(R.id.treasure_image);
-//        treasureChest.setOnClickListener(view ->{
-//            Intent intent = new Intent(this, Treasure.class);
-//            intent.putExtra("Points", points + "");
-//            intent.putExtra("PrevScreen", "main");
-//            startActivity(intent);
-//
-//        });
+        viewModel = new ViewModelProvider(this).get(PowerUpViewModel.class);
     }
 
 
     public void openSelectGameType(){
+        viewModel.setPoints(points);
         Intent intent = new Intent(this, GameTypeActivity.class);
-        intent.putExtra("Points", points +"");
         startActivity(intent);
     }
 

@@ -2,7 +2,9 @@ package com.example.calculatorprojectv2;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -24,25 +26,27 @@ public class EndScreen extends AppCompatActivity {
     private Button replayGame, doubleScorePowerupQuestion;
     private int numDoublePowerup = 0;
     private boolean doublePointsEnabled = false;
+    private PowerUpViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_screen);
 
-
         doubleScorePowerupQuestion = findViewById(R.id.double_points_powerup2);
-        numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
-        if(numDoublePowerup > 0){
-            System.out.println("numdouble powerup: " +numDoublePowerup);
+
+        viewModel = new ViewModelProvider(this).get(PowerUpViewModel.class);
+        numDoublePowerup = viewModel.getNumDouble();
+        if(numDoublePowerup > 0) {
             doubleScorePowerupQuestion.setVisibility(View.VISIBLE);
+        } else {
+            doubleScorePowerupQuestion.setVisibility(View.GONE);
         }
 
         currentScoreTxt = findViewById(R.id.gameScoreLabel);
         highScoreTxt = findViewById(R.id.highScoreLabel);
 
-        String pts = getIntent().getStringExtra("PointsAdded");
-        String displayTxt = "Game Score: "  + pts;
+        String displayTxt = "Game Score: "  + viewModel.getPointsAdded();
         currentScoreTxt.setText(displayTxt);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -50,7 +54,7 @@ public class EndScreen extends AppCompatActivity {
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
@@ -59,7 +63,7 @@ public class EndScreen extends AppCompatActivity {
                 highScoreTxt.setText(highScore);
             }
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
@@ -76,23 +80,10 @@ public class EndScreen extends AppCompatActivity {
 
         replayGame = findViewById(R.id.singlePlayerBtn);
         replayGame.setOnClickListener(view ->{
+            viewModel.setPrevScreen("EndScreen");
+            viewModel.setIsDoublePointsEnabled(doublePointsEnabled);
+
             Intent intent = new Intent(this, LevelOneActivity.class);
-
-            try{
-                numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
-                int numFreezePowerup = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
-                int numClickPowerup = Integer.parseInt(getIntent().getStringExtra("NumClick"));
-                intent.putExtra("NumFreeze", numFreezePowerup+"");
-                intent.putExtra("NumDouble", numDoublePowerup+"");
-                intent.putExtra("NumClick", numClickPowerup+"");
-                intent.putExtra("isDoublePointsEnabled", doublePointsEnabled);
-                System.out.println("Doubled points powerup: " + numDoublePowerup);
-            }
-            catch(Exception e){
-
-            }
-            String numTotalPts = getIntent().getStringExtra("Points");
-            intent.putExtra("Points", numTotalPts);
             startActivity(intent);
         });
     }

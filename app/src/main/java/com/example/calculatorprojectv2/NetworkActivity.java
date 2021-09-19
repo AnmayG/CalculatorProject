@@ -126,13 +126,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     private final Handler mUiHandler = new Handler(Looper.getMainLooper());
 
     /** Starts discovery. Used in a postDelayed manor with {@link #mUiHandler}. */
-    private final Runnable mDiscoverRunnable =
-            new Runnable() {
-                @Override
-                public void run() {
-                    setState(State.DISCOVERING);
-                }
-            };
+    private final Runnable mDiscoverRunnable = () -> setState(State.DISCOVERING);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,20 +147,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         ((TextView) findViewById(R.id.name)).setText(mName);
 
         bNext = findViewById(R.id.start_button);
-        bNext.setOnClickListener(view -> openLevelOne());
+        bNext.setOnClickListener(view -> {
+            findViewById(R.id.lobby_layout).setVisibility(View.GONE);
+            findViewById(R.id.calculator_fragment).setVisibility(View.VISIBLE);
+        });
 
         mEndpointsLogView = findViewById(R.id.endpoints_log);
-    }
-
-    public void openLevelOne(){
-        Intent intent = new Intent(this, LevelOneActivity.class);
-        intent.putExtra("Points", 0 +"");
-        intent.putExtra("NumFreeze", 0+"");
-        intent.putExtra("NumDouble", 0+"");
-        intent.putExtra("NumClick", 0+"");
-        intent.putExtra("isDoublePointsEnabled", false);
-        intent.putExtra("isNetwork", true);
-        startActivity(intent);
     }
 
     @Override
@@ -501,9 +487,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** {@see ConnectionsActivity#onReceive(Endpoint, Payload)} */
     @Override
     protected void onReceive(Endpoint endpoint, Payload payload) {
-        if (payload.getType() == Payload.Type.STREAM) {
-            // payload.asStream().asInputStream())
-        }
+        payload.getType();// payload.asStream().asInputStream())
     }
 
     /** Starts recording sound from the microphone and streaming it to all connected devices. */
@@ -628,12 +612,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     }
 
     private static String generateRandomName() {
-        String name = "";
+        StringBuilder name = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < 5; i++) {
-            name += random.nextInt(10);
+            name.append(random.nextInt(10));
         }
-        return name;
+        return name.toString();
     }
 
     @SuppressWarnings("unchecked")

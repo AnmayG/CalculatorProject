@@ -15,7 +15,7 @@
         android:background="@drawable/main_custom_button"
         android:text="@string/use_double_points_powerup"
         android:textColor="#F4C265"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:visibility="invisible"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="@+id/singlePlayerBtn"
