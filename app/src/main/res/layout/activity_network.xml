@@ -49,6 +49,7 @@
         android:id="@+id/debug_log"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#000000"
         android:gravity="bottom"
         android:maxLines="10"
         android:scrollbars="vertical"
@@ -60,7 +61,7 @@
 
     <Button
         android:id="@+id/start_button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Start"
         app:layout_constraintBottom_toTopOf="@+id/debug_log"

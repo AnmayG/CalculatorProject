@@ -95,8 +95,8 @@ public class Goal {
                 break;
             case 3:
                 // This is the case for multiplication
-                num1 = randInt(0, (randLimit / 10));
-                num2 = randInt(0, (randLimit / 10) - 1);
+                num1 = randInt(0, (int)Math.sqrt(randLimit));
+                num2 = randInt(0, (int)Math.sqrt(randLimit) - 1);
                 testNums = new int[]{num1, num2};
                 targetNumber = num1 * num2;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
@@ -104,8 +104,8 @@ public class Goal {
             case 4:
                 // This is the case for division
                 // Going backwards and generating a multiplication, then using the result and the first number
-                num1 = randInt(1, randLimit / 10);
-                num2 = randInt(1, randLimit / 10 - 1);
+                num1 = randInt(1, (int)Math.sqrt(randLimit));
+                num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
                 testNums = new int[]{num1 * num2, num1};
                 targetNumber = num2;
                 buttonLimit = String.valueOf(num1 * num2).length() + String.valueOf(num1).length() + 1;
@@ -114,7 +114,7 @@ public class Goal {
                 // This is the case for exponents
                 // Works by going backwards
                 num1 = randInt(1, randLimit - 1);
-                num2 = randInt(1, randLimit / 10 - 1);
+                num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
                 testNums = new int[]{(int) Math.sqrt(num1), num1};
                 targetNumber = num2;
                 buttonLimit = String.valueOf((int) Math.pow(num1, num2)).length() + String.valueOf(num1).length() + 1;

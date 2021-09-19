@@ -116,8 +116,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** The accelerometer sensor allows us to detect device movement for shake-to-advertise. */
     private Sensor mAccelerometer;
 
-    /** The phone's original media volume. */
-    private int mOriginalVolume;
+    /** A running display of the endpoints that we are connected to. **/
+    private TextView mEndpointsLogView;
 
     /**
      * A Handler that allows us to post back on to the UI thread. We use this to resume discovery
@@ -146,7 +146,6 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         mCurrentStateView = findViewById(R.id.current_state);
 
         mDebugLogView = findViewById(R.id.debug_log);
-        mDebugLogView.setVisibility(DEBUG ? View.VISIBLE : View.GONE);
         mDebugLogView.setMovementMethod(new ScrollingMovementMethod());
 
         mName = generateRandomName();
@@ -155,6 +154,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
         bNext = findViewById(R.id.start_button);
         bNext.setOnClickListener(view -> openLevelOne());
+
+        mEndpointsLogView = findViewById(R.id.endpoints_log);
     }
 
     public void openLevelOne(){
@@ -188,7 +189,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     protected void onStop() {
         mSensorManager.unregisterListener(this);
 
-        setState(State.UNKNOWN);
+        //setState(State.UNKNOWN);
 
         mUiHandler.removeCallbacksAndMessages(null);
 
@@ -224,10 +225,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
     @Override
     protected void onEndpointConnected(Endpoint endpoint) {
+        removeEndpointFromLogs(endpoint.getName());
         Toast.makeText(
                 this, getString(R.string.toast_connected, endpoint.getName()), Toast.LENGTH_SHORT)
                 .show();
         setState(State.CONNECTED);
+        appendEndpointToLogs(endpoint.getName());
     }
 
     @Override
@@ -235,7 +238,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         Toast.makeText(
                 this, getString(R.string.toast_disconnected, endpoint.getName()), Toast.LENGTH_SHORT)
                 .show();
-
+        removeEndpointFromLogs(endpoint.getName());
         // If we lost all our endpoints, then we should reset the state of our app and go back
         // to our initial state (discovering).
         if (getConnectedEndpoints().isEmpty()) {
@@ -521,8 +524,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     @Override
     protected String[] getRequiredPermissions() {
         return join(
-                super.getRequiredPermissions(),
-                Manifest.permission.RECORD_AUDIO);
+                super.getRequiredPermissions());
     }
 
     /** Joins 2 arrays together. */
@@ -603,6 +605,20 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         mDebugLogView.append("\n");
         mDebugLogView.append(DateFormat.format("hh:mm", System.currentTimeMillis()) + ": ");
         mDebugLogView.append(msg);
+    }
+
+    private void appendEndpointToLogs(CharSequence msg) {
+        mEndpointsLogView.append("\n");
+        mEndpointsLogView.append(msg);
+    }
+
+    private void removeEndpointFromLogs(CharSequence msg) {
+        String logText = mEndpointsLogView.getText().toString();
+        int index = logText.indexOf(msg.toString());
+        if(index != -1) {
+            System.out.println(index + " " + mEndpointsLogView.getText());
+            mEndpointsLogView.setText(logText.substring(0, index - 1));
+        }
     }
 
     private static CharSequence toColor(String msg, int color) {
