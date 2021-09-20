@@ -217,9 +217,11 @@ public class CalculatorFragment extends Fragment {
             @Override
             public void run() {
                 if(!timerPause){
+                    System.out.println(this + " " + timer + " " + seconds + " " + progressBar.getProgress() + " " + activeGoal.getTime() + " " + activeGoal);
                     decreaseProgress();
                     seconds += TIMER_PERIOD;
                     if(seconds > activeGoal.getTime()) {
+                        System.out.println("CANCELLED " + seconds + " " + activeGoal + " " + TIMER_PERIOD);
                         finishScreen();
                         timer.cancel();
                     }
@@ -285,7 +287,6 @@ public class CalculatorFragment extends Fragment {
             }
         } else {
             activeGoal = new Goal(activeGoal.getId() + 1);
-            viewModel.setCurrentLevel(activeGoal.getId());
             // System.out.println(activeGoal);
         }
 

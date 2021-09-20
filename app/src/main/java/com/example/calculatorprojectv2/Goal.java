@@ -70,6 +70,7 @@ public class Goal {
         this.id = id;
     }
 
+    //should we change time allotted as well?
     public void changeLim(){
         if(id < 5){
             randLimit = 100;

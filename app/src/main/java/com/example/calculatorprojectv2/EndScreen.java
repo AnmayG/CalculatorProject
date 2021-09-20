@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,9 @@ public class EndScreen extends AppCompatActivity {
     private Button replayGame, doubleScorePowerupQuestion;
     private int numDoublePowerup = 0;
     private boolean doublePointsEnabled = false;
+    private ImageView treasureChest;
+    private int totalPoints = 0;
+    private int numFreeze, numClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,24 @@ public class EndScreen extends AppCompatActivity {
             }
             String numTotalPts = getIntent().getStringExtra("Points");
             intent.putExtra("Points", numTotalPts);
+            startActivity(intent);
+        });
+
+        treasureChest = findViewById(R.id.treasure_image);
+        totalPoints = Integer.parseInt(getIntent().getStringExtra("Points"));
+        numClick = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+        numFreeze = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+
+        treasureChest.setOnClickListener(view ->{
+            System.out.println("clicked treasure");
+
+            Intent intent = new Intent(this, Treasure.class);
+            intent.putExtra("Points", totalPoints + "");
+            intent.putExtra("PointsAdded", pts +"");
+            intent.putExtra("NumFreeze", numFreeze+"");
+            intent.putExtra("NumDouble", numDoublePowerup+"");
+            intent.putExtra("NumClick", numClick+"");
+            intent.putExtra("PrevScreen", "EndScreen");
             startActivity(intent);
         });
     }
