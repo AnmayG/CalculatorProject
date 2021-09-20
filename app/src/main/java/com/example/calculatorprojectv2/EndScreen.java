@@ -2,17 +2,15 @@ package com.example.calculatorprojectv2;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +45,11 @@ public class EndScreen extends AppCompatActivity {
         String displayTxt = "Game Score: "  + pts;
         currentScoreTxt.setText(displayTxt);
 
+        String winner = getIntent().getStringExtra("Winner");
+        if(winner != null) {
+            highScoreTxt.setText(winner);
+        }
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
 
@@ -78,7 +81,7 @@ public class EndScreen extends AppCompatActivity {
 
         replayGame = findViewById(R.id.singlePlayerBtn);
         replayGame.setOnClickListener(view ->{
-            Intent intent = new Intent(this, LevelOneActivity.class);
+            Intent intent = new Intent(this, GameTypeActivity.class);
             try{
                 numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
                 int numFreezePowerup = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));

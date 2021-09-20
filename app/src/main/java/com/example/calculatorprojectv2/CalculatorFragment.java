@@ -93,6 +93,8 @@ public class CalculatorFragment extends Fragment {
 
     private View binding;
 
+    private NetworkViewModel viewModel;
+
     public CalculatorFragment() {
         // Required empty public constructor
     }
@@ -178,6 +180,8 @@ public class CalculatorFragment extends Fragment {
         seconds = 0;
         startTimer();
 
+        viewModel = new ViewModelProvider(requireActivity()).get(NetworkViewModel.class);
+
         return binding;
     }
 
@@ -213,11 +217,9 @@ public class CalculatorFragment extends Fragment {
             @Override
             public void run() {
                 if(!timerPause){
-                    System.out.println(this + " " + timer + " " + seconds + " " + progressBar.getProgress() + " " + activeGoal.getTime() + " " + activeGoal);
                     decreaseProgress();
                     seconds += TIMER_PERIOD;
                     if(seconds > activeGoal.getTime()) {
-                        System.out.println("CANCELLED " + seconds + " " + activeGoal + " " + TIMER_PERIOD);
                         finishScreen();
                         timer.cancel();
                     }
@@ -283,6 +285,7 @@ public class CalculatorFragment extends Fragment {
             }
         } else {
             activeGoal = new Goal(activeGoal.getId() + 1);
+            viewModel.setCurrentLevel(activeGoal.getId());
             // System.out.println(activeGoal);
         }
 
@@ -310,6 +313,7 @@ public class CalculatorFragment extends Fragment {
         }
         addScoreToDatabase(pointsAdded);
         points += pointsAdded;
+        requireActivity().runOnUiThread(() -> viewModel.setPoints(points));
 
         Intent intent = new Intent(requireActivity(), EndScreen.class);
         intent.putExtra("Points", points + "");
@@ -427,7 +431,7 @@ public class CalculatorFragment extends Fragment {
             }
 
             // Checks for if there's a beginning (and as such invalid) operation
-            if(isOperation(String.valueOf(pastExpEval.charAt(0)))) {
+            if(!pastExpEval.equals("") && isOperation(String.valueOf(pastExpEval.charAt(0)))) {
                 if (!String.valueOf(pastExpEval.charAt(0)).equals("-")) {
                     Toast.makeText(requireActivity().getApplicationContext(),
                             "Invalid operator", Toast.LENGTH_SHORT).show();
@@ -449,7 +453,7 @@ public class CalculatorFragment extends Fragment {
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
-                if (activeGoal.getId() == testGoals.length - 1) {
+                if (activeGoal.getId() == testGoals.length - 1 && USE_GOAL_TESTS) {
                     finishScreen();
                     return;
                 }

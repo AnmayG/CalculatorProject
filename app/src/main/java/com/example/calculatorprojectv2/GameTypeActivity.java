@@ -1,24 +1,20 @@
 package com.example.calculatorprojectv2;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 
 public class GameTypeActivity extends AppCompatActivity {
 
-    private Button singlePlayer, collaborative, competitive, doublePowerup;
+    private Button singlePlayer, collaborative, doublePowerup;
     private ImageView treasureChest;
     private int freezeCount = 0;
     private int clickCount = 0;
     private int doubleCount = 0;
-    private Toast bluetoothNeeded;
     private int points;
     private boolean doublePointsEnabled = false;
     private final CharSequence btNeededText = "Please connect second device to play!";
@@ -41,13 +37,8 @@ public class GameTypeActivity extends AppCompatActivity {
             System.out.println("hadn't been powerups bought");
         }
 
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        bluetoothNeeded = Toast.makeText(context, btNeededText, duration);
-
         singlePlayer = findViewById(R.id.singlePlayerBtn);
         collaborative = findViewById(R.id.collaborativeBtn);
-        competitive = findViewById(R.id.competitiveBtn);
         doublePowerup = findViewById(R.id.double_points_powerup);
 
         if(doubleCount > 0){
@@ -58,8 +49,6 @@ public class GameTypeActivity extends AppCompatActivity {
 
         //change once bluetooth code implemented
         collaborative.setOnClickListener(view -> openNetworkActivity());
-
-        competitive.setOnClickListener(view -> bluetoothNeeded.show());
 
         treasureChest = findViewById(R.id.treasure_image);
         treasureChest.setOnClickListener(view ->{

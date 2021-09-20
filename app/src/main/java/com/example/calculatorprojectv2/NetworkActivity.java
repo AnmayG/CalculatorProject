@@ -1,8 +1,11 @@
 package com.example.calculatorprojectv2;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,7 +13,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.ParcelFileDescriptor;
 import android.os.Vibrator;
 import android.text.SpannableString;
 import android.text.format.DateFormat;
@@ -30,12 +32,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.core.view.ViewCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.nearby.connection.ConnectionInfo;
 import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.Strategy;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
@@ -127,28 +131,17 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** Starts discovery. Used in a postDelayed manor with {@link #mUiHandler}. */
     private final Runnable mDiscoverRunnable = () -> setState(State.DISCOVERING);
 
+    /** Gets the information from the other things */
+    private final ArrayList<ArrayList<String>> endpointIdToResponse =
+            new ArrayList<>(Arrays.asList(new ArrayList<>(), new ArrayList<>()));
+
+    /** ViewModel to communicate with fragment */
+    private NetworkViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network);
-
-        String points = getIntent().getStringExtra("Points");
-        String doubleEnabled = getIntent().getStringExtra("isDoublePointsEnabled");
-        String numDouble = getIntent().getStringExtra("NumDouble");
-        String numFreeze = getIntent().getStringExtra("NumFreeze");
-        String numClick = getIntent().getStringExtra("NumClick");
-
-        Bundle args = new Bundle();
-        args.putString("Points",points);
-        args.putString("isDoublePointsEnabled", doubleEnabled);
-        args.putString("NumDouble", numDouble);
-        args.putString("NumFreeze", numFreeze);
-        args.putString("NumClick", numClick);
-
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.calculator_fragment, CalculatorFragment.class, args)
-                .commit();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -165,13 +158,75 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
         bNext = findViewById(R.id.start_button);
         bNext.setOnClickListener(view -> {
-            findViewById(R.id.lobby_layout).setVisibility(View.GONE);
-            findViewById(R.id.calculator_fragment).setVisibility(View.VISIBLE);
-            findViewById(R.id.race_layout).setVisibility(View.VISIBLE);
-            addRaceBars();
+            String s = "GAME_STARTED";
+            send(Payload.fromBytes(s.getBytes(UTF_8)));
+            initializeCalculatorFragment();
         });
 
         mEndpointsLogView = findViewById(R.id.endpoints_log);
+
+        viewModel = new ViewModelProvider(this).get(NetworkViewModel.class);
+        viewModel.reset();
+        viewModel.getCurrentLevel().observe(this, level -> {
+            if(raceBars.size() != 0) {
+                raceBars.get(0).incrementProgressBy(10);
+            }
+            send(Payload.fromBytes(String.valueOf(level).getBytes(UTF_8)));
+            if(level > 10) {
+                String s = "WINNER IS: " + getName();
+                send(Payload.fromBytes(s.getBytes(UTF_8)));
+            }
+        });
+    }
+
+    public void initializeCalculatorFragment() {
+        findViewById(R.id.lobby_layout).setVisibility(View.GONE);
+
+        // Everything is set to 0 for multiplayer
+        Bundle args = new Bundle();
+        args.putString("Points", "0");
+        args.putString("isDoublePointsEnabled", "false");
+        args.putString("NumDouble", "0");
+        args.putString("NumFreeze", "0");
+        args.putString("NumClick", "0");
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.calculator_fragment, CalculatorFragment.class, args)
+                .commit();
+
+        findViewById(R.id.calculator_fragment).setVisibility(View.VISIBLE);
+        findViewById(R.id.race_layout).setVisibility(View.VISIBLE);
+        addRaceBars();
+    }
+
+    private ArrayList<ProgressBar> raceBars = new ArrayList<>();
+
+    public void addRaceBars() {
+        // add own race bar
+        ProgressBar progressBar = new ProgressBar(this, null,
+                android.R.attr.progressBarStyleHorizontal);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setId(ViewCompat.generateViewId());
+        raceBars.add(progressBar);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        RelativeLayout relativeLayout = findViewById(R.id.race_layout);
+        relativeLayout.addView(progressBar, params);
+
+        // Add one for each endpoint
+        for (Endpoint e : getConnectedEndpoints()) {
+            progressBar = new ProgressBar(this, null,
+                    android.R.attr.progressBarStyleHorizontal);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setId(ViewCompat.generateViewId());
+            raceBars.add(progressBar);
+            params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            relativeLayout.addView(progressBar, params);
+        }
     }
 
     @Override
@@ -194,7 +249,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     protected void onStop() {
         mSensorManager.unregisterListener(this);
 
-        //setState(State.UNKNOWN);
+        if(getConnectedEndpoints().isEmpty()) {
+            setState(State.UNKNOWN);
+        }
 
         mUiHandler.removeCallbacksAndMessages(null);
 
@@ -226,16 +283,22 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     protected void onConnectionInitiated(Endpoint endpoint, ConnectionInfo connectionInfo) {
         // A connection to another device has been initiated! We'll accept the connection immediately.
         acceptConnection(endpoint);
+        endpointIdToResponse.get(0).add(endpoint.getId());
+        endpointIdToResponse.get(1).add("");
+        String s = "CONNECTION SENT DUDE " +
+                endpointIdToResponse.get(0) + " " + endpointIdToResponse.get(1);
+        System.out.println(s);
+        send(Payload.fromBytes(s.getBytes(UTF_8)));
     }
 
     @Override
     protected void onEndpointConnected(Endpoint endpoint) {
-        removeEndpointFromLogs(endpoint.getName());
+        getConnectedEndpoints().add(endpoint);
+        updateEndpointLogs();
         Toast.makeText(
                 this, getString(R.string.toast_connected, endpoint.getName()), Toast.LENGTH_SHORT)
                 .show();
         setState(State.CONNECTED);
-        appendEndpointToLogs(endpoint.getName());
     }
 
     @Override
@@ -243,7 +306,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         Toast.makeText(
                 this, getString(R.string.toast_disconnected, endpoint.getName()), Toast.LENGTH_SHORT)
                 .show();
-        removeEndpointFromLogs(endpoint.getName());
+        getConnectedEndpoints().remove(endpoint);
+        updateEndpointLogs();
         // If we lost all our endpoints, then we should reset the state of our app and go back
         // to our initial state (discovering).
         if (getConnectedEndpoints().isEmpty()) {
@@ -506,35 +570,34 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** {@see ConnectionsActivity#onReceive(Endpoint, Payload)} */
     @Override
     protected void onReceive(Endpoint endpoint, Payload payload) {
-        if(payload.getType() == Payload.Type.STREAM) {
-
-        }
-        payload.getType();// payload.asStream().asInputStream())
+        String input = new String(payload.asBytes(), UTF_8);
+        int index = endpointIdToResponse.get(0).indexOf(endpoint.getId());
+        endpointIdToResponse.get(1).set(index, input);
+        logD("CONNECTION RECIEVED " + endpoint.getId());
+        interpretRecievedInfo(input, endpoint);
     }
 
-    /** Starts recording sound from the microphone and streaming it to all connected devices. */
-    private void startRecording() {
-        logV("startRecording()");
-        try {
-            ParcelFileDescriptor[] payloadPipe = ParcelFileDescriptor.createPipe();
-
-            // Send the first half of the payload (the read side) to Nearby Connections.
-            send(Payload.fromStream(payloadPipe[0]));
-
-            // Use the second half of the payload (the write side) in AudioRecorder
-        } catch (IOException e) {
-            logE("startRecording() failed", e);
-        }
-    }
-
-    public void addRaceBars() {
-        for (Endpoint e : getConnectedEndpoints()) {
-            ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
-            progressBar.setVisibility(View.VISIBLE);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT);
-            RelativeLayout relativeLayout = findViewById(R.id.race_layout);
-            relativeLayout.addView(progressBar);
+    public void interpretRecievedInfo(String input, Endpoint endpoint) {
+        if(input.equals("GAME_STARTED")) {
+            initializeCalculatorFragment();
+        } else if (input.matches("-?\\d+")) {
+            for (int i = 0; i < endpointIdToResponse.get(0).size(); i++) {
+                if (endpointIdToResponse.get(0).get(i).equals(endpoint.getId())) {
+                    endpointIdToResponse.get(1).set(i, input);
+                    raceBars.get(i).incrementProgressBy(10);
+                }
+            }
+        } else if (input.contains("WINNER IS:")) {
+            Intent intent = new Intent(this, EndScreen.class);
+            intent.putExtra("Points", viewModel.getPoints().getValue() + "");
+            intent.putExtra("PointsAdded", 0 + "");
+            intent.putExtra("NumFreeze", 0 + "");
+            intent.putExtra("NumDouble", 0 + "");
+            intent.putExtra("NumClick", 0 + "");
+            intent.putExtra("Winner", input);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), input, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -625,18 +688,13 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         mDebugLogView.append(msg);
     }
 
-    private void appendEndpointToLogs(CharSequence msg) {
-        mEndpointsLogView.append("\n");
-        mEndpointsLogView.append(msg);
-    }
-
-    private void removeEndpointFromLogs(CharSequence msg) {
-        String logText = mEndpointsLogView.getText().toString();
-        int index = logText.indexOf(msg.toString());
-        if(index != -1) {
-            System.out.println(index + " " + mEndpointsLogView.getText());
-            mEndpointsLogView.setText(logText.substring(0, index - 1));
+    private void updateEndpointLogs() {
+        StringBuilder logText = new StringBuilder().append("Connected Device IDs:\n");
+        for (Endpoint e:getConnectedEndpoints()) {
+            logText.append(e.getName()).append("\n");
         }
+        logText.trimToSize();
+        mEndpointsLogView.setText(logText.toString());
     }
 
     private static CharSequence toColor(String msg, int color) {
