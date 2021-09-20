@@ -3,7 +3,6 @@ package com.example.calculatorprojectv2;
 import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -129,6 +128,24 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network);
+
+        String points = getIntent().getStringExtra("Points");
+        String doubleEnabled = getIntent().getStringExtra("isDoublePointsEnabled");
+        String numDouble = getIntent().getStringExtra("NumDouble");
+        String numFreeze = getIntent().getStringExtra("NumFreeze");
+        String numClick = getIntent().getStringExtra("NumClick");
+
+        Bundle args = new Bundle();
+        args.putString("Points",points);
+        args.putString("isDoublePointsEnabled", doubleEnabled);
+        args.putString("NumDouble", numDouble);
+        args.putString("NumFreeze", numFreeze);
+        args.putString("NumClick", numClick);
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.calculator_fragment, CalculatorFragment.class, args)
+                .commit();
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -484,6 +501,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** {@see ConnectionsActivity#onReceive(Endpoint, Payload)} */
     @Override
     protected void onReceive(Endpoint endpoint, Payload payload) {
+        if(payload.getType() == Payload.Type.STREAM) {
+
+        }
         payload.getType();// payload.asStream().asInputStream())
     }
 
@@ -494,8 +514,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             ParcelFileDescriptor[] payloadPipe = ParcelFileDescriptor.createPipe();
 
             // Send the first half of the payload (the read side) to Nearby Connections.
-            // send(Payload.fromStream(payloadPipe[0]));
+            send(Payload.fromStream(payloadPipe[0]));
 
+            // Use the second half of the payload (the write side) in AudioRecorder
         } catch (IOException e) {
             logE("startRecording() failed", e);
         }

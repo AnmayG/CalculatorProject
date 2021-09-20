@@ -97,38 +97,6 @@ public class CalculatorFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BlankFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CalculatorFragment newInstance(String param1, String param2, String param3,
-                                            String param4, String param5) {
-        CalculatorFragment fragment = new CalculatorFragment();
-        Bundle args = new Bundle();
-        args.putString("Points", param1);
-        args.putString("isDoublePointsEnabled", param2);
-        args.putString("NumDouble", param3);
-        args.putString("NumFreeze", param4);
-        args.putString("NumClick", param5);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public void setArguments(String param1, String param2, String param3,
-                             String param4, String param5) {
-        points = Integer.parseInt(param1);
-        isDoublePointsEnabled = Boolean.parseBoolean(param2);
-        numDoublePowerup = Integer.parseInt(param3);
-        System.out.println("double points: " + isDoublePointsEnabled + " " + numDoublePowerup);
-        numFreezePowerup = Integer.parseInt(param4);
-        numClickPowerup = Integer.parseInt(param5);
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +175,7 @@ public class CalculatorFragment extends Fragment {
         progressBar.setMax(activeGoal.getTime());
         progressBar.setProgress(activeGoal.getTime());
         timer = new Timer();
+        seconds = 0;
         startTimer();
 
         return binding;
@@ -237,23 +206,21 @@ public class CalculatorFragment extends Fragment {
         });
     }
 
-    private final Runnable generate = () -> {
-        if(!timerPause){
-            progressBar.incrementProgressBy(-1 * TIMER_PERIOD);
-            seconds += TIMER_PERIOD;
-            if(seconds > activeGoal.getTime()) {
-                finishScreen();
-                timer.cancel();
-            }
-        }
-    };
+    private final Runnable generate = () -> progressBar.incrementProgressBy(-1 * TIMER_PERIOD);
 
     public void startTimer() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if(!timerPause){
+                    System.out.println(this + " " + timer + " " + seconds + " " + progressBar.getProgress() + " " + activeGoal.getTime() + " " + activeGoal);
                     decreaseProgress();
+                    seconds += TIMER_PERIOD;
+                    if(seconds > activeGoal.getTime()) {
+                        System.out.println("CANCELLED " + seconds + " " + activeGoal + " " + TIMER_PERIOD);
+                        finishScreen();
+                        timer.cancel();
+                    }
                 }
             }
         }, 1, TIMER_PERIOD);
@@ -261,6 +228,7 @@ public class CalculatorFragment extends Fragment {
 
     public void resetTimer() {
         timer.cancel();
+        timer.purge();
         timer = new Timer();
         progressBar.setMax(activeGoal.getTime());
         progressBar.setProgress(activeGoal.getTime());
@@ -273,10 +241,10 @@ public class CalculatorFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
         timer.cancel();
         timer.purge();
-        super.onDestroy();
+        super.onStop();
     }
 
     private void startGoalRuns(){
@@ -285,7 +253,6 @@ public class CalculatorFragment extends Fragment {
                 activeGoal = testGoals[0];
             } else {
                 activeGoal = new Goal(0);
-                System.out.println(activeGoal);
             }
         }
 
@@ -316,7 +283,7 @@ public class CalculatorFragment extends Fragment {
             }
         } else {
             activeGoal = new Goal(activeGoal.getId() + 1);
-            System.out.println(activeGoal);
+            // System.out.println(activeGoal);
         }
 
         clickCounter = activeGoal.getButtonLimit();
@@ -338,13 +305,11 @@ public class CalculatorFragment extends Fragment {
 
     private void finishScreen(){
         int pointsAdded = level * 10;
-        System.out.println("isDoublePointsEnabled = " + isDoublePointsEnabled);
         if(isDoublePointsEnabled){
             pointsAdded *= 2;
         }
         addScoreToDatabase(pointsAdded);
         points += pointsAdded;
-        System.out.println(points);
 
         Intent intent = new Intent(requireActivity(), EndScreen.class);
         intent.putExtra("Points", points + "");
@@ -408,7 +373,7 @@ public class CalculatorFragment extends Fragment {
 
     public void checkOverButtonLimit() {
         // FIXME: This is for testing, switch -100 to 0
-        if (clickCounter < -100) {
+        if (clickCounter < 0) {
             toast.show();
             displayLabel = "";
             display.setText(displayLabel);
@@ -475,7 +440,6 @@ public class CalculatorFragment extends Fragment {
             }
 
             if(!hasOperators) {
-                System.out.println(pastExpEval);
                 useOperator.show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
@@ -489,8 +453,8 @@ public class CalculatorFragment extends Fragment {
                     finishScreen();
                     return;
                 }
-                resetTimer();
                 runNextGoal();
+                resetTimer();
                 updateRVPastEquation(pastExpEval, resultS);
             } else {
                 // FIXME: This is changed so that the answer won't submit until they reach the result under the click limit
