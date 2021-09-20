@@ -20,7 +20,7 @@ public class Goal {
     private final int id;
 
     // TODO: Implement changing times, currently set at 10,000 seconds should be 10,000 milliseconds
-    private int time = 1000000000;
+    private int time = 10000;
 
     private int randLimit = 10000;
 
@@ -86,8 +86,6 @@ public class Goal {
     }
 
     public void createTargets() {
-        // TODO: Create an actual algorithm to randomly create numbers
-
         // Currently, the algorithm is extremely simplistic and does not have advanced calculations
         // It may be a good idea to incorporate high-level processes such as checking to make sure that the sum is 9999
         // Additionally, other operations need to be added manually with this design, which obviously isn't a good thing

@@ -3,7 +3,6 @@ package com.example.calculatorprojectv2;
 import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +19,10 @@ import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -130,6 +132,24 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_network);
 
+        String points = getIntent().getStringExtra("Points");
+        String doubleEnabled = getIntent().getStringExtra("isDoublePointsEnabled");
+        String numDouble = getIntent().getStringExtra("NumDouble");
+        String numFreeze = getIntent().getStringExtra("NumFreeze");
+        String numClick = getIntent().getStringExtra("NumClick");
+
+        Bundle args = new Bundle();
+        args.putString("Points",points);
+        args.putString("isDoublePointsEnabled", doubleEnabled);
+        args.putString("NumDouble", numDouble);
+        args.putString("NumFreeze", numFreeze);
+        args.putString("NumClick", numClick);
+
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.calculator_fragment, CalculatorFragment.class, args)
+                .commit();
+
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -147,6 +167,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         bNext.setOnClickListener(view -> {
             findViewById(R.id.lobby_layout).setVisibility(View.GONE);
             findViewById(R.id.calculator_fragment).setVisibility(View.VISIBLE);
+            findViewById(R.id.race_layout).setVisibility(View.VISIBLE);
+            addRaceBars();
         });
 
         mEndpointsLogView = findViewById(R.id.endpoints_log);
@@ -484,6 +506,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     /** {@see ConnectionsActivity#onReceive(Endpoint, Payload)} */
     @Override
     protected void onReceive(Endpoint endpoint, Payload payload) {
+        if(payload.getType() == Payload.Type.STREAM) {
+
+        }
         payload.getType();// payload.asStream().asInputStream())
     }
 
@@ -494,10 +519,22 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             ParcelFileDescriptor[] payloadPipe = ParcelFileDescriptor.createPipe();
 
             // Send the first half of the payload (the read side) to Nearby Connections.
-            // send(Payload.fromStream(payloadPipe[0]));
+            send(Payload.fromStream(payloadPipe[0]));
 
+            // Use the second half of the payload (the write side) in AudioRecorder
         } catch (IOException e) {
             logE("startRecording() failed", e);
+        }
+    }
+
+    public void addRaceBars() {
+        for (Endpoint e : getConnectedEndpoints()) {
+            ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleLarge);
+            progressBar.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.addRule(RelativeLayout.CENTER_IN_PARENT);
+            RelativeLayout relativeLayout = findViewById(R.id.race_layout);
+            relativeLayout.addView(progressBar);
         }
     }
 

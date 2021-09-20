@@ -59,6 +59,4 @@
     <string name="next_to_continue">Press Next to Continue</string>
     <string name="click_image_description">Extra Click</string>
     <string name="freeze_image_description">Freeze Timer</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
