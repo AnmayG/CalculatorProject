@@ -54,6 +54,7 @@ public class Goal {
 
     public Goal(int id) {
         this.id = id;
+        changeLim();
         createTargets();
     }
 
@@ -63,6 +64,21 @@ public class Goal {
         this.operationDesignation = operationDesignation;
         this.isLimited = isLimited;
         this.id = id;
+    }
+
+    public void changeLim(){
+        if(id < 5){
+            randLimit = 100;
+        }
+        else if(id < 10){
+            randLimit = 1000;
+        }
+        else if(id < 20){
+            randLimit = 10000;
+        }
+        else{
+            randLimit = 50000;
+        }
     }
 
     public void createTargets() {
