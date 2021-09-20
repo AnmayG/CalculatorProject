@@ -52,6 +52,10 @@ public class Goal {
         return time;
     }
 
+    public int getRandLimit() {
+        return randLimit;
+    }
+
     public Goal(int id) {
         this.id = id;
         changeLim();
@@ -111,10 +115,11 @@ public class Goal {
                 break;
             case 3:
                 // This is the case for multiplication
-                num1 = randInt(1, (int)Math.sqrt(randLimit));
-                num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
+                int result = randInt(1, randLimit - 1);
+                num2 = randInt(2, randLimit - 1);
+                num1 = result / num2;
                 testNums = new int[]{num1, num2};
-                targetNumber = num1 * num2;
+                targetNumber = result;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 4:
@@ -129,7 +134,7 @@ public class Goal {
             case 5:
                 // This is the case for exponents
                 // Works by finding a random number then taking a root from 2 - 5 of it
-                int result = randInt(1, randLimit - 1);
+                result = randInt(1, randLimit - 1);
                 num2 = randInt(2, 5);
                 num1 = nthRoot(result, num2);
                 testNums = new int[]{num1, num2};
