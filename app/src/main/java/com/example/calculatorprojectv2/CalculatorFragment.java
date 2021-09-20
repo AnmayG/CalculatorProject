@@ -449,7 +449,7 @@ public class CalculatorFragment extends Fragment {
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
-                if (activeGoal.getId() == testGoals.length - 1) {
+                if (USE_GOAL_TESTS && activeGoal.getId() == testGoals.length - 1) {
                     finishScreen();
                     return;
                 }
