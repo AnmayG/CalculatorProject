@@ -5,9 +5,9 @@
     android:keepScreenOn="true">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/calculator_fragmentl"
+        android:id="@+id/calculator_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.calculatorprojectv2.level_fragment" />
+        android:name="com.example.calculatorprojectv2.CalculatorFragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

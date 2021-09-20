@@ -92,7 +92,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:name="com.example.calculatorprojectv2.level_fragment"
+        android:name="com.example.calculatorprojectv2.CalculatorFragment"
         android:id="@+id/calculator_fragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

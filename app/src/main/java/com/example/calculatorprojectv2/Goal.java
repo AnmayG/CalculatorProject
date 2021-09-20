@@ -79,24 +79,24 @@ public class Goal {
         switch (operationDesignation) {
             case 1:
                 // This is the case for addition
-                int num1 = randInt(0, randLimit / 2 - 1);
-                int num2 = randInt(0, randLimit / 2 - 1);
+                int num1 = randInt(1, randLimit / 2 - 1);
+                int num2 = randInt(1, randLimit / 2 - 1);
                 testNums = new int[]{num1, num2};
                 targetNumber = num1 + num2;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 2:
                 // This is the case for subtraction
-                num1 = randInt(0, randLimit - 1);
-                num2 = randInt(0, randLimit - 1);
+                num1 = randInt(1, randLimit - 1);
+                num2 = randInt(1, randLimit - 1);
                 testNums = new int[]{num1, num2};
                 targetNumber = num1 - num2;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 3:
                 // This is the case for multiplication
-                num1 = randInt(0, (int)Math.sqrt(randLimit));
-                num2 = randInt(0, (int)Math.sqrt(randLimit) - 1);
+                num1 = randInt(1, (int)Math.sqrt(randLimit));
+                num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
                 testNums = new int[]{num1, num2};
                 targetNumber = num1 * num2;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
@@ -112,18 +112,49 @@ public class Goal {
                 break;
             case 5:
                 // This is the case for exponents
-                // Works by going backwards
-                num1 = randInt(1, randLimit - 1);
-                num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
-                testNums = new int[]{(int) Math.sqrt(num1), num1};
-                targetNumber = num2;
-                buttonLimit = String.valueOf((int) Math.pow(num1, num2)).length() + String.valueOf(num1).length() + 1;
+                // Works by finding a random number then taking a root from 2 - 5 of it
+                int result = randInt(1, randLimit - 1);
+                num2 = randInt(2, 5);
+                num1 = nthRoot(result, num2);
+                testNums = new int[]{num1, num2};
+                targetNumber = (int) Math.pow(num1, num2);
+                buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
         }
 
         isLimited = randInt(1, 1) == 1;
     }
 
+    // method returns Nth power of A https://www.geeksforgeeks.org/n-th-root-number/
+    static int nthRoot(int A, int N)
+    {
+        // initially guessing a random number between
+        // 0 and 9
+        double xPre = Math.random() % 10;
+
+        // smaller eps, denotes more accuracy
+        double eps = 0.001;
+
+        // initializing difference between two
+        // roots by INT_MAX
+        double delX = 2147483647;
+
+        // xK denotes current value of x
+        double xK = 0.0;
+
+        // loop until we reach desired accuracy
+        while (delX > eps)
+        {
+            // calculating current value from previous
+            // value by newton's method
+            xK = ((N - 1.0) * xPre +
+                    (double)A / Math.pow(xPre, N - 1)) / (double)N;
+            delX = Math.abs(xK - xPre);
+            xPre = xK;
+        }
+
+        return (int) (Math.round(xK*1000.0)/1000.0);
+    }
 
     /**
      * Generates a random number between min and max, inclusive.

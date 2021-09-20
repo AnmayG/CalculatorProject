@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private int stage = 0;
     public int points = 100;
 
-    private PowerUpViewModel viewModel;
-
     //TO FIX: points always reset to 100 when new main activity started
 
     private final String[] stageLabels = {
@@ -96,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         mainButton.setOnClickListener(view -> openSelectGameType());
 
         nextButton.setOnClickListener(view -> {
@@ -117,14 +113,12 @@ public class MainActivity extends AppCompatActivity {
             skipButton.setVisibility(View.GONE);
 
         });
-
-        viewModel = new ViewModelProvider(this).get(PowerUpViewModel.class);
     }
 
 
     public void openSelectGameType(){
-        viewModel.setPoints(points);
         Intent intent = new Intent(this, GameTypeActivity.class);
+        intent.putExtra("Points", points +"");
         startActivity(intent);
     }
 

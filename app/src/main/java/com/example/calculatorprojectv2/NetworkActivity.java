@@ -54,9 +54,6 @@ import java.util.Random;
  * advertising) so that more people can connect to us.
  */
 public class NetworkActivity extends ConnectionsActivity implements SensorEventListener {
-    /** If true, debug logs are shown on the device. */
-    private static final boolean DEBUG = true;
-
     /**
      * The connection strategy we'll use for Nearby Connections. In this case, we've decided on
      * P2P_STAR, which is a combination of Bluetooth Classic and WiFi Hotspots.
@@ -469,7 +466,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             logD("Device shaken");
             vibrate();
             setState(State.ADVERTISING);
-            postDelayed(mDiscoverRunnable, ADVERTISING_DURATION);
+            postDelayed(mDiscoverRunnable);
         }
     }
 
@@ -546,8 +543,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     }
 
     /** {@see Handler#postDelayed(Runnable, long)} */
-    protected void postDelayed(Runnable r, long duration) {
-        mUiHandler.postDelayed(r, duration);
+    protected void postDelayed(Runnable r) {
+        mUiHandler.postDelayed(r, NetworkActivity.ADVERTISING_DURATION);
     }
 
     /** {@see Handler#removeCallbacks(Runnable)} */

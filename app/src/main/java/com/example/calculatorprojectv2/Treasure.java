@@ -19,12 +19,14 @@ public class Treasure extends AppCompatActivity {
     private int freeze_quant = 0;
     private int double_quant = 0;
     private int click_quant = 0;
-    private PowerUpViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treasure);
+
+        String pts = getIntent().getStringExtra("Points");
+        points = Integer.parseInt(pts);
 
         freezePower = findViewById(R.id.freezeTimer);
         doublePower = findViewById(R.id.doublePoints);
@@ -32,12 +34,14 @@ public class Treasure extends AppCompatActivity {
         exit = findViewById(R.id.exitBtn);
         pointsLbl = findViewById(R.id.pointCount);
 
-        viewModel = new ViewModelProvider(this).get(PowerUpViewModel.class);
-        points = viewModel.getPoints();
-        freeze_quant = viewModel.getNumFreeze();
-        click_quant = viewModel.getNumClick();
-        double_quant = viewModel.getNumDouble();
-        System.out.println(freeze_quant + ", " + click_quant + ", " + double_quant);
+        try{
+            freeze_quant = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+            click_quant = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+            double_quant = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+            System.out.println(freeze_quant + ", " + click_quant + ", " + double_quant);
+        }catch(Exception e){
+            System.out.println("hadn't been powerups bought");
+        }
 
         clickBtns();
         updatePointsLabel();
@@ -74,12 +78,11 @@ public class Treasure extends AppCompatActivity {
         });
 
         exit.setOnClickListener(View -> {
-            viewModel.setPoints(points);
-            viewModel.setNumFreeze(freeze_quant);
-            viewModel.setNumDouble(double_quant);
-            viewModel.setNumClick(click_quant);
-            viewModel.setPrevScreen("Treasure");
             Intent intent = new Intent(this, GameTypeActivity.class);
+            intent.putExtra("Points", points +"");
+            intent.putExtra("NumFreeze", freeze_quant+"");
+            intent.putExtra("NumDouble", double_quant+"");
+            intent.putExtra("NumClick", click_quant+"");
             startActivity(intent);
         });
     }

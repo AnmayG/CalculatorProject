@@ -22,18 +22,24 @@ public class GameTypeActivity extends AppCompatActivity {
     private int points;
     private boolean doublePointsEnabled = false;
     private final CharSequence btNeededText = "Please connect second device to play!";
-    private PowerUpViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_type);
 
-        viewModel = new ViewModelProvider(this).get(PowerUpViewModel.class);
-        points = viewModel.getPoints();
-        freezeCount = viewModel.getNumFreeze();
-        clickCount = viewModel.getNumClick();
-        doubleCount = viewModel.getNumClick();
+        String pts = getIntent().getStringExtra("Points");
+        points = Integer.parseInt(pts);
+
+        try{
+            freezeCount = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
+            clickCount = Integer.parseInt(getIntent().getStringExtra("NumClick"));
+            doubleCount = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
+            doublePointsEnabled = Boolean.parseBoolean(getIntent().getStringExtra("isDoublePointsEnabled"));
+            System.out.println(freezeCount + ", " + clickCount + ", " + doubleCount + ", " + doublePointsEnabled);
+        }catch(Exception e){
+            System.out.println("hadn't been powerups bought");
+        }
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -59,9 +65,12 @@ public class GameTypeActivity extends AppCompatActivity {
         treasureChest.setOnClickListener(view ->{
             System.out.println("clicked treasure");
 
-            viewModel.setPrevScreen("GameType");
-
             Intent intent = new Intent(this, Treasure.class);
+            intent.putExtra("Points", points + "");
+            intent.putExtra("NumFreeze", freezeCount+"");
+            intent.putExtra("NumDouble", doubleCount+"");
+            intent.putExtra("NumClick", clickCount+"");
+            intent.putExtra("PrevScreen", "gameType");
             startActivity(intent);
         });
 
@@ -73,19 +82,26 @@ public class GameTypeActivity extends AppCompatActivity {
     }
 
     public void openLevelOne(){
-        viewModel.setPoints(points);
-        viewModel.setNumFreeze(freezeCount);
-        viewModel.setNumDouble(doubleCount);
-        viewModel.setNumClick(clickCount);
-        viewModel.setIsDoublePointsEnabled(doublePointsEnabled);
-        viewModel.setPrevScreen("GameType");
-
         Intent intent = new Intent(this, LevelOneActivity.class);
+        intent.putExtra("Points", points +"");
+        intent.putExtra("NumFreeze", freezeCount+"");
+        intent.putExtra("NumDouble", doubleCount+"");
+        intent.putExtra("NumClick", clickCount+"");
+        intent.putExtra("isDoublePointsEnabled", doublePointsEnabled + "");
+        System.out.println("doublePointsEnabled = " + doublePointsEnabled);
+        intent.putExtra("isNetwork", false);
         startActivity(intent);
     }
 
     public void openNetworkActivity(){
         Intent intent = new Intent(this, NetworkActivity.class);
+        intent.putExtra("Points", points +"");
+        intent.putExtra("NumFreeze", freezeCount+"");
+        intent.putExtra("NumDouble", doubleCount+"");
+        intent.putExtra("NumClick", clickCount+"");
+        intent.putExtra("isDoublePointsEnabled", doublePointsEnabled + "");
+        System.out.println("doublePointsEnabled = " + doublePointsEnabled);
+        intent.putExtra("isNetwork", false);
         startActivity(intent);
     }
 }

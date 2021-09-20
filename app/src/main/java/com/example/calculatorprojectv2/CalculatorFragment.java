@@ -37,7 +37,7 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class level_fragment extends Fragment {
+public class CalculatorFragment extends Fragment {
 
     TextView display, goalDisplay, buttonClickCounter, levelDisplay, operationDisplay; //add a TextView for the number that the use has to reach
     Button bAdd, bSub, bMulti, bDiv, bPwr, bClear, bDelete, bEnter;
@@ -91,16 +91,55 @@ public class level_fragment extends Fragment {
     private long seconds = 0;
     private static final int TIMER_PERIOD = 20;
 
-    private PowerUpViewModel viewModel;
     private View binding;
 
-    public level_fragment() {
+    public CalculatorFragment() {
         // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment BlankFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static CalculatorFragment newInstance(String param1, String param2, String param3,
+                                            String param4, String param5) {
+        CalculatorFragment fragment = new CalculatorFragment();
+        Bundle args = new Bundle();
+        args.putString("Points", param1);
+        args.putString("isDoublePointsEnabled", param2);
+        args.putString("NumDouble", param3);
+        args.putString("NumFreeze", param4);
+        args.putString("NumClick", param5);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public void setArguments(String param1, String param2, String param3,
+                             String param4, String param5) {
+        points = Integer.parseInt(param1);
+        isDoublePointsEnabled = Boolean.parseBoolean(param2);
+        numDoublePowerup = Integer.parseInt(param3);
+        System.out.println("double points: " + isDoublePointsEnabled + " " + numDoublePowerup);
+        numFreezePowerup = Integer.parseInt(param4);
+        numClickPowerup = Integer.parseInt(param5);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            points = Integer.parseInt(getArguments().getString("Points"));
+            isDoublePointsEnabled = Boolean.parseBoolean(getArguments().getString("isDoublePointsEnabled"));
+            numDoublePowerup = Integer.parseInt(getArguments().getString("NumDouble"));
+            System.out.println("double points: " + isDoublePointsEnabled + " " + numDoublePowerup);
+            numFreezePowerup = Integer.parseInt(getArguments().getString("NumFreeze"));
+            numClickPowerup = Integer.parseInt(getArguments().getString("NumClick"));
+        }
     }
 
     @Override
@@ -108,15 +147,6 @@ public class level_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = inflater.inflate(R.layout.fragment_level, container, false);
-
-        viewModel = new ViewModelProvider(requireActivity()).get(PowerUpViewModel.class);
-
-        points = viewModel.getPoints();
-        isDoublePointsEnabled = viewModel.isDoublePointsEnabled();
-        System.out.println("double points: " + isDoublePointsEnabled);
-        numDoublePowerup = viewModel.getNumDouble();
-        numFreezePowerup = viewModel.getNumFreeze();
-        numClickPowerup = viewModel.getNumClick();
 
         for (int i = 0; i <= 9; i++) {
             int id = getResources().getIdentifier("button_" + i , "id", requireActivity().getPackageName());
@@ -242,12 +272,20 @@ public class level_fragment extends Fragment {
         requireActivity().runOnUiThread(generate);
     }
 
+    @Override
+    public void onDestroy() {
+        timer.cancel();
+        timer.purge();
+        super.onDestroy();
+    }
+
     private void startGoalRuns(){
         if(activeGoal == null) {
             if(USE_GOAL_TESTS) {
                 activeGoal = testGoals[0];
             } else {
                 activeGoal = new Goal(0);
+                System.out.println(activeGoal);
             }
         }
 
@@ -278,6 +316,7 @@ public class level_fragment extends Fragment {
             }
         } else {
             activeGoal = new Goal(activeGoal.getId() + 1);
+            System.out.println(activeGoal);
         }
 
         clickCounter = activeGoal.getButtonLimit();
@@ -299,6 +338,7 @@ public class level_fragment extends Fragment {
 
     private void finishScreen(){
         int pointsAdded = level * 10;
+        System.out.println("isDoublePointsEnabled = " + isDoublePointsEnabled);
         if(isDoublePointsEnabled){
             pointsAdded *= 2;
         }
@@ -306,14 +346,12 @@ public class level_fragment extends Fragment {
         points += pointsAdded;
         System.out.println(points);
 
-        viewModel.setPointsAdded(pointsAdded);
-        viewModel.setPoints(points);
-        viewModel.setNumFreeze(numFreezePowerup);
-        viewModel.setNumDouble(numDoublePowerup);
-        viewModel.setNumClick(numClickPowerup);
-        viewModel.setPrevScreen("LevelOneActivity");
-
         Intent intent = new Intent(requireActivity(), EndScreen.class);
+        intent.putExtra("Points", points + "");
+        intent.putExtra("PointsAdded", pointsAdded + "");
+        intent.putExtra("NumFreeze", numFreezePowerup + "");
+        intent.putExtra("NumDouble", numDoublePowerup + "");
+        intent.putExtra("NumClick", numClickPowerup + "");
         startActivity(intent);
     }
 
@@ -423,6 +461,19 @@ public class level_fragment extends Fragment {
                 resultS = String.valueOf(result);
             }
 
+            // Checks for if there's a beginning (and as such invalid) operation
+            if(isOperation(String.valueOf(pastExpEval.charAt(0)))) {
+                if (!String.valueOf(pastExpEval.charAt(0)).equals("-")) {
+                    Toast.makeText(requireActivity().getApplicationContext(),
+                            "Invalid operator", Toast.LENGTH_SHORT).show();
+                    displayLabel = "";
+                    clickCounter = activeGoal.getButtonLimit();
+                    display.setText(displayLabel);
+                    buttonClickCounter.setText(String.format(Locale.getDefault(), "Button Clicks Left: %d", clickCounter));
+                    return;
+                }
+            }
+
             if(!hasOperators) {
                 System.out.println(pastExpEval);
                 useOperator.show();
@@ -430,7 +481,7 @@ public class level_fragment extends Fragment {
                 clickCounter = activeGoal.getButtonLimit();
             } else if(zeroChange(pastExpEval, resultS)) {
                 Toast.makeText(requireActivity().getApplicationContext(),
-                        "Try to come up with a cooler expression!", Toast.LENGTH_SHORT).show();
+                        "You can't use the result in the equation!", Toast.LENGTH_SHORT).show();
                 displayLabel = "";
                 clickCounter = activeGoal.getButtonLimit();
             } else if (result == activeGoal.getTargetNumber()) {
@@ -499,7 +550,7 @@ public class level_fragment extends Fragment {
         for (int i = 0; i < input.length(); i++) {
             String character = String.valueOf(input.charAt(i));
             boolean isOperator = false;
-            if(hasOperation(character)) {
+            if(hasOperation(character) && !(character.equals("-") && i == 0)) {
                 isOperator = true;
                 entries.add("");
                 entryIndex++;
@@ -514,7 +565,7 @@ public class level_fragment extends Fragment {
         return entries;
     }
 
-    private boolean isOperation(String i) {
+    private static boolean isOperation(String i) {
         for (String s:OPERATIONS_DISPLAY) {
             if(i.equals(s)) return true;
         }
