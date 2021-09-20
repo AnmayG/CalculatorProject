@@ -78,7 +78,14 @@ public class Treasure extends AppCompatActivity {
         });
 
         exit.setOnClickListener(View -> {
-            Intent intent = new Intent(this, GameTypeActivity.class);
+            Intent intent;
+            if(getIntent().getStringExtra("PrevScreen").equals("EndScreen")){
+                intent = new Intent(this, EndScreen.class);
+                intent.putExtra("PointsAdded", getIntent().getStringExtra("PointsAdded"));
+            }
+            else{
+                intent = new Intent(this, GameTypeActivity.class);
+            }
             intent.putExtra("Points", points +"");
             intent.putExtra("NumFreeze", freeze_quant+"");
             intent.putExtra("NumDouble", double_quant+"");
