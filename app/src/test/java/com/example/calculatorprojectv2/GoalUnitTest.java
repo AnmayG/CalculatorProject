@@ -23,12 +23,13 @@ public class GoalUnitTest {
 
     @Test
     public void goal_buttonLimit_isWorking() {
-        for (int i = 0; i < 10000; i++) {
-            Goal q = new Goal(i);
+        Goal q = new Goal(0);
+        for (int i = 0; i < q.getRandLimit(); i++) {
+            q = new Goal(i);
             int[] testNums = q.getTestNums();
             // Checks to see if the length of each test number plus the length of the other test number plus one is the button limit
             // This is good for everything else
-            System.out.println("BUTTON_LIMIT \n" + q.toString() + "\n" + testNums[0] + " " + testNums[1] + " " + q.getButtonLimit());
+            // System.out.println("BUTTON_LIMIT \n" + q.toString() + "\n" + testNums[0] + " " + testNums[1] + " " + q.getButtonLimit());
             assertEquals(String.valueOf(testNums[0]).length() + String.valueOf(testNums[1]).length() + 1,
                     q.getButtonLimit());
         }
@@ -36,9 +37,10 @@ public class GoalUnitTest {
 
     @Test
     public void goal_targetNumber_isWorking() {
+        Goal q = new Goal(0);
         double precision = 0.01;
-        for (int i = 0; i < 10000; i++) {
-            Goal q = new Goal(i);
+        for (int i = 0; i < q.getRandLimit(); i++) {
+            q = new Goal(i);
             int[] testNums = q.getTestNums();
             switch (q.getOperationDesignation()) {
                 case 1:
@@ -59,21 +61,23 @@ public class GoalUnitTest {
 
     @Test
     public void goal_operationDesignation_isWorking() {
-        for (int i = 0; i < 10000; i++) {
-            Goal q = new Goal(i);
+        Goal q = new Goal(0);
+        for (int i = 0; i < q.getRandLimit(); i++) {
+            q = new Goal(i);
             assertTrue(1 <= q.getOperationDesignation() && q.getOperationDesignation() <= Goal.NUMBER_OPERATIONS);
         }
     }
 
     @Test
     public void goal_numberLimit_isBelow() {
-        for (int i = 0; i < 10000; i++) {
-            Goal q = new Goal(i);
+        Goal q = new Goal(0);
+        for (int i = 0; i < q.getRandLimit(); i++) {
+            q = new Goal(i);
             int[] testNums = q.getTestNums();
-            System.out.println("NUMBER_LIMIT \n" + q.toString() + "\n" + testNums[0] + " " + testNums[1] + " " + q.getButtonLimit());
-            assertTrue(testNums[0] < 10000);
-            assertTrue(testNums[1] < 10000);
-            assertTrue(q.getTargetNumber() < 10000);
+            // System.out.println("NUMBER_LIMIT \n" + q.toString() + "\n" + testNums[0] + " " + testNums[1] + " " + q.getButtonLimit());
+            assertTrue(testNums[0] < q.getRandLimit());
+            assertTrue(testNums[1] < q.getRandLimit());
+            assertTrue(q.getTargetNumber() < q.getRandLimit());
         }
     }
 }

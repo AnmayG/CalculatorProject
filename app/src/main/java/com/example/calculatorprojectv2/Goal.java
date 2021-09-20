@@ -52,6 +52,10 @@ public class Goal {
         return time;
     }
 
+    public int getRandLimit() {
+        return randLimit;
+    }
+
     public Goal(int id) {
         this.id = id;
         changeLim();
@@ -114,7 +118,7 @@ public class Goal {
                 num1 = randInt(1, (int)Math.sqrt(randLimit));
                 num2 = randInt(1, (int)Math.sqrt(randLimit) - 1);
                 testNums = new int[]{num1, num2};
-                targetNumber = num1 * num2;
+                targetNumber = num1*num2;
                 buttonLimit = String.valueOf(num1).length() + String.valueOf(num2).length() + 1;
                 break;
             case 4:
