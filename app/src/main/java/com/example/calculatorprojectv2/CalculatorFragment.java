@@ -53,6 +53,7 @@ public class CalculatorFragment extends Fragment {
     private int numFreezePowerup = 0;
     private int numClickPowerup = 0;
     private boolean timerPause = false;
+    private boolean useNetworkEndFragment = false;
 
     private int points = 0;
 
@@ -71,13 +72,6 @@ public class CalculatorFragment extends Fragment {
     private final CharSequence sillyGoose = "Use the right operator you silly goose :)";
     private Toast toast;
     private Toast fgd;
-    /*
-        This is old stuff
-        private final CharSequence textOver = "Goal Overshot!";
-        private final CharSequence textUnder = "Goal Undershot!";
-        private Toast underShot;
-        private Toast overShot;
-     */
     private final CharSequence textUseOperator = "Remember to use an operator!";
     private Toast useOperator;
 
@@ -109,6 +103,7 @@ public class CalculatorFragment extends Fragment {
             System.out.println("double points: " + isDoublePointsEnabled + " " + numDoublePowerup);
             numFreezePowerup = Integer.parseInt(getArguments().getString("NumFreeze"));
             numClickPowerup = Integer.parseInt(getArguments().getString("NumClick"));
+            useNetworkEndFragment = Boolean.parseBoolean(getArguments().getString("useNetworkEndFragment"));
         }
     }
 
@@ -217,11 +212,11 @@ public class CalculatorFragment extends Fragment {
             @Override
             public void run() {
                 if(!timerPause){
-                    System.out.println(this + " " + timer + " " + seconds + " " + progressBar.getProgress() + " " + activeGoal.getTime() + " " + activeGoal);
+                    //System.out.println(this + " " + timer + " " + seconds + " " + progressBar.getProgress() + " " + activeGoal.getTime() + " " + activeGoal);
                     decreaseProgress();
                     seconds += TIMER_PERIOD;
                     if(seconds > activeGoal.getTime()) {
-                        System.out.println("CANCELLED " + seconds + " " + activeGoal + " " + TIMER_PERIOD);
+                        //System.out.println("CANCELLED " + seconds + " " + activeGoal + " " + TIMER_PERIOD);
                         finishScreen();
                         timer.cancel();
                     }
@@ -298,6 +293,11 @@ public class CalculatorFragment extends Fragment {
         level++;
         levelDisplay.setText(String.format(Locale.getDefault(), "Level: %d", level));
 
+        if(useNetworkEndFragment) {
+            viewModel.setCurrentLevel(level);
+            System.out.println("LEVEL" + viewModel.getCurrentLevel().getValue());
+        }
+
         String operationLimit = "Operation Limit: ";
         if(activeGoal.isLimited()) {
             operationLimit += OPERATIONS_DISPLAY[activeGoal.getOperationDesignation() - 1];
@@ -307,7 +307,7 @@ public class CalculatorFragment extends Fragment {
         operationDisplay.setText(operationLimit);
     }
 
-    private void finishScreen(){
+    private void finishScreen() {
         int pointsAdded = level * 10;
         if(isDoublePointsEnabled){
             pointsAdded *= 2;
@@ -315,6 +315,11 @@ public class CalculatorFragment extends Fragment {
         addScoreToDatabase(pointsAdded);
         points += pointsAdded;
         requireActivity().runOnUiThread(() -> viewModel.setPoints(points));
+
+        if(useNetworkEndFragment) {
+            ((NetworkActivity) requireActivity()).switchToEndFragment(points);
+            return;
+        }
 
         Intent intent = new Intent(requireActivity(), EndScreen.class);
         intent.putExtra("Points", points + "");

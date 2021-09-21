@@ -7,20 +7,6 @@
     android:background="#000000"
     tools:context=".EndScreen">
 
-    <Button
-        android:id="@+id/double_points_powerup2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/main_custom_button"
-        android:text="@string/use_double_points_powerup"
-        android:textColor="#F4C265"
-        android:textSize="12sp"
-        android:visibility="invisible"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintEnd_toEndOf="@+id/singlePlayerBtn"
-        app:layout_constraintTop_toBottomOf="@+id/singlePlayerBtn" />
-
     <TextView
         android:id="@+id/gameScoreLabel"
         android:layout_width="wrap_content"
@@ -29,14 +15,13 @@
         android:fontFamily="serif-monospace"
         android:gravity="center_horizontal"
         android:shadowColor="@color/white"
-        android:text="@string/game_score_txy"
+        android:text="@string/your_score"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/leaderLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/highScoreLabel" />
 
     <TextView
         android:id="@+id/leaderLabel"
@@ -46,7 +31,7 @@
         android:fontFamily="serif-monospace"
         android:gravity="center_horizontal"
         android:shadowColor="@color/white"
-        android:text="@string/game_ended"
+        android:text="@string/winner"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="60sp"
@@ -54,15 +39,6 @@
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/treasure_image"
-        android:layout_width="93dp"
-        android:layout_height="93dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription"
-        app:srcCompat="@drawable/treasure_icon" />
 
     <TextView
         android:id="@+id/highScoreLabel"
@@ -78,7 +54,7 @@
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gameScoreLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/leaderLabel" />
 
     <Button
         android:id="@+id/singlePlayerBtn"
@@ -92,6 +68,6 @@
         android:textSize="25sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/highScoreLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/gameScoreLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

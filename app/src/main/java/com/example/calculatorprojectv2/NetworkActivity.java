@@ -23,8 +23,8 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,9 +171,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             if(raceBars.size() != 0) {
                 raceBars.get(0).incrementProgressBy(10);
             }
-            send(Payload.fromBytes(String.valueOf(level).getBytes(UTF_8)));
+            send(Payload.fromBytes(("LEVEL:" + level).getBytes(UTF_8)));
             if(level > 10) {
-                String s = "WINNER IS: " + getName();
+                String s = "WINNER IS:" + getName();
                 send(Payload.fromBytes(s.getBytes(UTF_8)));
             }
         });
@@ -189,6 +189,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         args.putString("NumDouble", "0");
         args.putString("NumFreeze", "0");
         args.putString("NumClick", "0");
+        args.putString("useNetworkEndFragment", "true");
 
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
@@ -200,32 +201,31 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         addRaceBars();
     }
 
+    public void switchToEndFragment(int points) {
+        Bundle args = new Bundle();
+        args.putString("myPoints", points + "");
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.calculator_fragment, NetworkEndFragment.class, args)
+                .commit();
+    }
+
     private ArrayList<ProgressBar> raceBars = new ArrayList<>();
 
     public void addRaceBars() {
-        // add own race bar
-        ProgressBar progressBar = new ProgressBar(this, null,
-                android.R.attr.progressBarStyleHorizontal);
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setId(ViewCompat.generateViewId());
-        raceBars.add(progressBar);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT);
-        RelativeLayout relativeLayout = findViewById(R.id.race_layout);
-        relativeLayout.addView(progressBar, params);
-
-        // Add one for each endpoint
-        for (Endpoint e : getConnectedEndpoints()) {
-            progressBar = new ProgressBar(this, null,
+        // Add one for each endpoint and one for your own
+        for (int i = -1; i < getConnectedEndpoints().size(); i++) {
+            ProgressBar progressBar = new ProgressBar(this, null,
                     android.R.attr.progressBarStyleHorizontal);
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setId(ViewCompat.generateViewId());
+            progressBar.setScaleY(8);
             raceBars.add(progressBar);
-            params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.CENTER_IN_PARENT);
-            relativeLayout.addView(progressBar, params);
+            params.setMargins(0, 8, 0, 8);
+            LinearLayout linearLayout = findViewById(R.id.race_layout);
+            linearLayout.addView(progressBar, params);
         }
     }
 
@@ -276,6 +276,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         // We found an advertiser!
         if (!isConnecting()) {
             connectToEndpoint(endpoint);
+            send(Payload.fromBytes(("ID:" + endpoint.getId()).getBytes(UTF_8)));
         }
     }
 
@@ -580,21 +581,29 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     public void interpretRecievedInfo(String input, Endpoint endpoint) {
         if(input.equals("GAME_STARTED")) {
             initializeCalculatorFragment();
-        } else if (input.matches("-?\\d+")) {
+        } else if (input.contains("LEVEL:")) {
+            String input2 = input.substring(input.indexOf(":") + 1);
             for (int i = 0; i < endpointIdToResponse.get(0).size(); i++) {
                 if (endpointIdToResponse.get(0).get(i).equals(endpoint.getId())) {
-                    endpointIdToResponse.get(1).set(i, input);
+                    endpointIdToResponse.get(1).set(i, input2);
                     raceBars.get(i).incrementProgressBy(10);
                 }
             }
+            viewModel.setCurrentLevel(Integer.parseInt(input2));
+        } else if (input.contains("ID:")) {
+            String input2 = input.substring(input.indexOf(":") + 1);
+            connectToEndpoint(input2);
         } else if (input.contains("WINNER IS:")) {
+            String input2 = input.substring(input.indexOf(":") + 1);
             Intent intent = new Intent(this, EndScreen.class);
-            intent.putExtra("Points", viewModel.getPoints().getValue() + "");
+            intent.putExtra("Points",
+                    String.valueOf(viewModel.getPoints().getValue() != null ?
+                                   viewModel.getPoints().getValue() : 0));
             intent.putExtra("PointsAdded", 0 + "");
             intent.putExtra("NumFreeze", 0 + "");
             intent.putExtra("NumDouble", 0 + "");
             intent.putExtra("NumClick", 0 + "");
-            intent.putExtra("Winner", input);
+            intent.putExtra("Winner", input2);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), input, Toast.LENGTH_SHORT).show();

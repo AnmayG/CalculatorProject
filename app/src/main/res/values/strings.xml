@@ -59,4 +59,6 @@
     <string name="next_to_continue">Press Next to Continue</string>
     <string name="click_image_description">Extra Click</string>
     <string name="freeze_image_description">Freeze Timer</string>
+    <string name="winner">Current Leader:</string>
+    <string name="your_score">Your Score:</string>
 </resources>

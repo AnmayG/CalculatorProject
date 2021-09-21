@@ -35,7 +35,6 @@ public class EndScreen extends AppCompatActivity {
         setContentView(R.layout.activity_end_screen);
 
         doubleScorePowerupQuestion = findViewById(R.id.double_points_powerup2);
-        doubleScorePowerupQuestion = findViewById(R.id.double_points_powerup2);
         numDoublePowerup = Integer.parseInt(getIntent().getStringExtra("NumDouble"));
         if(numDoublePowerup > 0){
             System.out.println("numdouble powerup: " + numDoublePowerup);

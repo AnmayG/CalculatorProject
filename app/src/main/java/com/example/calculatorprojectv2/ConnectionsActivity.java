@@ -404,6 +404,30 @@ public abstract class ConnectionsActivity extends AppCompatActivity {
                         });
     }
 
+    /**
+     * Sends a connection request to the endpoint. Either {@link #onConnectionInitiated(Endpoint,
+     * ConnectionInfo)} or {@link #onConnectionFailed(Endpoint)} will be called once we've found out
+     * if we successfully reached the device.
+     */
+    protected void connectToEndpoint(final String endpointId) {
+        logV("Sending a connection request to endpoint " + endpointId);
+        // Mark ourselves as connecting so we don't connect multiple times
+        mIsConnecting = true;
+
+        // Ask to connect
+        mConnectionsClient
+                .requestConnection(getName(), endpointId, mConnectionLifecycleCallback)
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                logW("requestConnection() failed.", e);
+                                mIsConnecting = false;
+                                onConnectionFailed(new Endpoint("-1", "ID Connection Failed"));
+                            }
+                        });
+    }
+
     /** Returns {@code true} if we're currently attempting to connect to another device. */
     protected final boolean isConnecting() {
         return mIsConnecting;
@@ -587,6 +611,7 @@ public abstract class ConnectionsActivity extends AppCompatActivity {
             return id.hashCode();
         }
 
+        @NonNull
         @Override
         public String toString() {
             return String.format("Endpoint{id=%s, name=%s}", id, name);
