@@ -25,8 +25,7 @@
     <string name="operation_limit">Operation Limit:</string>
     <string name="pick_a_game_mode">Pick a Game Mode:</string>
     <string name="single_player_mode">Single Player Mode</string>
-    <string name="competitive_mode">Competitive Mode</string>
-    <string name="collaborative_mode">Collaborative Mode</string>
+    <string name="collaborative_mode">Competitive Mode</string>
 
     <!-- This is just copy-pasted from the repo -->
     <string name="error_missing_permissions">Cannot start without required permissions</string>
