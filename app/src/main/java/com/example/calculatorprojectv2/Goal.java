@@ -20,7 +20,7 @@ public class Goal {
     private final int id;
 
     // TODO: Implement changing times, currently set at 10,000 seconds should be 10,000 milliseconds
-    private int time = 10000;
+    private int time = 15000;
 
     private int randLimit = 10000;
 
@@ -141,7 +141,7 @@ public class Goal {
                 break;
         }
 
-        isLimited = randInt(1, 1) == 1;
+        isLimited = randInt(1, 5) == 1;
     }
 
     // method returns Nth power of A https://www.geeksforgeeks.org/n-th-root-number/

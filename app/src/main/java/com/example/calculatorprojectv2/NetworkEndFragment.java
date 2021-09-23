@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -49,8 +51,9 @@ public class NetworkEndFragment extends Fragment {
 
         initializeTextViews();
 
-        viewModel.getCurrentLevel().observe(requireActivity(), level -> {
-            String s = "High Score: " + level*10;
+        viewModel.getCompanionLevels().observe(requireActivity(), level -> {
+            int maxLevel = max(level);
+            String s = "High Score: " + maxLevel*10;
             highScoreTxt.setText(s);
         });
 
@@ -97,8 +100,8 @@ public class NetworkEndFragment extends Fragment {
             currentScoreTxt.setText(s);
         }
 
-        if(viewModel.getCurrentLevel().getValue()!=null) {
-            String s = "High Score: " + viewModel.getCurrentLevel().getValue() * 10;
+        if(viewModel.getCompanionLevels().getValue()!=null) {
+            String s = "High Score: " + max(viewModel.getCompanionLevels().getValue()) * 10;
             highScoreTxt.setText(s);
         }
 
@@ -106,5 +109,13 @@ public class NetworkEndFragment extends Fragment {
             String s = "Current Leader: " + viewModel.getLeader().getValue();
             currentScoreTxt.setText(s);
         }
+    }
+
+    public int max(ArrayList<Integer> a) {
+        int max = a.get(0);
+        for (int i = 0; i < a.size(); i++) {
+            if(a.get(i) > max) max = a.get(i);
+        }
+        return max;
     }
 }

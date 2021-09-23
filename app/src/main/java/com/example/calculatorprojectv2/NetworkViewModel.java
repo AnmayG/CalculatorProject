@@ -50,11 +50,30 @@ public class NetworkViewModel extends ViewModel {
     }
 
     public void setCompanionLevels(int level, int index) {
+        equalSizeArray();
         Objects.requireNonNull(companionLevels.getValue()).set(index, level);
+        int max = 0;
+        for (int i = 0; i < companionLevels.getValue().size(); i++) {
+            if(companionLevels.getValue().get(i) > companionLevels.getValue().get(max)) {
+                max = i;
+            }
+        }
+        setLeader(Objects.requireNonNull(companionNames.getValue()).get(max));
+    }
+
+    public void equalSizeArray() {
+        while(Objects.requireNonNull(companionLevels.getValue()).size() <
+                Objects.requireNonNull(companionNames.getValue()).size()) {
+            companionLevels.getValue().add(0);
+        }
     }
 
     public void setCompanionLevels(int level, String name) {
         int index = Objects.requireNonNull(companionNames.getValue()).indexOf(name);
+        if(index == -1) {
+            companionNames.getValue().add(name);
+            index = companionNames.getValue().size() - 1;
+        }
         setCompanionLevels(level, index);
     }
 

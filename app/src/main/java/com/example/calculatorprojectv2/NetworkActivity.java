@@ -5,7 +5,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import android.Manifest;
 import android.animation.Animator;
 import android.content.Context;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -174,8 +173,17 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             send(Payload.fromBytes(("LEVEL:" + level).getBytes(UTF_8)));
             if(level > 10) {
                 String s = "WINNER IS:" + getName();
+                switchToEndFragment();
                 send(Payload.fromBytes(s.getBytes(UTF_8)));
             }
+        });
+
+        viewModel.getCompanionLevels().observe(this, levels -> {
+            for (int i = 0; i < levels.size(); i++) {
+                raceBars.get(i).setProgress(10 * levels.get(i));
+                endpointIdToResponse.get(1).set(i, levels.get(i) + "");
+            }
+            System.out.println(endpointIdToResponse.get(0) + "\n" +  endpointIdToResponse.get(1));
         });
     }
 
@@ -201,9 +209,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         addRaceBars();
     }
 
-    public void switchToEndFragment(int points) {
+    public void switchToEndFragment() {
         Bundle args = new Bundle();
-        args.putString("myPoints", points + "");
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.calculator_fragment, NetworkEndFragment.class, args)
@@ -286,9 +293,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         acceptConnection(endpoint);
         endpointIdToResponse.get(0).add(endpoint.getId());
         endpointIdToResponse.get(1).add("");
-        String s = "CONNECTION SENT DUDE " +
-                endpointIdToResponse.get(0) + " " + endpointIdToResponse.get(1);
+        String s = "ID: " + endpointIdToResponse.get(0).get(endpointIdToResponse.get(0).size() - 1);
         System.out.println(s);
+
         send(Payload.fromBytes(s.getBytes(UTF_8)));
     }
 
@@ -589,22 +596,15 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
                     raceBars.get(i).incrementProgressBy(10);
                 }
             }
-            viewModel.setCurrentLevel(Integer.parseInt(input2));
+            // viewModel.setCurrentLevel(Integer.parseInt(input2));
+            System.out.println(input2 + " " + endpoint.getName());
+            viewModel.setCompanionLevels(Integer.parseInt(input2), endpoint.getName());
         } else if (input.contains("ID:")) {
             String input2 = input.substring(input.indexOf(":") + 1);
             connectToEndpoint(input2);
         } else if (input.contains("WINNER IS:")) {
-            String input2 = input.substring(input.indexOf(":") + 1);
-            Intent intent = new Intent(this, EndScreen.class);
-            intent.putExtra("Points",
-                    String.valueOf(viewModel.getPoints().getValue() != null ?
-                                   viewModel.getPoints().getValue() : 0));
-            intent.putExtra("PointsAdded", 0 + "");
-            intent.putExtra("NumFreeze", 0 + "");
-            intent.putExtra("NumDouble", 0 + "");
-            intent.putExtra("NumClick", 0 + "");
-            intent.putExtra("Winner", input2);
-            startActivity(intent);
+            // String input2 = input.substring(input.indexOf(":") + 1);
+            switchToEndFragment();
         } else {
             Toast.makeText(getApplicationContext(), input, Toast.LENGTH_SHORT).show();
         }

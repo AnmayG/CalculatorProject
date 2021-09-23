@@ -295,7 +295,7 @@ public class CalculatorFragment extends Fragment {
 
         if(useNetworkEndFragment) {
             viewModel.setCurrentLevel(level);
-            System.out.println("LEVEL" + viewModel.getCurrentLevel().getValue());
+            System.out.println("LEVEL:" + viewModel.getCurrentLevel().getValue());
         }
 
         String operationLimit = "Operation Limit: ";
@@ -317,7 +317,7 @@ public class CalculatorFragment extends Fragment {
         requireActivity().runOnUiThread(() -> viewModel.setPoints(points));
 
         if(useNetworkEndFragment) {
-            ((NetworkActivity) requireActivity()).switchToEndFragment(points);
+            ((NetworkActivity) requireActivity()).switchToEndFragment();
             return;
         }
 
@@ -535,6 +535,9 @@ public class CalculatorFragment extends Fragment {
                 entryIndex++;
             }
             // System.out.println(input + " " + entries);
+        }
+        if (entries.get(entries.size() - 1).equals("")) {
+            entries.remove(entries.size() - 1);
         }
         return entries;
     }
