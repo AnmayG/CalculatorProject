@@ -74,6 +74,8 @@ public class NetworkViewModel extends ViewModel {
             companionNames.getValue().add(name);
             index = companionNames.getValue().size() - 1;
         }
+        equalSizeArray();
+        System.out.println("TEST " + companionNames.getValue() + " " + companionLevels.getValue());
         setCompanionLevels(level, index);
     }
 

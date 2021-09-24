@@ -47,7 +47,7 @@ public class CalculatorFragment extends Fragment {
 
     private int clickCounter = 0;
     private String displayLabel = "";
-    private int level = 1;
+    private int level = 0;
     private boolean isDoublePointsEnabled = false;
     private int numDoublePowerup = 0;
     private int numFreezePowerup = 0;
@@ -295,7 +295,7 @@ public class CalculatorFragment extends Fragment {
 
         if(useNetworkEndFragment) {
             viewModel.setCurrentLevel(level);
-            System.out.println("LEVEL:" + viewModel.getCurrentLevel().getValue());
+            // System.out.println("LEVEL:" + viewModel.getCurrentLevel().getValue());
         }
 
         String operationLimit = "Operation Limit: ";

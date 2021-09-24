@@ -24,10 +24,8 @@ public class GameTypeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_type);
 
-        String pts = getIntent().getStringExtra("Points");
-        points = Integer.parseInt(pts);
-
         try{
+            points = Integer.parseInt(getIntent().getStringExtra("Points"));
             freezeCount = Integer.parseInt(getIntent().getStringExtra("NumFreeze"));
             clickCount = Integer.parseInt(getIntent().getStringExtra("NumClick"));
             doubleCount = Integer.parseInt(getIntent().getStringExtra("NumDouble"));

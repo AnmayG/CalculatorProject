@@ -40,6 +40,7 @@ import com.google.android.gms.nearby.connection.Strategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -67,6 +68,9 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
     /** Acceleration required to detect a shake. In multiples of Earth's gravity. */
     private static final float SHAKE_THRESHOLD_GRAVITY = 2;
+
+    /** Number of levels to be completed before win */
+    private static final int LEVEL_LIMIT = 10;
 
     /**
      * Advertise for 30 seconds before going back to discovering. If a client connects, we'll continue
@@ -170,21 +174,26 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             if(raceBars.size() != 0) {
                 raceBars.get(0).incrementProgressBy(10);
             }
+            System.out.println("LEVEL:" + level);
             send(Payload.fromBytes(("LEVEL:" + level).getBytes(UTF_8)));
-            if(level > 10) {
+            if(level >= LEVEL_LIMIT) {
                 String s = "WINNER IS:" + getName();
                 switchToEndFragment();
                 send(Payload.fromBytes(s.getBytes(UTF_8)));
             }
         });
 
-        viewModel.getCompanionLevels().observe(this, levels -> {
-            for (int i = 0; i < levels.size(); i++) {
-                raceBars.get(i).setProgress(10 * levels.get(i));
-                endpointIdToResponse.get(1).set(i, levels.get(i) + "");
-            }
-            System.out.println(endpointIdToResponse.get(0) + "\n" +  endpointIdToResponse.get(1));
-        });
+        viewModel.getCompanionLevels().observe(this, this::updateRaceBars);
+    }
+
+    public void updateRaceBars(ArrayList<Integer> levels) {
+        System.out.println("LEVELS: " + levels);
+        for (int i = 0; i < levels.size(); i++) {
+            System.out.println("I: " + i);
+            raceBars.get(i + 1).setProgress(10 * levels.get(i));
+            endpointIdToResponse.get(1).set(i, levels.get(i) + "");
+        }
+        System.out.println(endpointIdToResponse.get(0) + "\n" +  endpointIdToResponse.get(1));
     }
 
     public void initializeCalculatorFragment() {
@@ -206,6 +215,8 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
 
         findViewById(R.id.calculator_fragment).setVisibility(View.VISIBLE);
         findViewById(R.id.race_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.name).setBackgroundColor(0);
+
         addRaceBars();
     }
 
@@ -222,7 +233,7 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     public void addRaceBars() {
         // Add one for each endpoint and one for your own
         for (int i = -1; i < getConnectedEndpoints().size(); i++) {
-            ProgressBar progressBar = new ProgressBar(this, null,
+            ProgressBar  progressBar = new ProgressBar(this, null,
                     android.R.attr.progressBarStyleHorizontal);
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setId(ViewCompat.generateViewId());
@@ -291,10 +302,15 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
     protected void onConnectionInitiated(Endpoint endpoint, ConnectionInfo connectionInfo) {
         // A connection to another device has been initiated! We'll accept the connection immediately.
         acceptConnection(endpoint);
+    }
+
+    @Override
+    protected void acceptConnection(Endpoint endpoint) {
+        super.acceptConnection(endpoint);
         endpointIdToResponse.get(0).add(endpoint.getId());
         endpointIdToResponse.get(1).add("");
         String s = "ID: " + endpointIdToResponse.get(0).get(endpointIdToResponse.get(0).size() - 1);
-        System.out.println(s);
+        System.out.println("ID: " + endpointIdToResponse.get(0) + " " + endpointIdToResponse.get(1));
 
         send(Payload.fromBytes(s.getBytes(UTF_8)));
     }
@@ -581,11 +597,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
         String input = new String(payload.asBytes(), UTF_8);
         int index = endpointIdToResponse.get(0).indexOf(endpoint.getId());
         endpointIdToResponse.get(1).set(index, input);
-        logD("CONNECTION RECIEVED " + endpoint.getId());
-        interpretRecievedInfo(input, endpoint);
+        logD("CONNECTION RECEIVED " + endpoint.getId());
+        interpretReceivedInfo(input, endpoint);
     }
 
-    public void interpretRecievedInfo(String input, Endpoint endpoint) {
+    public void interpretReceivedInfo(String input, Endpoint endpoint) {
+        System.out.println("input = " + input);
         if(input.equals("GAME_STARTED")) {
             initializeCalculatorFragment();
         } else if (input.contains("LEVEL:")) {
@@ -593,12 +610,12 @@ public class NetworkActivity extends ConnectionsActivity implements SensorEventL
             for (int i = 0; i < endpointIdToResponse.get(0).size(); i++) {
                 if (endpointIdToResponse.get(0).get(i).equals(endpoint.getId())) {
                     endpointIdToResponse.get(1).set(i, input2);
-                    raceBars.get(i).incrementProgressBy(10);
                 }
             }
             // viewModel.setCurrentLevel(Integer.parseInt(input2));
-            System.out.println(input2 + " " + endpoint.getName());
+            System.out.println("INPUT2 " + input2 + " " + endpoint.getName());
             viewModel.setCompanionLevels(Integer.parseInt(input2), endpoint.getName());
+            updateRaceBars(Objects.requireNonNull(viewModel.getCompanionLevels().getValue()));
         } else if (input.contains("ID:")) {
             String input2 = input.substring(input.indexOf(":") + 1);
             connectToEndpoint(input2);

@@ -112,6 +112,7 @@ public class NetworkEndFragment extends Fragment {
     }
 
     public int max(ArrayList<Integer> a) {
+        if(a.size() == 0) return 0;
         int max = a.get(0);
         for (int i = 0; i < a.size(); i++) {
             if(a.get(i) > max) max = a.get(i);
